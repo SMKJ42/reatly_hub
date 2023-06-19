@@ -1,9 +1,9 @@
 import type { ReactElement } from "react";
-import PublicLayout from "../components/layouts/PublicLayout";
-import type { NextPageWithLayout } from "./_app";
+import PublicLayout from "../../components/layouts/PublicLayout";
+import type { NextPageWithLayout } from "../_app";
 
 const Home: NextPageWithLayout = () => {
-  return <h1 className="bg-white"> hello </h1>;
+  return <h1 className="bg-white"> Blog :) </h1>;
 };
 
 Home.getLayout = function getLayout(page: ReactElement) {

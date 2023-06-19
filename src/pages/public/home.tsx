@@ -3,7 +3,7 @@ import PublicLayout from "../../components/layouts/PublicLayout";
 import type { NextPageWithLayout } from "../_app";
 
 const Home: NextPageWithLayout = () => {
-  return <h1 className="bg-white"> hello </h1>;
+  return <h1 className="bg-white"> Home :) </h1>;
 };
 
 Home.getLayout = function getLayout(page: ReactElement) {

@@ -40,5 +40,5 @@ model Flip {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    //TODO: later evalutation... setting this up=
+    //TODO: later evalutation... setting this up
 }

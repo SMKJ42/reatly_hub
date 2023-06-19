@@ -5,23 +5,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { type ReactElement, type ReactNode } from "react";
 import { type NextPage } from "next";
 
-// export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-//   getLayout?: (page: ReactElement) => ReactNode;
-// };
-
-// type AppPropsWithLayout = AppProps & {
-//   Component: NextPageWithLayout;
-// };
-
-// export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-//   // Use the layout defined at the page level, if available
-//   const getLayout = Component.getLayout ?? ((page) => page);
-
-//   return getLayout(<Component {...pageProps} />);
-// }
-
-//////
-
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
@@ -31,7 +14,6 @@ type AppPropsWithLayout = AppProps & {
 };
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-  // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
@@ -40,15 +22,5 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     </ClerkProvider>
   );
 }
-
-//////////
-
-// function MyApp({ Component, pageProps }: AppProps) {
-//   return (
-//     <ClerkProvider {...pageProps}>
-//       <Component {...pageProps} />
-//     </ClerkProvider>
-//   );
-// }
 
 export default api.withTRPC(MyApp);
