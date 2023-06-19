@@ -1,4 +1,4 @@
-import { UserButton, useUser } from "@clerk/nextjs";
+import { SignOutButton, UserButton, useUser } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,15 +9,15 @@ export default function UserLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = useUser();
+  // const user = useUser();
 
   const router = useRouter();
-  const { isLoaded: userLoaded } = useUser();
+  // const { isLoaded: userLoaded } = useUser();
 
-  useEffect(() => {
-    if (!userLoaded) void router.push("/");
-    else void router.push("/user/dashboard");
-  }, [userLoaded]);
+  // useEffect(() => {
+  //   if (!userLoaded) void router.push("/");
+  //   else void router.push("/user/dashboard");
+  // }, [userLoaded]);
 
   return (
     <>
@@ -37,8 +37,8 @@ export default function UserLayout({
         </div>
         <div className="account-manager flex-3 flex-inital flex w-32 justify-around">
           <>
-            <Link href="/account">account</Link>
-            <UserButton />
+            <Link href="/user/account">account</Link>
+            <SignOutButton />
           </>
         </div>
       </nav>

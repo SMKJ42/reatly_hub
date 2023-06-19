@@ -17,7 +17,6 @@ export default function PublicLayout({
   useEffect(() => {
     if (!userLoaded) return;
     if (user.isSignedIn) void router.push("/user/dashboard");
-    else void router.push("/");
   });
 
   return (
