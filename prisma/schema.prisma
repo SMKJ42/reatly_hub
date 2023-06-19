@@ -8,11 +8,37 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
-model Example {
+model SFHpod {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    street    String
+    city      String
+    state     String
+    zip       String
+    price     Int
+    beds      Int
+    baths     Int
+    sqft      Int
+
+    //TODO: finish this shit up for the schema on SFH
+}
+
+model MFHpod {
+    id        String @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    //TODO: later evalutation... setting this up
+}
+
+model Flip {
+    id        String @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    //TODO: later evalutation... setting this up=
 }
