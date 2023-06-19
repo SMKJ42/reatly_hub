@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "./navigation.css";
+
+body {
+  background-color: black;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 0.5rem;
+  margin: 0 0.25rem;
+  border-radius: 0.25rem;
+  transition: 0.2s ease-in-out;
+}
