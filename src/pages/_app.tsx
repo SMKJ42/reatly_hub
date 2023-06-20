@@ -7,7 +7,10 @@ import { type NextPage } from "next";
 import { Provider } from "react-redux";
 import store from "~/redux/store";
 
-export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+export type NextPageWithLayout<P = NonNullable<unknown>, IP = P> = NextPage<
+  P,
+  IP
+> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
