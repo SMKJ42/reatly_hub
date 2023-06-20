@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
-import UserLayout from "../../components/layouts/UserLayout";
-import type { NextPageWithLayout } from "../_app";
+import UserLayout from "../../../components/layouts/UserLayout";
+import type { NextPageWithLayout } from "../../_app";
 
 const Dashboard: NextPageWithLayout = () => {
   return <h1 className="bg-white"> User Calculators :) </h1>;

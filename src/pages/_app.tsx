@@ -4,6 +4,8 @@ import "~/styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { type ReactElement, type ReactNode } from "react";
 import { type NextPage } from "next";
+import { Provider } from "react-redux";
+import store from "~/redux/store";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -18,7 +20,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <ClerkProvider {...pageProps}>
-      {getLayout(<Component {...pageProps} />)}
+      <Provider store={store}>
+        {getLayout(<Component {...pageProps} />)}
+      </Provider>
     </ClerkProvider>
   );
 }

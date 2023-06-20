@@ -1,24 +1,12 @@
-import { SignOutButton, UserButton, useUser } from "@clerk/nextjs";
+import { SignOutButton } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 export default function UserLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // const user = useUser();
-
-  const router = useRouter();
-  // const { isLoaded: userLoaded } = useUser();
-
-  // useEffect(() => {
-  //   if (!userLoaded) void router.push("/");
-  //   else void router.push("/user/dashboard");
-  // }, [userLoaded]);
-
   return (
     <>
       <Head>
