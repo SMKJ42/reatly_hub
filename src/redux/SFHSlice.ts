@@ -7,46 +7,46 @@ import {
 } from "../homeBrews/calculations";
 
 interface SFHstate {
-  address: string,
-  price: string,
-  interest: string,
-  interestPercent: string,
-  downPaymentPerc: string,
-  downPaymentDoll: string,
-  closingCostsPerc: string,
-  closingCostsDoll: string,
-  loanTerm: string,
-  loanType: string,
-  loanTyeOptions: string[],
-  repairs: string,
-  ARV: string,
-  taxes: string,
-  insurance: string,
-  hoa: string,
-  vacancy: string,
-  capEx: string,
-  rennovationsRadio: false,
-  rennovations: string,
-  maintenance: string,
-  management: string,
-  expOther: string,
-  rents: string,
-  incOther: string,
-  speculation: false,
-  appreciation: string,
-  loanBalance: string,
-  costOfRenno: string,
-  totalAquisitionReturn: string,
-  aquisitionCosts: string,
-  equity: string,
-  LTV: string,
-  mortgagePayment: string,
-  cashFlow: string,
-  expenses: string,
-  monthlyPayment: string,
-  cashOnCash: string,
-  rennoEquity: string,
-  rennoReturn: string,
+  address: string;
+  price: string;
+  interest: string;
+  interestPercent: string;
+  downPaymentPerc: string;
+  downPaymentDoll: string;
+  closingCostsPerc: string;
+  closingCostsDoll: string;
+  loanTerm: string;
+  loanType: string;
+  loanTyeOptions: string[];
+  repairs: string;
+  ARV: string;
+  taxes: string;
+  insurance: string;
+  hoa: string;
+  vacancy: string;
+  capEx: string;
+  rennovationsRadio: boolean;
+  rennovations: string;
+  maintenance: string;
+  management: string;
+  expOther: string;
+  rents: string;
+  incOther: string;
+  speculation: boolean;
+  appreciation: string;
+  loanBalance: string;
+  costOfRenno: string;
+  totalAquisitionReturn: string;
+  aquisitionCosts: string;
+  equity: string;
+  LTV: string;
+  mortgagePayment: string;
+  cashFlow: string;
+  expenses: string;
+  monthlyPayment: string;
+  cashOnCash: string;
+  rennoEquity: string;
+  rennoReturn: string;
 }
 
 const initialState: SFHstate = {
@@ -99,10 +99,10 @@ export const SFHSlice = createSlice({
     resetSFH: () => {
       return initialState;
     },
-    updateAddress: (state, action) => {
+    updateAddress: (state, action: { payload: string }) => {
       return { ...state, address: action.payload };
     },
-    updatePrice: (state, action) => {
+    updatePrice: (state, action: { payload: string }) => {
       const price = convertToNum(action.payload);
       const downPayment = convertToNum(state.downPaymentPerc);
       const ARV = convertToNum(state.ARV);
@@ -159,17 +159,17 @@ export const SFHSlice = createSlice({
       };
     },
 
-    updateInterest: (state, action: {payload: string}) => {
+    updateInterest: (state, action: { payload: string }) => {
       const interest = convertToNum(action.payload);
       const loanBalance = convertToNum(state.loanBalance);
       const loanTerm = convertToNum(state.loanTerm);
 
       //TODO: turn into comma parsed string.
-      const mortgagePayment = (calcMortgagePayment(
+      const mortgagePayment = calcMortgagePayment(
         loanBalance,
         interest,
         loanTerm
-      ).toString());
+      ).toString();
       return {
         ...state,
         interest: action.payload,
@@ -177,7 +177,7 @@ export const SFHSlice = createSlice({
       };
     },
 
-    updateDownPaymentPerc: (state, action) => {
+    updateDownPaymentPerc: (state, action: { payload: string }) => {
       const downPayment = convertToNum(action.payload);
       const price = convertToNum(state.price);
       const interest = convertToNum(state.interest) / 100;
@@ -188,11 +188,11 @@ export const SFHSlice = createSlice({
       const loanBalance = price - (downPayment / 100) * price;
 
       //TODO: turn into comma parsed string.
-      const mortgagePayment = (calcMortgagePayment(
+      const mortgagePayment = calcMortgagePayment(
         loanBalance,
         interest,
         loanTerm
-      ).toString());
+      ).toString();
       console.log("redux mortgage payment", mortgagePayment);
       return {
         ...state,
@@ -202,7 +202,7 @@ export const SFHSlice = createSlice({
       };
     },
 
-    updateDownPaymentDoll: (state, action) => {
+    updateDownPaymentDoll: (state, action: { payload: string }) => {
       const downPayment = convertToNum(action.payload);
       const price = convertToNum(state.price);
       const interest = convertToNum(state.interest) / 100;
@@ -213,11 +213,11 @@ export const SFHSlice = createSlice({
       const loanBalance = price - (downPayment / 100) * price;
 
       //TODO: turn into comma parsed string.
-      const mortgagePayment = (calcMortgagePayment(
+      const mortgagePayment = calcMortgagePayment(
         loanBalance,
         interest,
         loanTerm
-      ).toString());
+      ).toString();
 
       return {
         ...state,
@@ -227,7 +227,7 @@ export const SFHSlice = createSlice({
       };
     },
 
-    updateClosingCostsPerc: (state, action) => {
+    updateClosingCostsPerc: (state, action: { payload: string }) => {
       const closingCosts = convertToNum(action.payload);
       const repairs = convertToNum(state.repairs);
       const rennovations = convertToNum(state.rennovations);
@@ -251,7 +251,7 @@ export const SFHSlice = createSlice({
       };
     },
 
-    updateClosingCostsDoll: (state, action) => {
+    updateClosingCostsDoll: (state, action: { payload: string }) => {
       const closingCosts = convertToNum(action.payload);
       const repairs = convertToNum(state.repairs);
       const rennovations = convertToNum(state.rennovations);
@@ -274,7 +274,7 @@ export const SFHSlice = createSlice({
       };
     },
 
-    updateLoanTerm: (state, action) => {
+    updateLoanTerm: (state, action: { payload: string }) => {
       const loanTerm = convertToNum(action.payload);
       const loanBalance = convertToNum(state.loanBalance);
       const interest = convertToNum(state.interest) / 100;
@@ -285,11 +285,11 @@ export const SFHSlice = createSlice({
       return { ...state, loanTerm: action.payload, mortgagePayment };
     },
 
-    updateLoanType: (state, action) => {
+    updateLoanType: (state, action: { payload: string }) => {
       return { ...state, loanType: action.payload };
     },
 
-    updateRepairs: (state, action) => {
+    updateRepairs: (state, action: { payload: string }) => {
       const repairs = convertToNum(action.payload);
       const rennovations = convertToNum(state.rennovations);
       const closingCosts = convertToNum(state.closingCostsPerc);
@@ -305,9 +305,8 @@ export const SFHSlice = createSlice({
           ? strNumsInput(price - price - repairs - rennovations)
           : strNumsInput(ARV - price - repairs - rennovations);
       //
-      const aquisitionCosts = strNumsInput(
-        (downPayment / 100) * price + closingCosts + repairs + rennovations
-      );
+      const aquisitionCosts =
+        (downPayment / 100) * price + closingCosts + repairs + rennovations;
       //
       const cashOnCash = strNumsInput(
         (cashFlow / (aquisitionCosts + repairs)) * 100
@@ -317,16 +316,16 @@ export const SFHSlice = createSlice({
         repairs: action.payload,
         costOfRenno,
         totalAquisitionReturn,
-        aquisitionCosts,
+        aquisitionCosts: strNumsInput(aquisitionCosts),
         cashOnCash,
       };
     },
 
-    updateRennovationsRadio: (state, action) => {
+    updateRennovationsRadio: (state, action: { payload: boolean }) => {
       return { ...state, rennovationsRadio: action.payload, rennovations: "0" };
     },
 
-    updateRennovations: (state, action) => {
+    updateRennovations: (state, action: { payload: string }) => {
       const rennovations = convertToNum(action.payload);
       const repairs = convertToNum(state.repairs);
       const closingCosts = convertToNum(state.closingCostsPerc);
@@ -356,7 +355,7 @@ export const SFHSlice = createSlice({
       };
     },
 
-    updateARV: (state, action) => {
+    updateARV: (state, action: { payload: string }) => {
       const ARV = convertToNum(action.payload);
       const price = convertToNum(state.price);
       const repairs = convertToNum(state.repairs);
@@ -382,7 +381,7 @@ export const SFHSlice = createSlice({
       };
     },
 
-    updateTaxes: (state, action) => {
+    updateTaxes: (state, action: { payload: string }) => {
       const taxes = convertToNum(action.payload);
       const insurance = convertToNum(state.insurance);
       const hoa = convertToNum(state.hoa);
@@ -422,7 +421,7 @@ export const SFHSlice = createSlice({
       return { ...state, taxes: action.payload, expenses, monthlyPayment };
     },
 
-    updateInsurance: (state, action) => {
+    updateInsurance: (state, action: { payload: string }) => {
       const insurance = convertToNum(action.payload);
       const taxes = convertToNum(state.taxes);
       const hoa = convertToNum(state.hoa);
@@ -450,7 +449,7 @@ export const SFHSlice = createSlice({
       return { ...state, insurance: action.payload, expenses, monthlyPayment };
     },
 
-    updateHOA: (state, action) => {
+    updateHOA: (state, action: { payload: string }) => {
       const hoa = convertToNum(action.payload);
       const taxes = convertToNum(state.taxes);
       const insurance = convertToNum(state.insurance);
@@ -478,7 +477,7 @@ export const SFHSlice = createSlice({
       return { ...state, hoa: action.payload, expenses, monthlyPayment };
     },
 
-    updateVacancy: (state, action) => {
+    updateVacancy: (state, action: { payload: string }) => {
       const vacancy = convertToNum(action.payload);
       const taxes = convertToNum(state.taxes);
       const insurance = convertToNum(state.insurance);
@@ -503,7 +502,7 @@ export const SFHSlice = createSlice({
       return { ...state, vacancy: action.payload, expenses };
     },
 
-    updateCapex: (state, action) => {
+    updateCapex: (state, action: { payload: string }) => {
       const capEx = convertToNum(action.payload);
       const taxes = convertToNum(state.taxes);
       const insurance = convertToNum(state.insurance);
@@ -528,7 +527,7 @@ export const SFHSlice = createSlice({
       return { ...state, capEx: action.payload, expenses };
     },
 
-    updateMaintenance: (state, action) => {
+    updateMaintenance: (state, action: { payload: string }) => {
       const maintenance = convertToNum(action.payload);
       const taxes = convertToNum(state.taxes);
       const insurance = convertToNum(state.insurance);
@@ -553,7 +552,7 @@ export const SFHSlice = createSlice({
       return { ...state, maintenance: action.payload, expenses };
     },
 
-    updateManagement: (state, action) => {
+    updateManagement: (state, action: { payload: string }) => {
       const management = convertToNum(action.payload);
       const taxes = convertToNum(state.taxes);
       const insurance = convertToNum(state.insurance);
@@ -578,7 +577,7 @@ export const SFHSlice = createSlice({
       return { ...state, management: action.payload, expenses };
     },
 
-    updateExpOther: (state, action) => {
+    updateExpOther: (state, action: { payload: string }) => {
       const expOther = convertToNum(action.payload);
       const taxes = convertToNum(state.taxes);
       const insurance = convertToNum(state.insurance);
@@ -603,7 +602,7 @@ export const SFHSlice = createSlice({
       return { ...state, expOther: action.payload, expenses };
     },
 
-    updateRents: (state, action) => {
+    updateRents: (state, action: { payload: string }) => {
       const rents = convertToNum(action.payload);
       const incOther = convertToNum(state.incOther);
       const expenses = convertToNum(state.expenses);
@@ -613,7 +612,7 @@ export const SFHSlice = createSlice({
       return { ...state, rents: action.payload, cashFlow };
     },
 
-    updateIncOther: (state, action) => {
+    updateIncOther: (state, action: { payload: string }) => {
       const incOther = convertToNum(action.payload);
       const expenses = convertToNum(state.expenses);
       const rents = convertToNum(state.rents);

@@ -1,8 +1,8 @@
-const stripComma = (string) => {
-  if (typeof string === "number") {
-    string = string.toString();
+const stripComma = (input: number | string) => {
+  if (typeof input === "number") {
+    input = input.toString();
   }
-  const array = string.split("");
+  const array = input.split("");
   const filter = array.filter((char) => {
     return char !== ",";
   });
@@ -11,7 +11,7 @@ const stripComma = (string) => {
 };
 
 //limits the maximum amount of decimal places
-const enforceDecimal = (string, max) => {
+const enforceDecimal = (string: string, max: number) => {
   if (string) {
     const regExp = new RegExp(`(\\.\\d{${max}})\\d+$`);
     const output = string.replace(regExp, "$1");
@@ -19,7 +19,7 @@ const enforceDecimal = (string, max) => {
   } else return "";
 };
 
-const addCommas = (string) => {
+const addCommas = (string: string) => {
   let decimalIndex = string.indexOf(".");
   if (decimalIndex === -1) {
     decimalIndex = string.length - 1;
@@ -39,16 +39,16 @@ const addCommas = (string) => {
 };
 
 //ensures only numbers and decimals are entered
-const enforceStrNums = (string) => {
+const enforceStrNums = (string: string) => {
   const output = string.replace(/[^\d.]/g, "");
   return output;
 };
 
-const strNumsInput = (string, max) => {
-  if (typeof string === "number") {
-    string = string.toString();
+const strNumsInput = (input: number | string, max?: number) => {
+  if (typeof input === "number") {
+    input = input.toString();
   }
-  const stripped = enforceStrNums(string);
+  const stripped = enforceStrNums(input);
   const commas = addCommas(stripped);
   if (!max) {
     return commas;
@@ -56,12 +56,9 @@ const strNumsInput = (string, max) => {
   return enforceDecimal(commas, max);
 };
 
-const convertToNum = (input) => {
-  if (typeof input === "number" && isNaN(input))
-    throw new Error(`THROWING NaN to find bug in ${input}`);
-  console.log("convertToNum input", input);
+const convertToNum = (input: string) => {
   const output = parseFloat(stripComma(input));
-  return output ? output : 0;
+  return output ? output : (0 as number);
 };
 
 export { stripComma, strNumsInput, convertToNum };
