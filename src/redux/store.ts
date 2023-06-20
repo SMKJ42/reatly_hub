@@ -1,4 +1,4 @@
-import { Reducer, configureStore } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import SFHReducer from "./SFHSlice";
 
 // export interface ReduxInterface {
