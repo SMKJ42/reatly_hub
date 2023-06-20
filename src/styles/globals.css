@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @import "./navigation.css";
 
 body {
@@ -14,4 +15,8 @@ nav a {
   margin: 0 0.25rem;
   border-radius: 0.25rem;
   transition: 0.2s ease-in-out;
+}
+
+nav button {
+  padding: 5px;
 }
