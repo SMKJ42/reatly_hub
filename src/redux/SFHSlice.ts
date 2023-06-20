@@ -6,7 +6,6 @@ import {
   convertPercentToDecimal,
 } from "../homeBrews/calculations";
 
-
 interface SFHstate {
   address: string,
   price: string,
@@ -93,7 +92,7 @@ const initialState: SFHstate = {
   rennoReturn: "0",
 };
 
-export const SFHSlice:  = createSlice({
+export const SFHSlice = createSlice({
   name: "SFH",
   initialState,
   reducers: {
