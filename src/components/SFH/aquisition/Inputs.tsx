@@ -1,17 +1,10 @@
 import React from "react";
 import RennovationRadio from "./RennovationRadio";
 import Rennovations from "./Rennovations";
+import { strNumsInput } from "../../../homeBrews/numberDisplay";
 import {
-  convertToNum,
-  strNumsInput,
-  stripComma,
-} from "../../../app/homeBrews/numberDisplay";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  updateClosingCosts,
   updateClosingCostsDoll,
   updateClosingCostsPerc,
-  updateDownPayment,
   updateDownPaymentDoll,
   updateDownPaymentPerc,
   updateInterest,
@@ -19,58 +12,15 @@ import {
   updateLoanType,
   updatePrice,
   updateRepairs,
-} from "../../../app/store/SFHSlice";
-import {
-  convertDecimalToPercent,
-  convertPercentToDecimal,
-} from "../../../app/homeBrews/calculations";
+} from "../../../redux/SFHSlice";
+import type { SFHInterface } from "../../../redux/SFHSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
 const SFHAquisitionInputs = () => {
-  const dispatch = useDispatch();
-  const SFH = useSelector((state) => state.SFH);
+  const dispatch = useAppDispatch();
+  const SFH: SFHInterface = useAppSelector((state) => state.SFH);
 
   const loanProducts = ["conventional", "fha", "va"];
-
-  //needs hoisted -- motherfucker
-  // const [downPaymentDollar, setDownPaymentDollar] = useState(
-  //   strNumsInput(
-  //     (
-  //       (stripComma(state.downPayment) * stripComma(state.price)) /
-  //       100
-  //     ).toString()
-  //   )
-  // );
-
-  // useEffect(() => {
-  //   setDownPaymentDollar(
-  //     strNumsInput(
-  //       (
-  //         (stripComma(state.downPayment) * stripComma(state.price)) /
-  //         100
-  //       ).toString()
-  //     )
-  //   );
-  // }, [state.downPayment, state.price]);
-
-  // const [closingCostsPerecent, setClosingCostsPercent] = useState(
-  //   strNumsInput(
-  //     (
-  //       (stripComma(state.closingCosts) / stripComma(state.price)) *
-  //       100
-  //     ).toString()
-  //   )
-  // );
-
-  // useEffect(() => {
-  //   setClosingCostsPercent(
-  //     strNumsInput(
-  //       (
-  //         (stripComma(state.closingCosts) / stripComma(state.price)) *
-  //         100
-  //       ).toString()
-  //     )
-  //   );
-  // }, [state.closingCosts, state.price]);
 
   return (
     <div className="aquisition">
@@ -90,10 +40,9 @@ const SFHAquisitionInputs = () => {
           Loan Type:
           {/* TODO: turn into drop-down modal */}
           <select
-            type="text"
             value={SFH.loanType}
             onChange={(e) => {
-              dispatch(updateLoanType(e.target.value, 2));
+              dispatch(updateLoanType(e.target.value));
             }}
           >
             {loanProducts.map((product, index) => (
@@ -114,7 +63,7 @@ const SFHAquisitionInputs = () => {
               className="dollar"
               onChange={(e) => {
                 dispatch(
-                  updateDownPaymentDoll(strNumsInput(e.target.value), 2)
+                  updateDownPaymentDoll(strNumsInput(e.target.value, 2))
                 );
               }}
             />
@@ -162,7 +111,7 @@ const SFHAquisitionInputs = () => {
             Closing Costs: $
             <input
               type="text"
-              value={SFH.closingCosts === "0" ? "" : SFH.closingCosts}
+              value={SFH.closingCostsDoll === "0" ? "" : SFH.closingCostsDoll}
               className="dollar"
               onChange={(e) => {
                 dispatch(updateClosingCostsDoll(strNumsInput(e.target.value)));
@@ -170,6 +119,7 @@ const SFHAquisitionInputs = () => {
             />
             <input
               type="text"
+              value={SFH.closingCostsPerc === "0" ? "" : SFH.closingCostsPerc}
               className="percent"
               onChange={(e) => {
                 dispatch(updateClosingCostsPerc(strNumsInput(e.target.value)));

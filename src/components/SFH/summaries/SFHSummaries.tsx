@@ -1,9 +1,9 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "~/redux/hooks";
 
 const SFHSummaries = ({}) => {
-  const dispatch = useDispatch();
-  const SFH = useSelector((state) => state.SFH);
+  const dispatch = useAppDispatch();
+  const SFH = useAppSelector((state) => state.SFH);
   return (
     <div>
       {/* <p className="roi">ROI: {ROI && ROE ? ROI : 0}</p> */}

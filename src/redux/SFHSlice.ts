@@ -6,7 +6,7 @@ import {
   convertPercentToDecimal,
 } from "../homeBrews/calculations";
 
-interface SFHstate {
+export interface SFHInterface {
   address: string;
   price: string;
   interest: string;
@@ -47,9 +47,13 @@ interface SFHstate {
   cashOnCash: string;
   rennoEquity: string;
   rennoReturn: string;
+  closingCosts: string;
+  capRate: string;
+  ROE: string;
+  ROI: string;
 }
 
-const initialState: SFHstate = {
+const initialState: SFHInterface = {
   address: "",
   price: "100,000",
   interest: "5",
@@ -90,6 +94,10 @@ const initialState: SFHstate = {
   cashOnCash: "0",
   rennoEquity: "0",
   rennoReturn: "0",
+  closingCosts: "0",
+  capRate: "0",
+  ROE: "0",
+  ROI: "0",
 };
 
 export const SFHSlice = createSlice({

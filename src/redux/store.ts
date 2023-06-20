@@ -1,11 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./authSlice";
-import counterReducer from "./counterSlice";
+import { Reducer, configureStore } from "@reduxjs/toolkit";
+import SFHReducer from "./SFHSlice";
+
+// export interface ReduxInterface {
+//   SFH: SFHInterface;
+// }
 
 const store = configureStore({
   reducer: {
-    auth: authReducer,
-    counter: counterReducer,
+    SFH: SFHReducer,
   },
 });
 

@@ -1,9 +1,9 @@
 import React, { useContext, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useAppSelector } from "~/redux/hooks";
 
 const SFHIncomeOutputs = () => {
-  const dispatch = useDispatch();
-  const SFH = useSelector((state) => state.SFH);
+  const SFH = useAppSelector((state) => state.SFH);
 
   return (
     <div>

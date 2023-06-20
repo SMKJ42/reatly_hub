@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import { strNumsInput } from "../../../app/homeBrews/numberDisplay";
-import { useDispatch, useSelector } from "react-redux";
+import { strNumsInput } from "../../../homeBrews/numberDisplay";
+import { useAppDispatch, useAppSelector } from "~/redux/hooks";
 
 const Rennovations = () => {
-  const dispatch = useDispatch();
-  const SFH = useSelector((state) => state.SFH);
+  const dispatch = useAppDispatch();
+  const SFH = useAppSelector((state) => state.SFH);
 
   useEffect(() => {
     dispatch({
@@ -40,7 +40,6 @@ const Rennovations = () => {
       </div>
       <div className="value-after-rennovations input-container">
         <label>Value after Renno: </label>
-        {console.log(SFH.ARV, SFH.price)}
         <input
           type="text"
           value={SFH.ARV === "0" ? SFH.price : SFH.ARV}

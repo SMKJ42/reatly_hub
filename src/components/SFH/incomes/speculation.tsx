@@ -1,9 +1,9 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "~/redux/hooks";
 
 const RennovationRadio = () => {
-  const dispatch = useDispatch();
-  const SFH = useSelector((state) => state.SFH);
+  const dispatch = useAppDispatch();
+  const SFH = useAppSelector((state) => state.SFH);
 
   return (
     <div className="rennovation-radios-container">
@@ -14,10 +14,9 @@ const RennovationRadio = () => {
         <input
           type="radio"
           id="rennovation-yes"
-          value={true}
           name="rennovations"
           onChange={() => {
-            SFH.RennovationRadio
+            SFH.rennovationsRadio
               ? dispatch({ type: "UPDATE_RENNOVATIONS_RADIO", payload: false })
               : dispatch({ type: "UPDATE_RENNOVATIONS_RADIO", payload: true });
           }}
@@ -26,11 +25,10 @@ const RennovationRadio = () => {
         <input
           type="radio"
           id="rennovation-no"
-          value={false}
           name="rennovations"
           defaultChecked
           onChange={() => {
-            SFH.RennovationRadio
+            SFH.rennovationsRadio
               ? dispatch({ type: "UPDATE_RENNOVATIONS_RADIO", payload: true })
               : dispatch({ type: "UPDATE_RENNOVATIONS_RADIO", payload: false });
           }}

@@ -1,6 +1,5 @@
 import React from "react";
-import { strNumsInput } from "../../../app/homeBrews/numberDisplay";
-import { useDispatch, useSelector } from "react-redux";
+import { strNumsInput } from "../../../homeBrews/numberDisplay";
 import {
   updateCapex,
   updateExpOther,
@@ -10,11 +9,12 @@ import {
   updateManagement,
   updateTaxes,
   updateVacancy,
-} from "../../../app/store/SFHSlice";
+} from "../../../redux/SFHSlice";
+import { useAppDispatch, useAppSelector } from "~/redux/hooks";
 
 const SFHEXpensesInputs = () => {
-  const dispatch = useDispatch();
-  const SFH = useSelector((state) => state.SFH);
+  const dispatch = useAppDispatch();
+  const SFH = useAppSelector((state) => state.SFH);
 
   return (
     <div className="expenses">

@@ -1,13 +1,9 @@
 import React from "react";
-
-import { useDispatch, useSelector } from "react-redux";
-import {
-  convertToNum,
-  strNumsInput,
-} from "../../../app/homeBrews/numberDisplay";
+import { convertToNum, strNumsInput } from "../../../homeBrews/numberDisplay";
+import { useAppSelector } from "~/redux/hooks";
 
 const SFHExpensesOutputs = () => {
-  const SFH = useSelector((state) => state.SFH);
+  const SFH = useAppSelector((state) => state.SFH);
 
   return (
     <div className="expenses summary">

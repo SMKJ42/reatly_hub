@@ -6,11 +6,11 @@ import SFHExpensesOutputs from "./expenses/outputs";
 import SFHIncomeInputs from "./incomes/inputs";
 import SFHIncomeOutputs from "./incomes/outputs";
 import SFHSummaries from "./summaries/SFHSummaries";
-import { useDispatch } from "react-redux";
-import { resetSFH, updateAddress } from "../../app/store/SFHSlice";
+import { resetSFH, updateAddress } from "../../redux/SFHSlice";
+import { useAppDispatch } from "~/redux/hooks";
 
 const SFHContainer = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   function handleSave() {
     //TODO: do something
