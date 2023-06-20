@@ -31,8 +31,8 @@ export default function PublicLayout({
           <img className="logo"></img>
         </div>
         <div className="std-navigation flex flex-1 justify-around">
-          <Link href="/about">home</Link>
-          <Link href="blog">blog</Link>
+          <Link href="about">home</Link>
+          <Link href="public/blog">blog</Link>
         </div>
         <div className="account-manager flex-3 flex-inital flex w-32 justify-around">
           <SignInButton />
