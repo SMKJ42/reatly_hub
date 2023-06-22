@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "./navigation.css";
-
+@import "./navigation.scss";
+@import "./SFH.scss";
 body {
   background-color: black;
 }

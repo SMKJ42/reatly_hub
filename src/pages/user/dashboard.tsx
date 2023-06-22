@@ -31,10 +31,15 @@ const Counter = () => {
         Increment
       </button>
       <button onClick={() => dispatch(decrement())}>Decrement</button>
-      <input value={number} onChange={(e) => {
-        setNumber(parseInt(e.target.value))
-      }} />
-      <button onClick={() => dispatch(incrementByAmount(number))}>Update</button>
+      <input
+        value={number}
+        onChange={(e) => {
+          setNumber(parseInt(e.target.value));
+        }}
+      />
+      <button onClick={() => dispatch(incrementByAmount(number))}>
+        Update
+      </button>
     </div>
   );
 };
