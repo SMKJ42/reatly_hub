@@ -12,7 +12,7 @@ import { useAppDispatch } from "~/redux/hooks";
 const SFHContainer = () => {
   const dispatch = useAppDispatch();
 
-  function handleSave() {
+  function handleSave() { 
     //TODO: do something
   }
 
@@ -27,7 +27,7 @@ const SFHContainer = () => {
           e.preventDefault();
         }}
       >
-        <div className="deal-analysis">
+        <div className="deal-analysis grid grid-cols-2 gap-20 justify-center">
           <div className="address">
             <label>Address:</label>
             <input

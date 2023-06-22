@@ -112,7 +112,8 @@ export const SFHSlice = createSlice({
     },
     updatePrice: (state, action: { payload: string }) => {
       const price = convertToNum(action.payload);
-      const downPayment = convertToNum(state.downPaymentPerc);
+      const downPaymentPerc = convertToNum(state.downPaymentDoll);
+      const downPaymentDoll = convertToNum(state.downPaymentDoll)
       const ARV = convertToNum(state.ARV);
       const repairs = convertToNum(state.repairs);
       const rennovations = convertToNum(state.rennovations);
@@ -120,15 +121,13 @@ export const SFHSlice = createSlice({
       const interest = convertToNum(state.interest) / 100;
       const loanTerm = convertToNum(state.loanTerm);
 
-      console.log(price, downPayment, ARV, repairs, rennovations, closingCosts);
-
-      const loanBalance = price - (downPayment / 100) * price;
+      const loanBalance = price - downPaymentDoll;
       const totalAquisitionReturn =
         ARV === 0
           ? strNumsInput(price - price - repairs - rennovations, 2)
           : strNumsInput(ARV - price - repairs - rennovations, 2);
       const aquisitionCosts = strNumsInput(
-        (downPayment / 100) * price + closingCosts + repairs + rennovations,
+        downPaymentDoll + closingCosts + repairs + rennovations,
         2
       );
       const equity = strNumsInput(price - loanBalance, 2);
@@ -136,23 +135,6 @@ export const SFHSlice = createSlice({
       const mortgagePayment = strNumsInput(
         calcMortgagePayment(loanBalance, interest, loanTerm),
         2
-      );
-
-      console.log(price, loanBalance);
-
-      console.log(
-        "loan balance: ",
-        loanBalance,
-        "TAR: ",
-        totalAquisitionReturn,
-        "AC: ",
-        aquisitionCosts,
-        "equity: ",
-        equity,
-        "ltv: ",
-        LTV,
-        "mortgage payment: ",
-        mortgagePayment
       );
 
       return {
@@ -172,6 +154,8 @@ export const SFHSlice = createSlice({
       const loanBalance = convertToNum(state.loanBalance);
       const loanTerm = convertToNum(state.loanTerm);
 
+      console.log(loanBalance)
+
       //TODO: turn into comma parsed string.
       const mortgagePayment = calcMortgagePayment(
         loanBalance,
@@ -186,7 +170,7 @@ export const SFHSlice = createSlice({
     },
 
     updateDownPaymentPerc: (state, action: { payload: string }) => {
-      const downPayment = convertToNum(action.payload);
+      const downPayment = convertToNum(action.payload) / 100;
       const price = convertToNum(state.price);
       const interest = convertToNum(state.interest) / 100;
       const loanTerm = convertToNum(state.loanTerm);
@@ -201,7 +185,6 @@ export const SFHSlice = createSlice({
         interest,
         loanTerm
       ).toString();
-      console.log("redux mortgage payment", mortgagePayment);
       return {
         ...state,
         downPaymentPerc: action.payload,
@@ -399,18 +382,6 @@ export const SFHSlice = createSlice({
       const management = convertToNum(state.management);
       const expOther = convertToNum(state.expOther);
       const mortgagePayment = convertToNum(state.mortgagePayment);
-
-      console.log(
-        taxes,
-        insurance,
-        hoa,
-        vacancy,
-        capEx,
-        maintenance,
-        management,
-        expOther,
-        mortgagePayment
-      );
 
       const expenses = strNumsInput(
         taxes +

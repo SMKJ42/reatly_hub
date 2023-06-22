@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Dashboard: NextPageWithLayout = () => {
   return (
-    <h1 className="bg-white">
+    <h1 className="">
       User Calculators :)
       <Link href="/user/calculators/SFH">SFH</Link>
     </h1>

@@ -9,7 +9,7 @@ const Dashboard: NextPageWithLayout = () => {
   return (
     <>
       <Counter />
-      <h1 className="bg-white"> User Dashboard :) </h1>
+      <h1 className=""> User Dashboard :) </h1>
     </>
   );
 };
@@ -25,7 +25,7 @@ const Counter = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="bg-white">
+    <div className="">
       <h1>Count: {value}</h1>
       <button type="button" onClick={() => dispatch(increment())}>
         Increment

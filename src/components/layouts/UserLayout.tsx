@@ -1,6 +1,7 @@
 import { SignOutButton } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
+import  ToggleTheme from "../shared/ToggleTheme"
 
 export default function UserLayout({
   children,
@@ -29,6 +30,7 @@ export default function UserLayout({
             <SignOutButton />
           </>
         </div>
+        <ToggleTheme />
       </nav>
       <main className="bg-slate">{children}</main>
       <footer></footer>

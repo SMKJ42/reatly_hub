@@ -5,7 +5,7 @@ import { UserProfile } from "@clerk/nextjs";
 
 const Dashboard: NextPageWithLayout = () => {
   return (
-    <h1 className="bg-white">
+    <h1 className="">
       User Calculators :)
       <UserProfile />
     </h1>

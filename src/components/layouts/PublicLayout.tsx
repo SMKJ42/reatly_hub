@@ -3,6 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import  ToggleTheme from "../shared/ToggleTheme"
 
 export default function PublicLayout({
   children,
@@ -17,7 +18,7 @@ export default function PublicLayout({
   useEffect(() => {
     if (!userLoaded) return;
     if (user.isSignedIn) void router.push("/user/dashboard");
-  });
+  }, [userLoaded]);
 
   return (
     <>
@@ -37,6 +38,7 @@ export default function PublicLayout({
         <div className="account-manager flex-3 flex-inital flex w-32 justify-around">
           <SignInButton />
         </div>
+        <ToggleTheme />
       </nav>
       <main className="bg-slate">{children}</main>
       <footer></footer>
