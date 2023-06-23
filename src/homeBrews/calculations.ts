@@ -63,7 +63,6 @@ export const calcMortgagePayment = (
   interest: number,
   loanTerm: number
 ) => {
-  console.log(loanValue, interest, loanTerm)
   const output =
     ((interest / 12) * loanValue) /
     (1 - Math.pow(1 + interest / 12, -loanTerm * 12));

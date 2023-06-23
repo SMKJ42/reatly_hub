@@ -10,7 +10,7 @@ export interface SFHInterface {
   address: string;
   price: string;
   interest: string;
-  interestPercent: string;
+  // interestPercent: string;
   downPaymentPerc: string;
   downPaymentDoll: string;
   closingCostsPerc: string;
@@ -51,13 +51,15 @@ export interface SFHInterface {
   capRate: string;
   ROE: string;
   ROI: string;
+  fixed: string;
+  variable: string;
 }
 
 const initialState: SFHInterface = {
   address: "",
   price: "100,000",
   interest: "5",
-  interestPercent: "0.05",
+  // interestPercent: "0.05",
   downPaymentPerc: "20",
   downPaymentDoll: "20,000",
   closingCostsPerc: "3.5",
@@ -84,10 +86,10 @@ const initialState: SFHInterface = {
   loanBalance: "80,000",
   costOfRenno: "0",
   totalAquisitionReturn: "0",
-  aquisitionCosts: "0",
+  aquisitionCosts: "23,500",
   equity: "0",
   LTV: "0",
-  mortgagePayment: "0",
+  mortgagePayment: "429.46",
   cashFlow: "0",
   expenses: "0",
   monthlyPayment: "0",
@@ -98,6 +100,8 @@ const initialState: SFHInterface = {
   capRate: "0",
   ROE: "0",
   ROI: "0",
+  fixed: "0",
+  variable: "0",
 };
 
 export const SFHSlice = createSlice({
@@ -112,40 +116,72 @@ export const SFHSlice = createSlice({
     },
     updatePrice: (state, action: { payload: string }) => {
       const price = convertToNum(action.payload);
-      const downPaymentPerc = convertToNum(state.downPaymentDoll);
-      const downPaymentDoll = convertToNum(state.downPaymentDoll)
       const ARV = convertToNum(state.ARV);
       const repairs = convertToNum(state.repairs);
       const rennovations = convertToNum(state.rennovations);
-      const closingCosts = convertToNum(state.closingCostsPerc);
+      const closingCostsPerc = convertToNum(state.closingCostsPerc);
+      const closingCostsDoll = price * (closingCostsPerc / 100);
+      const downPaymentPerc = convertToNum(state.downPaymentPerc);
+      const downPaymentDoll = price * (downPaymentPerc / 100);
       const interest = convertToNum(state.interest) / 100;
       const loanTerm = convertToNum(state.loanTerm);
 
+      const taxes = convertToNum(state.taxes);
+      const insurance = convertToNum(state.insurance);
+      const hoa = convertToNum(state.hoa);
+      const vacancy = convertToNum(state.vacancy);
+      const capEx = convertToNum(state.capEx);
+      const maintenance = convertToNum(state.maintenance);
+      const management = convertToNum(state.management);
+      const expOther = convertToNum(state.expOther);
+
       const loanBalance = price - downPaymentDoll;
+
+      const mortgagePayment = calcMortgagePayment(
+        loanBalance,
+        interest,
+        loanTerm
+      );
+
+      const expenses = strNumsInput(
+        taxes +
+          insurance +
+          hoa +
+          vacancy +
+          capEx +
+          maintenance +
+          management +
+          expOther +
+          mortgagePayment
+      );
+
       const totalAquisitionReturn =
         ARV === 0
           ? strNumsInput(price - price - repairs - rennovations, 2)
           : strNumsInput(ARV - price - repairs - rennovations, 2);
+
       const aquisitionCosts = strNumsInput(
-        downPaymentDoll + closingCosts + repairs + rennovations,
-        2
-      );
-      const equity = strNumsInput(price - loanBalance, 2);
-      const LTV = strNumsInput(loanBalance / price, 3);
-      const mortgagePayment = strNumsInput(
-        calcMortgagePayment(loanBalance, interest, loanTerm),
+        downPaymentDoll + closingCostsDoll + repairs + rennovations,
         2
       );
 
+      const equity = strNumsInput(price - loanBalance, 2);
+      const LTV = strNumsInput(loanBalance / price, 3);
+
+      console.log(equity);
+
       return {
         ...state,
+        downPaymentDoll: strNumsInput(downPaymentDoll, 2),
         price: action.payload,
         loanBalance: strNumsInput(loanBalance, 2),
         totalAquisitionReturn,
         aquisitionCosts,
+        closingCostsDoll: strNumsInput(closingCostsDoll, 2),
         equity,
         LTV,
-        mortgagePayment,
+        mortgagePayment: strNumsInput(mortgagePayment, 2),
+        // expenses,
       };
     },
 
@@ -154,7 +190,7 @@ export const SFHSlice = createSlice({
       const loanBalance = convertToNum(state.loanBalance);
       const loanTerm = convertToNum(state.loanTerm);
 
-      console.log(loanBalance)
+      console.log(loanBalance);
 
       //TODO: turn into comma parsed string.
       const mortgagePayment = calcMortgagePayment(
@@ -584,9 +620,9 @@ export const SFHSlice = createSlice({
     updateRents: (state, action: { payload: string }) => {
       const rents = convertToNum(action.payload);
       const incOther = convertToNum(state.incOther);
-      const expenses = convertToNum(state.expenses);
+      const monthlyPayment = convertToNum(state.monthlyPayment);
 
-      const cashFlow = strNumsInput(rents + incOther - expenses);
+      const cashFlow = strNumsInput(rents + incOther - monthlyPayment, 2);
 
       return { ...state, rents: action.payload, cashFlow };
     },

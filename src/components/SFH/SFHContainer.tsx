@@ -15,6 +15,10 @@ const SFHContainer = () => {
     //TODO: do something
   }
 
+  function handlePDF() {
+    //TODO: do something
+  }
+
   function handleReset() {
     dispatch(resetSFH());
   }
@@ -51,7 +55,7 @@ const SFHContainer = () => {
             <SFHIncomeInputs />
             <SFHIncomeOutputs />
           </div>
-          <div>
+          <div className="button-container w-100 flex justify-center">
             <input
               type="button"
               value="save"
@@ -66,6 +70,15 @@ const SFHContainer = () => {
               className="SFH-submit-button"
               onClick={() => {
                 handleReset();
+              }}
+            />
+            <input
+              type="button"
+              value="PDF"
+              className="PDF-download"
+              onClick={(e) => {
+                e.preventDefault();
+                handlePDF();
               }}
             />
           </div>
