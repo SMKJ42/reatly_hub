@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { rennovationReturn } from "../../../homeBrews/calculations";
 import { convertToNum } from "../../../homeBrews/numberDisplay";
 import { useAppSelector } from "~/redux/hooks";
@@ -17,7 +17,10 @@ const SFHAquisitionOutputs = () => {
     rennovations,
     closingCosts,
     mortgagePayment,
+    rennovationsRadio,
   } = SFH;
+
+  console.log(rennovationsRadio);
 
   return (
     <div className="aquisition-metrics">
@@ -33,7 +36,7 @@ const SFHAquisitionOutputs = () => {
           : "0"}
       </div>
       <div className="ltv">LTV : {isNaN(parseInt(LTV)) ? 0 : LTV}</div>
-      {SFH.rennovationsRadio ? (
+      {rennovationsRadio ? (
         <>
           <div className="rennovations-radio">
             Post Renno LTV: {parseInt(SFH.rennovations) > 0 ? "0" : LTV}

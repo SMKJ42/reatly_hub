@@ -1,10 +1,9 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useAppDispatch, useAppSelector } from "~/redux/hooks";
+import { updateRennovationsRadio } from "~/redux/SFHSlice";
+import { useAppDispatch } from "~/redux/hooks";
 
 const RennovationRadio = () => {
   const dispatch = useAppDispatch();
-  const SFH = useAppSelector((state) => state.SFH);
 
   return (
     <div className="rennovation-radios-container">
@@ -18,15 +17,7 @@ const RennovationRadio = () => {
             id="rennovation-yes"
             name="rennovations"
             onChange={() => {
-              SFH.rennovationsRadio
-                ? dispatch({
-                    type: "UPDATE_RENNOVATIONS_RADIO",
-                    payload: false,
-                  })
-                : dispatch({
-                    type: "UPDATE_RENNOVATIONS_RADIO",
-                    payload: true,
-                  });
+              dispatch(updateRennovationsRadio(true));
             }}
           />
           <label htmlFor="rennovation-yes">yes</label>
@@ -39,12 +30,7 @@ const RennovationRadio = () => {
             name="rennovations"
             defaultChecked
             onChange={() => {
-              SFH.rennovationsRadio
-                ? dispatch({ type: "UPDATE_RENNOVATIONS_RADIO", payload: true })
-                : dispatch({
-                    type: "UPDATE_RENNOVATIONS_RADIO",
-                    payload: false,
-                  });
+              dispatch(updateRennovationsRadio(false));
             }}
           />
           <label htmlFor="rennovation-no">no</label>

@@ -5,3 +5,11 @@
 .input-container {
   @apply flex justify-between;
 }
+
+// nav,
+main {
+  @apply dark:text-bg300;
+  input {
+    @apply dark:bg-bg200 dark:text-black;
+  }
+}

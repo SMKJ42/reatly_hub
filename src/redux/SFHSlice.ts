@@ -10,7 +10,6 @@ export interface SFHInterface {
   address: string;
   price: string;
   interest: string;
-  // interestPercent: string;
   downPaymentPerc: string;
   downPaymentDoll: string;
   closingCostsPerc: string;
@@ -59,7 +58,6 @@ const initialState: SFHInterface = {
   address: "",
   price: "100,000",
   interest: "5",
-  // interestPercent: "0.05",
   downPaymentPerc: "20",
   downPaymentDoll: "20,000",
   closingCostsPerc: "3.5",
@@ -142,18 +140,16 @@ export const SFHSlice = createSlice({
 
       const totalAquisitionReturn =
         ARV === 0
-          ? strNumsInput(price - price - repairs - rennovations, 2)
-          : strNumsInput(ARV - price - repairs - rennovations, 2);
+          ? price - price - repairs - rennovations
+          : ARV - price - repairs - rennovations;
 
       const aquisitionCosts =
         downPaymentDoll + closingCostsDoll + repairs + rennovations;
 
-      const monthlyPayment = strNumsInput(
-        mortgagePayment + taxes + insurance + hoa
-      );
+      const monthlyPayment = mortgagePayment + taxes + insurance + hoa;
 
       const equity = price - loanBalance;
-      const LTV = strNumsInput(loanBalance / price, 3);
+      const LTV = loanBalance / price;
 
       const cashFlow = rents + incOther - expenses;
       const capRate = ((cashFlow + mortgagePayment) * 12) / price;
@@ -165,13 +161,13 @@ export const SFHSlice = createSlice({
         downPaymentDoll: strNumsInput(downPaymentDoll, 2),
         price: action.payload,
         loanBalance: strNumsInput(loanBalance, 2),
-        totalAquisitionReturn,
+        totalAquisitionReturn: strNumsInput(totalAquisitionReturn, 2),
         aquisitionCosts: strNumsInput(aquisitionCosts, 2),
         closingCostsDoll: strNumsInput(closingCostsDoll, 2),
         equity: strNumsInput(equity, 2),
-        LTV,
+        LTV: strNumsInput(LTV, 3),
         mortgagePayment: strNumsInput(mortgagePayment, 2),
-        monthlyPayment,
+        monthlyPayment: strNumsInput(monthlyPayment, 2),
         cashFlow: strNumsInput(cashFlow, 2),
         capRate: strNumsInput(capRate, 2),
         ROE: strNumsInput(ROE, 2),
@@ -184,7 +180,6 @@ export const SFHSlice = createSlice({
       const loanBalance = convertToNum(state.loanBalance);
       const loanTerm = convertToNum(state.loanTerm);
 
-      //TODO: turn into comma parsed string.
       const mortgagePayment = calcMortgagePayment(
         loanBalance,
         interest,
@@ -229,7 +224,6 @@ export const SFHSlice = createSlice({
       const ROE = ((cashFlow * 12) / equity) * 100;
       const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
 
-      //TODO: turn into comma parsed string.
       return {
         ...state,
         downPaymentPerc: strNumsInput(downPaymentPerc, 2),
@@ -270,8 +264,6 @@ export const SFHSlice = createSlice({
       const capRate = ((cashFlow + mortgagePayment) * 12) / price;
       const ROE = ((cashFlow * 12) / equity) * 100;
       const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
-
-      //TODO: turn into comma parsed string.
 
       return {
         ...state,
@@ -382,7 +374,7 @@ export const SFHSlice = createSlice({
     },
 
     updateRennovationsRadio: (state, action: { payload: boolean }) => {
-      return { ...state, rennovationsRadio: action.payload, rennovations: "0" };
+      return { ...state, rennovationsRadio: action.payload };
     },
 
     updateRennovations: (state, action: { payload: string }) => {
