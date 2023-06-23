@@ -1,5 +1,4 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import getLocalStorageItem from "~/cache/localStorage/getLocalStorageItem";
+import { createSlice } from "@reduxjs/toolkit";
 
 export interface CounterState {
   colorTheme: string;

@@ -6,7 +6,6 @@ import { type ReactElement, type ReactNode } from "react";
 import { type NextPage } from "next";
 import { Provider } from "react-redux";
 import store from "~/redux/store";
-import { ThemeProvider } from "next-themes";
 
 export type NextPageWithLayout<P = NonNullable<unknown>, IP = P> = NextPage<
   P,

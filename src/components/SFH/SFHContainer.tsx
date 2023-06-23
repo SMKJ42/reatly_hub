@@ -5,14 +5,13 @@ import SFHEXpensesInputs from "./expenses/inputs";
 import SFHExpensesOutputs from "./expenses/outputs";
 import SFHIncomeInputs from "./incomes/inputs";
 import SFHIncomeOutputs from "./incomes/outputs";
-import SFHSummaries from "./summaries/SFHSummaries";
 import { resetSFH, updateAddress } from "../../redux/SFHSlice";
 import { useAppDispatch } from "~/redux/hooks";
 
 const SFHContainer = () => {
   const dispatch = useAppDispatch();
 
-  function handleSave() { 
+  function handleSave() {
     //TODO: do something
   }
 
@@ -27,7 +26,7 @@ const SFHContainer = () => {
           e.preventDefault();
         }}
       >
-        <div className="deal-analysis grid grid-cols-2 gap-20 justify-center">
+        <div className="deal-analysis">
           <div className="address">
             <label>Address:</label>
             <input
@@ -38,22 +37,19 @@ const SFHContainer = () => {
             />
           </div>
           <h2>Aquisition</h2>
-          <div className="aquisition-container container">
+          <div className="aquisition-container  grid grid-cols-2 justify-center gap-20">
             <SFHAquisitionInputs />
             <SFHAquisitionOutputs />
           </div>
           <h2>Expenses</h2>
-          <div className="expenses-container container">
+          <div className="expenses-container  grid grid-cols-2 justify-center gap-20">
             <SFHEXpensesInputs />
             <SFHExpensesOutputs />
           </div>
           <h2>Incomes</h2>
-          <div className="income-container container">
+          <div className="income-container  grid grid-cols-2 justify-center gap-20">
             <SFHIncomeInputs />
             <SFHIncomeOutputs />
-          </div>
-          <div className="summaries">
-            <SFHSummaries />
           </div>
           <div>
             <input
