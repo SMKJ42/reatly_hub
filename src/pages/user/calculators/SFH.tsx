@@ -5,7 +5,7 @@ import SFHContainer from "~/components/SFH/SFHContainer";
 
 const Dashboard: NextPageWithLayout = () => {
   return (
-    <div className="bg-bg100">
+    <div className="">
       <h1 className=""> User Calculators :)</h1>
       <SFHContainer />
     </div>

@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import SFHReducer from "./SFHSlice";
 import counterReducer from "./counterSlice";
+import clientReducer from "./clientSlice";
 
 const store = configureStore({
   reducer: {
     SFH: SFHReducer,
     counter: counterReducer,
+    client: clientReducer,
   },
 });
 
