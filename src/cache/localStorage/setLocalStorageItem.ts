@@ -1,3 +1,3 @@
-export default function setLocalStorageItem (key: string, value: any) {
+export default function setLocalStorageItem(key: string, value: string) {
   localStorage.setItem(key, value);
-};
+}
