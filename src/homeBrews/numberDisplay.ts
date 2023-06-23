@@ -12,21 +12,28 @@ const stripComma = (input: number | string) => {
 
 //limits the maximum amount of decimal places
 const enforceDecimal = (string: string, max: number) => {
-  if (string) {
-    const regExp = new RegExp(`(\\.\\d{${max}})\\d+$`);
-    const output = string.replace(regExp, "$1");
-    return output;
-  } else return "";
+  const regExp = new RegExp(`(\\.\\d{${max}})\\d+$`);
+  const output = string.replace(regExp, "$1");
+  return output;
 };
 
 const addCommas = (string: string) => {
+  let negative = false;
   let decimalIndex = string.indexOf(".");
+
+  if (string[0] === "-") {
+    negative = true;
+  }
+
   if (decimalIndex === -1) {
     decimalIndex = string.length - 1;
   } else {
     decimalIndex--;
   }
+
   const array = string.split("");
+  if (negative) array.shift();
+
   let j = 0;
   for (let i = decimalIndex; i >= 0; i--) {
     if (j % 3 === 0 && j !== 0) {
@@ -34,13 +41,15 @@ const addCommas = (string: string) => {
     }
     j++;
   }
+
+  if (negative) array.unshift("-");
   const output = array.join("");
   return output;
 };
 
 //ensures only numbers and decimals are entered
 const enforceStrNums = (string: string) => {
-  const output = string.replace(/[^\d.]/g, "");
+  const output = string.replace(/[^\d.-]/g, "");
   return output;
 };
 

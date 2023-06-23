@@ -28,9 +28,9 @@ const SFHAquisitionOutputs = () => {
       <div className="loan-balance">Loan Balance: ${loanBalance}</div>
       <div className="mortgage">
         Mortgage P&I:
-        {mortgagePayment !== "0" && isFinite(convertToNum(mortgagePayment))
+        {mortgagePayment !== "0" && convertToNum(mortgagePayment)
           ? `$${mortgagePayment}`
-          : "Too much -- trust me bro"}
+          : "0"}
       </div>
       <div className="ltv">LTV : {isNaN(parseInt(LTV)) ? 0 : LTV}</div>
       {SFH.rennovationsRadio ? (

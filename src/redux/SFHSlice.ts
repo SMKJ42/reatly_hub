@@ -88,11 +88,11 @@ const initialState: SFHInterface = {
   totalAquisitionReturn: "0",
   aquisitionCosts: "23,500",
   equity: "0",
-  LTV: "0",
+  LTV: "0.8",
   mortgagePayment: "429.46",
   cashFlow: "0",
-  expenses: "0",
-  monthlyPayment: "0",
+  expenses: "429.46",
+  monthlyPayment: "429.46",
   cashOnCash: "0",
   rennoEquity: "0",
   rennoReturn: "0",
@@ -125,15 +125,12 @@ export const SFHSlice = createSlice({
       const downPaymentDoll = price * (downPaymentPerc / 100);
       const interest = convertToNum(state.interest) / 100;
       const loanTerm = convertToNum(state.loanTerm);
-
+      const rents = convertToNum(state.rents);
+      const incOther = convertToNum(state.incOther);
+      const expenses = convertToNum(state.expenses);
       const taxes = convertToNum(state.taxes);
       const insurance = convertToNum(state.insurance);
       const hoa = convertToNum(state.hoa);
-      const vacancy = convertToNum(state.vacancy);
-      const capEx = convertToNum(state.capEx);
-      const maintenance = convertToNum(state.maintenance);
-      const management = convertToNum(state.management);
-      const expOther = convertToNum(state.expOther);
 
       const loanBalance = price - downPaymentDoll;
 
@@ -143,32 +140,25 @@ export const SFHSlice = createSlice({
         loanTerm
       );
 
-      const expenses = strNumsInput(
-        taxes +
-          insurance +
-          hoa +
-          vacancy +
-          capEx +
-          maintenance +
-          management +
-          expOther +
-          mortgagePayment
-      );
-
       const totalAquisitionReturn =
         ARV === 0
           ? strNumsInput(price - price - repairs - rennovations, 2)
           : strNumsInput(ARV - price - repairs - rennovations, 2);
 
-      const aquisitionCosts = strNumsInput(
-        downPaymentDoll + closingCostsDoll + repairs + rennovations,
-        2
+      const aquisitionCosts =
+        downPaymentDoll + closingCostsDoll + repairs + rennovations;
+
+      const monthlyPayment = strNumsInput(
+        mortgagePayment + taxes + insurance + hoa
       );
 
-      const equity = strNumsInput(price - loanBalance, 2);
+      const equity = price - loanBalance;
       const LTV = strNumsInput(loanBalance / price, 3);
 
-      console.log(equity);
+      const cashFlow = rents + incOther - expenses;
+      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const ROE = ((cashFlow * 12) / equity) * 100;
+      const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
 
       return {
         ...state,
@@ -176,12 +166,16 @@ export const SFHSlice = createSlice({
         price: action.payload,
         loanBalance: strNumsInput(loanBalance, 2),
         totalAquisitionReturn,
-        aquisitionCosts,
+        aquisitionCosts: strNumsInput(aquisitionCosts, 2),
         closingCostsDoll: strNumsInput(closingCostsDoll, 2),
-        equity,
+        equity: strNumsInput(equity, 2),
         LTV,
         mortgagePayment: strNumsInput(mortgagePayment, 2),
-        // expenses,
+        monthlyPayment,
+        cashFlow: strNumsInput(cashFlow, 2),
+        capRate: strNumsInput(capRate, 2),
+        ROE: strNumsInput(ROE, 2),
+        ROI: strNumsInput(ROI, 2),
       };
     },
 
@@ -189,8 +183,6 @@ export const SFHSlice = createSlice({
       const interest = convertToNum(action.payload);
       const loanBalance = convertToNum(state.loanBalance);
       const loanTerm = convertToNum(state.loanTerm);
-
-      console.log(loanBalance);
 
       //TODO: turn into comma parsed string.
       const mortgagePayment = calcMortgagePayment(
@@ -206,26 +198,49 @@ export const SFHSlice = createSlice({
     },
 
     updateDownPaymentPerc: (state, action: { payload: string }) => {
-      const downPayment = convertToNum(action.payload) / 100;
+      const downPaymentPerc = convertToNum(action.payload);
       const price = convertToNum(state.price);
       const interest = convertToNum(state.interest) / 100;
       const loanTerm = convertToNum(state.loanTerm);
 
-      const downPaymentDoll = convertPercentToDecimal(downPayment, price);
+      const rents = convertToNum(state.rents);
+      const incOther = convertToNum(state.incOther);
+      const expenses = convertToNum(state.expenses);
+      const equity = convertToNum(state.equity);
+      const aquisitionCosts = convertToNum(state.aquisitionCosts);
 
-      const loanBalance = price - (downPayment / 100) * price;
+      const downPaymentDoll = convertPercentToDecimal(
+        downPaymentPerc / 100,
+        price
+      );
 
-      //TODO: turn into comma parsed string.
+      const loanBalance = price - (downPaymentPerc / 100) * price;
+
+      const LTV = loanBalance / price;
+
       const mortgagePayment = calcMortgagePayment(
         loanBalance,
         interest,
         loanTerm
-      ).toString();
+      );
+
+      const cashFlow = rents + incOther - expenses;
+      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const ROE = ((cashFlow * 12) / equity) * 100;
+      const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
+
+      //TODO: turn into comma parsed string.
       return {
         ...state,
-        downPaymentPerc: action.payload,
-        downPaymentDoll: downPaymentDoll,
-        mortgagePayment,
+        downPaymentPerc: strNumsInput(downPaymentPerc, 2),
+        downPaymentDoll: strNumsInput(downPaymentDoll),
+        mortgagePayment: strNumsInput(mortgagePayment, 2),
+        loanBalance: strNumsInput(loanBalance, 2),
+        LTV: strNumsInput(LTV, 3),
+        cashFlow: strNumsInput(cashFlow, 2),
+        capRate: strNumsInput(capRate, 2),
+        ROE: strNumsInput(ROE, 2),
+        ROI: strNumsInput(ROI, 2),
       };
     },
 
@@ -234,23 +249,41 @@ export const SFHSlice = createSlice({
       const price = convertToNum(state.price);
       const interest = convertToNum(state.interest) / 100;
       const loanTerm = convertToNum(state.loanTerm);
+      const rents = convertToNum(state.rents);
+      const incOther = convertToNum(state.incOther);
+      const expenses = convertToNum(state.expenses);
+      const equity = convertToNum(state.equity);
+      const aquisitionCosts = convertToNum(state.aquisitionCosts);
 
       const downPaymentPerc = convertDecimalToPercent(downPayment, price);
 
-      const loanBalance = price - (downPayment / 100) * price;
+      const loanBalance = price - downPayment;
+      const LTV = loanBalance / price;
 
-      //TODO: turn into comma parsed string.
       const mortgagePayment = calcMortgagePayment(
         loanBalance,
         interest,
         loanTerm
-      ).toString();
+      );
+
+      const cashFlow = rents + incOther - expenses;
+      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const ROE = ((cashFlow * 12) / equity) * 100;
+      const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
+
+      //TODO: turn into comma parsed string.
 
       return {
         ...state,
         downPaymentDoll: action.payload,
         downPaymentPerc: downPaymentPerc,
-        mortgagePayment,
+        mortgagePayment: strNumsInput(mortgagePayment, 2),
+        loanBalance: strNumsInput(loanBalance, 2),
+        LTV: strNumsInput(LTV, 3),
+        cashFlow: strNumsInput(cashFlow, 2),
+        capRate: strNumsInput(capRate, 2),
+        ROE: strNumsInput(ROE, 2),
+        ROI: strNumsInput(ROI, 2),
       };
     },
 
@@ -474,22 +507,37 @@ export const SFHSlice = createSlice({
       const management = convertToNum(state.management);
       const expOther = convertToNum(state.expOther);
       const mortgagePayment = convertToNum(state.mortgagePayment);
+      const rents = convertToNum(state.rents);
+      const incOther = convertToNum(state.incOther);
+      const equity = convertToNum(state.equity);
+      const aquisitionCosts = convertToNum(state.aquisitionCosts);
+      const price = convertToNum(state.price);
 
-      const expenses = strNumsInput(
+      const expenses =
         taxes +
-          insurance +
-          hoa +
-          vacancy +
-          capEx +
-          maintenance +
-          management +
-          expOther +
-          mortgagePayment
-      );
-      const monthlyPayment = strNumsInput(
-        mortgagePayment + taxes + insurance + hoa
-      );
-      return { ...state, hoa: action.payload, expenses, monthlyPayment };
+        insurance +
+        hoa +
+        vacancy +
+        capEx +
+        maintenance +
+        management +
+        expOther +
+        mortgagePayment;
+
+      const cashFlow = rents + incOther - expenses;
+      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const ROE = ((cashFlow * 12) / equity) * 100;
+      const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
+
+      return {
+        ...state,
+        hoa: action.payload,
+        expenses: strNumsInput(expenses, 2),
+        cashFlow: strNumsInput(cashFlow, 2),
+        capRate: strNumsInput(capRate, 2),
+        ROE: strNumsInput(ROE, 2),
+        ROI: strNumsInput(ROI, 2),
+      };
     },
 
     updateVacancy: (state, action: { payload: string }) => {
@@ -502,19 +550,37 @@ export const SFHSlice = createSlice({
       const management = convertToNum(state.management);
       const expOther = convertToNum(state.expOther);
       const mortgagePayment = convertToNum(state.mortgagePayment);
+      const rents = convertToNum(state.rents);
+      const incOther = convertToNum(state.incOther);
+      const equity = convertToNum(state.equity);
+      const aquisitionCosts = convertToNum(state.aquisitionCosts);
+      const price = convertToNum(state.price);
 
-      const expenses = strNumsInput(
+      const expenses =
         taxes +
-          insurance +
-          hoa +
-          vacancy +
-          capEx +
-          maintenance +
-          management +
-          expOther +
-          mortgagePayment
-      );
-      return { ...state, vacancy: action.payload, expenses };
+        insurance +
+        hoa +
+        vacancy +
+        capEx +
+        maintenance +
+        management +
+        expOther +
+        mortgagePayment;
+
+      const cashFlow = rents + incOther - expenses;
+      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const ROE = ((cashFlow * 12) / equity) * 100;
+      const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
+
+      return {
+        ...state,
+        vacancy: action.payload,
+        expenses: strNumsInput(expenses, 2),
+        cashFlow: strNumsInput(cashFlow, 2),
+        capRate: strNumsInput(capRate, 2),
+        ROE: strNumsInput(ROE, 2),
+        ROI: strNumsInput(ROI, 2),
+      };
     },
 
     updateCapex: (state, action: { payload: string }) => {
@@ -527,19 +593,37 @@ export const SFHSlice = createSlice({
       const management = convertToNum(state.management);
       const expOther = convertToNum(state.expOther);
       const mortgagePayment = convertToNum(state.mortgagePayment);
+      const rents = convertToNum(state.rents);
+      const incOther = convertToNum(state.incOther);
+      const equity = convertToNum(state.equity);
+      const aquisitionCosts = convertToNum(state.aquisitionCosts);
+      const price = convertToNum(state.price);
 
-      const expenses = strNumsInput(
+      const expenses =
         taxes +
-          insurance +
-          hoa +
-          vacancy +
-          capEx +
-          maintenance +
-          management +
-          expOther +
-          mortgagePayment
-      );
-      return { ...state, capEx: action.payload, expenses };
+        insurance +
+        hoa +
+        vacancy +
+        capEx +
+        maintenance +
+        management +
+        expOther +
+        mortgagePayment;
+
+      const cashFlow = rents + incOther - expenses;
+      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const ROE = ((cashFlow * 12) / equity) * 100;
+      const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
+
+      return {
+        ...state,
+        capEx: action.payload,
+        expenses: strNumsInput(expenses, 2),
+        cashFlow: strNumsInput(cashFlow, 2),
+        capRate: strNumsInput(capRate, 2),
+        ROE: strNumsInput(ROE, 2),
+        ROI: strNumsInput(ROI, 2),
+      };
     },
 
     updateMaintenance: (state, action: { payload: string }) => {
@@ -552,19 +636,37 @@ export const SFHSlice = createSlice({
       const management = convertToNum(state.management);
       const expOther = convertToNum(state.expOther);
       const mortgagePayment = convertToNum(state.mortgagePayment);
+      const rents = convertToNum(state.rents);
+      const incOther = convertToNum(state.incOther);
+      const equity = convertToNum(state.equity);
+      const aquisitionCosts = convertToNum(state.aquisitionCosts);
+      const price = convertToNum(state.price);
 
-      const expenses = strNumsInput(
+      const expenses =
         taxes +
-          insurance +
-          hoa +
-          vacancy +
-          capEx +
-          maintenance +
-          management +
-          expOther +
-          mortgagePayment
-      );
-      return { ...state, maintenance: action.payload, expenses };
+        insurance +
+        hoa +
+        vacancy +
+        capEx +
+        maintenance +
+        management +
+        expOther +
+        mortgagePayment;
+
+      const cashFlow = rents + incOther - expenses;
+      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const ROE = ((cashFlow * 12) / equity) * 100;
+      const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
+
+      return {
+        ...state,
+        maintenance: action.payload,
+        expenses: strNumsInput(expenses, 2),
+        cashFlow: strNumsInput(cashFlow, 2),
+        capRate: strNumsInput(capRate, 2),
+        ROE: strNumsInput(ROE, 2),
+        ROI: strNumsInput(ROI, 2),
+      };
     },
 
     updateManagement: (state, action: { payload: string }) => {
@@ -577,19 +679,37 @@ export const SFHSlice = createSlice({
       const maintenance = convertToNum(state.maintenance);
       const expOther = convertToNum(state.expOther);
       const mortgagePayment = convertToNum(state.mortgagePayment);
+      const rents = convertToNum(state.rents);
+      const incOther = convertToNum(state.incOther);
+      const equity = convertToNum(state.equity);
+      const aquisitionCosts = convertToNum(state.aquisitionCosts);
+      const price = convertToNum(state.price);
 
-      const expenses = strNumsInput(
+      const expenses =
         taxes +
-          insurance +
-          hoa +
-          vacancy +
-          capEx +
-          maintenance +
-          management +
-          expOther +
-          mortgagePayment
-      );
-      return { ...state, management: action.payload, expenses };
+        insurance +
+        hoa +
+        vacancy +
+        capEx +
+        maintenance +
+        management +
+        expOther +
+        mortgagePayment;
+
+      const cashFlow = rents + incOther - expenses;
+      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const ROE = ((cashFlow * 12) / equity) * 100;
+      const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
+
+      return {
+        ...state,
+        management: action.payload,
+        expenses: strNumsInput(expenses, 2),
+        cashFlow: strNumsInput(cashFlow, 2),
+        capRate: strNumsInput(capRate, 2),
+        ROE: strNumsInput(ROE, 2),
+        ROI: strNumsInput(ROI, 2),
+      };
     },
 
     updateExpOther: (state, action: { payload: string }) => {
@@ -602,39 +722,86 @@ export const SFHSlice = createSlice({
       const maintenance = convertToNum(state.maintenance);
       const management = convertToNum(state.management);
       const mortgagePayment = convertToNum(state.mortgagePayment);
+      const rents = convertToNum(state.rents);
+      const incOther = convertToNum(state.incOther);
+      const equity = convertToNum(state.equity);
+      const aquisitionCosts = convertToNum(state.aquisitionCosts);
+      const price = convertToNum(state.price);
 
-      const expenses = strNumsInput(
+      const expenses =
         taxes +
-          insurance +
-          hoa +
-          vacancy +
-          capEx +
-          maintenance +
-          management +
-          expOther +
-          mortgagePayment
-      );
-      return { ...state, expOther: action.payload, expenses };
+        insurance +
+        hoa +
+        vacancy +
+        capEx +
+        maintenance +
+        management +
+        expOther +
+        mortgagePayment;
+
+      const cashFlow = rents + incOther - expenses;
+      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const ROE = ((cashFlow * 12) / equity) * 100;
+      const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
+
+      return {
+        ...state,
+        expOther: action.payload,
+        expenses: strNumsInput(expenses, 2),
+        cashFlow: strNumsInput(cashFlow, 2),
+        capRate: strNumsInput(capRate, 2),
+        ROE: strNumsInput(ROE, 2),
+        ROI: strNumsInput(ROI, 2),
+      };
     },
 
     updateRents: (state, action: { payload: string }) => {
       const rents = convertToNum(action.payload);
       const incOther = convertToNum(state.incOther);
-      const monthlyPayment = convertToNum(state.monthlyPayment);
+      const expenses = convertToNum(state.expenses);
+      const equity = convertToNum(state.equity);
+      const aquisitionCosts = convertToNum(state.aquisitionCosts);
+      const price = convertToNum(state.price);
+      const mortgagePayment = convertToNum(state.mortgagePayment);
 
-      const cashFlow = strNumsInput(rents + incOther - monthlyPayment, 2);
+      const cashFlow = rents + incOther - expenses;
 
-      return { ...state, rents: action.payload, cashFlow };
+      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const ROE = ((cashFlow * 12) / equity) * 100;
+      const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
+
+      return {
+        ...state,
+        rents: action.payload,
+        cashFlow: strNumsInput(cashFlow, 2),
+        capRate: strNumsInput(capRate, 2),
+        ROE: strNumsInput(ROE, 2),
+        ROI: strNumsInput(ROI, 2),
+      };
     },
 
     updateIncOther: (state, action: { payload: string }) => {
       const incOther = convertToNum(action.payload);
       const expenses = convertToNum(state.expenses);
       const rents = convertToNum(state.rents);
+      const equity = convertToNum(state.equity);
+      const aquisitionCosts = convertToNum(state.aquisitionCosts);
+      const price = convertToNum(state.price);
+      const mortgagePayment = convertToNum(state.mortgagePayment);
 
-      const cashFlow = strNumsInput(rents + incOther - expenses);
+      const cashFlow = rents + incOther - expenses;
+      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const ROE = ((cashFlow * 12) / equity) * 100;
+      const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
 
-      return { ...state, incOther: action.payload, cashFlow };
+      return {
+        ...state,
+        incOther: action.payload,
+        cashFlow: strNumsInput(cashFlow, 2),
+        capRate: strNumsInput(capRate, 2),
+        ROE: strNumsInput(ROE, 2),
+        ROI: strNumsInput(ROI, 2),
+      };
     },
   },
 });

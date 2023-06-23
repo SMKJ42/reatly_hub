@@ -7,20 +7,10 @@ const SFHExpensesOutputs = () => {
 
   return (
     <div className="expenses summary">
-      <div>Mortgage Payment: ${SFH.mortgagePayment}</div>
-      <div>
-        Operating Expenses: $
-        {strNumsInput(
-          convertToNum(SFH.expenses) -
-            convertToNum(SFH.monthlyPayment) -
-            convertToNum(SFH.capEx)
-        )}
-      </div>
+      <div>Mortgage payment: ${SFH.mortgagePayment}</div>
+      <div>Inlcuding escrow: ${SFH.monthlyPayment}</div>
       <br />
-      <div>Fixed Costs: ${SFH.fixed}</div>
-      <div>Variable Costs: ${SFH.variable}</div>
-      <br />
-      <div>Total Projected Expenses: ${SFH.expenses}</div>
+      <div>Total projected expenses: ${SFH.expenses}</div>
     </div>
   );
 };

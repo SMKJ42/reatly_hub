@@ -1,7 +1,7 @@
 import React from "react";
 import RennovationRadio from "./RennovationRadio";
 import Rennovations from "./Rennovations";
-import { strNumsInput } from "../../../homeBrews/numberDisplay";
+import { convertToNum, strNumsInput } from "../../../homeBrews/numberDisplay";
 import {
   updateClosingCostsDoll,
   updateClosingCostsPerc,
@@ -72,9 +72,13 @@ const SFHAquisitionInputs = () => {
               className="percent"
               value={SFH.downPaymentPerc}
               onChange={(e) => {
-                dispatch(
-                  updateDownPaymentPerc(strNumsInput(e.target.value, 3))
-                );
+                if (convertToNum(e.target.value) <= 100) {
+                  dispatch(
+                    updateDownPaymentPerc(strNumsInput(e.target.value, 3))
+                  );
+                } else {
+                  e.target.value = "100";
+                }
               }}
             />
             %
