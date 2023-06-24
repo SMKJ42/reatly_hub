@@ -16,7 +16,7 @@ export interface SFHInterface {
   closingCostsDoll: string;
   loanTerm: string;
   loanType: string;
-  loanTyeOptions: string[];
+  loanTypeOptions: string[];
   repairs: string;
   ARV: string;
   taxes: string;
@@ -64,7 +64,7 @@ const initialState: SFHInterface = {
   closingCostsDoll: "3,500",
   loanTerm: "30",
   loanType: "conventional",
-  loanTyeOptions: ["conventional", "FHA", "VA", "USDA"],
+  loanTypeOptions: ["conventional", "FHA", "VA", "USDA"],
   repairs: "0",
   ARV: "0",
   taxes: "0",

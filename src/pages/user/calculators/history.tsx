@@ -1,16 +1,15 @@
 import type { ReactElement } from "react";
 import UserLayout from "../../../components/layouts/UserLayout";
 import type { NextPageWithLayout } from "../../_app";
-import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 
 const Dashboard: NextPageWithLayout = () => {
+  const user = useUser();
+
   return (
-    <h1 className="">
-      User Calculators :)
-      <Link href="/user/calculators/sFH">SFH</Link>
-      <Link href="/user/calculators/mFH">MFH</Link>
-      <Link href="/user/calculators/history">History</Link>
-    </h1>
+    <div className="">
+      <h1 className=""> History </h1>
+    </div>
   );
 };
 
