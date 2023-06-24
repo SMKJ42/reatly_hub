@@ -41,17 +41,17 @@ const SFHContainer = () => {
             />
           </div>
           <h2>Aquisition</h2>
-          <div className="aquisition-container grid grid-cols-2 justify-center gap-20">
+          <div className="aquisition-container container grid grid-cols-2 justify-center gap-20">
             <SFHAquisitionInputs />
             <SFHAquisitionOutputs />
           </div>
           <h2>Expenses</h2>
-          <div className="expenses-container grid grid-cols-2 justify-center gap-20">
+          <div className="expenses-container container grid grid-cols-2 justify-center gap-20">
             <SFHEXpensesInputs />
             <SFHExpensesOutputs />
           </div>
           <h2>Incomes</h2>
-          <div className="income-container grid grid-cols-2 justify-center gap-20">
+          <div className="income-container container grid grid-cols-2 justify-center gap-20">
             <SFHIncomeInputs />
             <SFHIncomeOutputs />
           </div>

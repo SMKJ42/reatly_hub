@@ -2,14 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
+$--primary100: "#8B0000";
+$--primary200: "#c2402a";
+$--primary300: "#feded3";
+$--accent100: "#FF6347";
+$--accent200: "#8d0000";
+$--text100: "#000000";
+$--text200: "#565656";
+$--bg100: "#E9E9E9";
+$--bg200: "#dfdfdf";
+$--bg300: "#b7b7b7";
+
+//THESE ARE THE SAME
+// $--darkPrimary100: "#8B0000";
+// $--darkPrimary200: "#c2402a";
+// $--darkPrimary300: "#feded3";
+// $--darkAccent100: "#FF6347";
+// $--darkAccent200: "#8d0000";
+$--darkText100: "#FFFFFF";
+$--darkText200: "#CCCCCC";
+$--darkBg100: "#222222";
+$--darkBg200: "#333333";
+$--darkBg300: "#444444";
+
 .input-container {
-  @apply flex justify-between;
+  @apply flex justify-between whitespace-nowrap;
+  input {
+    @apply my-2 rounded-sm;
+  }
+  //TODO: make this more 'flat' on right hand side with auto width -- maybe have % be a set min, and the dollar fill the rest?
+  .dollar {
+    @apply mr-2 w-1/3;
+  }
+  .percent {
+    @apply w-1/6;
+  }
 }
 
-// nav,
 main {
   @apply dark:text-bg300;
-  input {
+  input,
+  select {
     @apply dark:bg-bg200 dark:text-black;
   }
+}
+
+.button-container {
+  input {
+    @apply mx-4 my-2 rounded-sm px-2;
+  }
+}
+
+nav {
+  @apply dark:bg-darkBg300 dark:text-darkText100;
 }

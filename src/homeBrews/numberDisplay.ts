@@ -18,12 +18,15 @@ const enforceDecimal = (string: string, max: number) => {
 };
 
 const addCommas = (string: string) => {
-  let negative = false;
-  let decimalIndex = string.indexOf(".");
+  const array = string.split("");
 
+  let negative = false;
   if (string[0] === "-") {
     negative = true;
   }
+  if (negative) array.shift();
+
+  let decimalIndex = array.indexOf(".");
 
   if (decimalIndex === -1) {
     decimalIndex = string.length - 1;
@@ -31,8 +34,7 @@ const addCommas = (string: string) => {
     decimalIndex--;
   }
 
-  const array = string.split("");
-  if (negative) array.shift();
+  console.log(array, decimalIndex);
 
   let j = 0;
   for (let i = decimalIndex; i >= 0; i--) {
