@@ -1,7 +1,6 @@
 import type { ReactElement } from "react";
 import UserLayout from "../../../components/layouts/UserLayout";
 import type { NextPageWithLayout } from "../../_app";
-import SFHContainer from "~/components/calculators/sFH/SFHContainer";
 
 const Dashboard: NextPageWithLayout = () => {
   return (
