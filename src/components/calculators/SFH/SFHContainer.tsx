@@ -5,7 +5,7 @@ import SFHEXpensesInputs from "./expenses/inputs";
 import SFHExpensesOutputs from "./expenses/outputs";
 import SFHIncomeInputs from "./incomes/inputs";
 import SFHIncomeOutputs from "./incomes/outputs";
-import { resetSFH, updateAddress } from "../../redux/SFHSlice";
+import { resetSFH, updateAddress } from "../../../redux/slice/SFHSlice";
 import { useAppDispatch } from "~/redux/hooks";
 
 const SFHContainer = () => {

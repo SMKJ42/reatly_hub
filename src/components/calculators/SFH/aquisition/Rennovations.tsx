@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
-import { convertToNum, strNumsInput } from "../../../homeBrews/numberDisplay";
+import {
+  convertToNum,
+  strNumsInput,
+} from "../../../../homeBrews/numberDisplay";
 import { useAppDispatch, useAppSelector } from "~/redux/hooks";
-import { updateARV, updateRennovations } from "~/redux/SFHSlice";
+import { updateARV, updateRennovations } from "~/redux/slice/SFHSlice";
 
 const Rennovations = () => {
   const dispatch = useAppDispatch();

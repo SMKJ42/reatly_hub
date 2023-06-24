@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import SFHReducer from "./SFHSlice";
-import counterReducer from "./counterSlice";
-import clientReducer from "./clientSlice";
+import SFHReducer from "./slice/SFHSlice";
+import counterReducer from "./slice/counterSlice";
+import clientReducer from "./slice/clientSlice";
 
 const store = configureStore({
   reducer: {

@@ -4,8 +4,6 @@ import { useAppSelector } from "~/redux/hooks";
 const SFHIncomeOutputs = () => {
   const SFH = useAppSelector((state) => state.SFH);
 
-  console.log(SFH.cashFlow);
-
   return (
     <div>
       <p>Cash Flow: {SFH.cashFlow}</p>

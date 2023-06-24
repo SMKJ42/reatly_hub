@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { convertToNum, strNumsInput } from "../homeBrews/numberDisplay";
+import { convertToNum, strNumsInput } from "../../homeBrews/numberDisplay";
 import {
   calcMortgagePayment,
   convertDecimalToPercent,
   convertPercentToDecimal,
-} from "../homeBrews/calculations";
+} from "../../homeBrews/calculations";
 
 export interface SFHInterface {
   address: string;

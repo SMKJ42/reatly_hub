@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { rennovationReturn } from "../../../homeBrews/calculations";
-import { convertToNum } from "../../../homeBrews/numberDisplay";
+import { rennovationReturn } from "../../../../homeBrews/calculations";
+import { convertToNum } from "../../../../homeBrews/numberDisplay";
 import { useAppSelector } from "~/redux/hooks";
 
 const SFHAquisitionOutputs = () => {
@@ -19,8 +19,6 @@ const SFHAquisitionOutputs = () => {
     mortgagePayment,
     rennovationsRadio,
   } = SFH;
-
-  console.log(rennovationsRadio);
 
   return (
     <div className="aquisition-metrics">

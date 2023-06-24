@@ -1,27 +1,13 @@
 // 'use client';
 
-import React, { useEffect } from "react";
-import getLocalStorageItem from "~/cache/localStorage/getLocalStorageItem";
-import setLocalStorageItem from "~/cache/localStorage/setLocalStorageItem";
+import React from "react";
+import setLocalStorageItem from "~/homeBrews/clientCache/localStorage/setLocalStorageItem";
 import { useAppDispatch, useAppSelector } from "~/redux/hooks";
-import { setDarkMode, setLightMode } from "~/redux/clientSlice";
+import { setDarkMode, setLightMode } from "~/redux/slice/clientSlice";
 
 const ToggleTheme = () => {
   const dispatch = useAppDispatch();
   const colorTheme = useAppSelector((state) => state.client.colorTheme);
-
-  useEffect(() => {
-    const localColorTheme = getLocalStorageItem("color-theme");
-    if (
-      localColorTheme === "dark" ||
-      (!("color-theme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      dispatch(setDarkMode());
-    } else {
-      dispatch(setLightMode());
-    }
-  }, []);
 
   return (
     <>

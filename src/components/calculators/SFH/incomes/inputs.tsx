@@ -1,6 +1,6 @@
 import React from "react";
-import { strNumsInput } from "../../../homeBrews/numberDisplay";
-import { updateIncOther, updateRents } from "../../../redux/SFHSlice";
+import { strNumsInput } from "../../../../homeBrews/numberDisplay";
+import { updateIncOther, updateRents } from "../../../../redux/slice/SFHSlice";
 import { useAppDispatch, useAppSelector } from "~/redux/hooks";
 
 const SFHIncomeInputs = () => {

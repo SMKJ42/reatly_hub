@@ -3,7 +3,11 @@ import UserLayout from "../../components/layouts/UserLayout";
 import type { NextPageWithLayout } from "../_app";
 import { NextComponentType } from "next";
 import { useAppDispatch, useAppSelector } from "~/redux/hooks";
-import { decrement, increment, incrementByAmount } from "~/redux/counterSlice";
+import {
+  decrement,
+  increment,
+  incrementByAmount,
+} from "~/redux/slice/counterSlice";
 
 const Dashboard: NextPageWithLayout = () => {
   return (

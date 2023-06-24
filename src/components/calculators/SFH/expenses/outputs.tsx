@@ -1,5 +1,8 @@
 import React from "react";
-import { convertToNum, strNumsInput } from "../../../homeBrews/numberDisplay";
+import {
+  convertToNum,
+  strNumsInput,
+} from "../../../../homeBrews/numberDisplay";
 import { useAppSelector } from "~/redux/hooks";
 
 const SFHExpensesOutputs = () => {

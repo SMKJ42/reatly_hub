@@ -34,8 +34,6 @@ const addCommas = (string: string) => {
     decimalIndex--;
   }
 
-  console.log(array, decimalIndex);
-
   let j = 0;
   for (let i = decimalIndex; i >= 0; i--) {
     if (j % 3 === 0 && j !== 0) {

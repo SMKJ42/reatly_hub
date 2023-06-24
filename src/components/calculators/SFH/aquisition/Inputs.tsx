@@ -1,7 +1,10 @@
 import React from "react";
 import RennovationRadio from "./RennovationRadio";
 import Rennovations from "./Rennovations";
-import { convertToNum, strNumsInput } from "../../../homeBrews/numberDisplay";
+import {
+  convertToNum,
+  strNumsInput,
+} from "../../../../homeBrews/numberDisplay";
 import {
   updateClosingCostsDoll,
   updateClosingCostsPerc,
@@ -12,9 +15,9 @@ import {
   updateLoanType,
   updatePrice,
   updateRepairs,
-} from "../../../redux/SFHSlice";
-import type { SFHInterface } from "../../../redux/SFHSlice";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+} from "../../../../redux/slice/SFHSlice";
+import type { SFHInterface } from "../../../../redux/slice/SFHSlice";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 
 const SFHAquisitionInputs = () => {
   const dispatch = useAppDispatch();
