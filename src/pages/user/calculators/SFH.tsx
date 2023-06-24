@@ -9,13 +9,25 @@ import SFHEXpensesInputs from "~/components/calculators/sFH/expenses/inputs";
 import SFHExpensesOutputs from "~/components/calculators/sFH/expenses/outputs";
 import SFHIncomeInputs from "~/components/calculators/sFH/incomes/inputs";
 import SFHIncomeOutputs from "~/components/calculators/sFH/incomes/outputs";
+import { useUser } from "@clerk/nextjs";
+import { api } from "~/utils/api";
+import { getSFHSubmit } from "~/components/calculators/sFH/getSFHSubmit";
 
 const Dashboard: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
 
-  function handleSave() {
-    //TODO: do something
-  }
+  const ctx = api.useContext();
+
+  const { mutate, isLoading: isSaving } = api.sFH.create.useMutation({
+    onSuccess: () => {
+      console.log("success");
+      resetSFH();
+      void ctx.sFH.getAll.invalidate();
+    },
+    onError: (error) => {
+      console.log("failed");
+    },
+  });
 
   function handlePDF() {
     //TODO: do something
@@ -62,8 +74,9 @@ const Dashboard: NextPageWithLayout = () => {
               type="button"
               value="save"
               className="SFH-submit-button"
+              disabled={isSaving}
               onClick={() => {
-                handleSave();
+                mutate({ ...getSFHSubmit() });
               }}
             />
             <input

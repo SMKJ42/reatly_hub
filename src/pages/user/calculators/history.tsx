@@ -2,9 +2,12 @@ import type { ReactElement } from "react";
 import UserLayout from "../../../components/layouts/UserLayout";
 import type { NextPageWithLayout } from "../../_app";
 import { useUser } from "@clerk/nextjs";
+import { api } from "~/utils/api";
 
 const Dashboard: NextPageWithLayout = () => {
   const user = useUser();
+
+  const { data, isLoading: historyLoading } = api.sFH.getAll.useQuery();
 
   return (
     <div className="">
