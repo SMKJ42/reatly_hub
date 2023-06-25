@@ -3,15 +3,14 @@ import UserLayout from "../../../components/layouts/UserLayout";
 import type { NextPageWithLayout } from "../../_app";
 import { useAppDispatch } from "~/redux/hooks";
 import { resetSFH, updateAddress } from "~/redux/slice/SFHSlice";
-import SFHAquisitionInputs from "~/components/calculators/sFH/aquisition/Inputs";
-import SFHAquisitionOutputs from "~/components/calculators/sFH/aquisition/Outputs";
-import SFHEXpensesInputs from "~/components/calculators/sFH/expenses/inputs";
-import SFHExpensesOutputs from "~/components/calculators/sFH/expenses/outputs";
-import SFHIncomeInputs from "~/components/calculators/sFH/incomes/inputs";
-import SFHIncomeOutputs from "~/components/calculators/sFH/incomes/outputs";
-import { useUser } from "@clerk/nextjs";
+import SFHAquisitionInputs from "~/components/calculators/SFH/aquisition/Inputs";
+import SFHAquisitionOutputs from "~/components/calculators/SFH/aquisition/Outputs";
+import SFHEXpensesInputs from "~/components/calculators/SFH/expenses/inputs";
+import SFHExpensesOutputs from "~/components/calculators/SFH/expenses/outputs";
+import SFHIncomeInputs from "~/components/calculators/SFH/incomes/inputs";
+import SFHIncomeOutputs from "~/components/calculators/SFH/incomes/outputs";
 import { api } from "~/utils/api";
-import { getSFHSubmit } from "~/components/calculators/sFH/getSFHSubmit";
+import { getSFHSubmit } from "~/components/calculators/SFH/getSFHSubmit";
 
 const Dashboard: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
