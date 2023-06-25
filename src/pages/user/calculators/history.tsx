@@ -7,7 +7,8 @@ import { api } from "~/utils/api";
 const Dashboard: NextPageWithLayout = () => {
   const user = useUser();
 
-  const { data, isLoading: historyLoading } = api.sFH.getAll.useQuery();
+  const { data, isLoading: historyLoading } =
+    api.singleFamily.getAll.useQuery();
 
   return (
     <div className="">
