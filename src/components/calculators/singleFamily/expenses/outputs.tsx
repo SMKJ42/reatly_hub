@@ -6,9 +6,7 @@ const SFHExpensesOutputs = () => {
 
   return (
     <div className="expenses summary">
-      <div>Mortgage payment: ${singleFamily.mortgagePayment}</div>
-      <div>Inlcuding escrow: ${singleFamily.monthlyPayment}</div>
-      <br />
+      <div>Monthly payment: ${singleFamily.monthlyPayment}</div>
       <div>Total projected expenses: ${singleFamily.expenses}</div>
     </div>
   );

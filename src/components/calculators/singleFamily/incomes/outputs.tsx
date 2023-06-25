@@ -6,10 +6,10 @@ const SFHIncomeOutputs = () => {
 
   return (
     <div>
-      <p>Cash Flow: {singleFamily.cashFlow}</p>
-      <p>Cap rate: {singleFamily.capRate} %</p>
-      <p>ROE: {singleFamily.ROE} %</p>
-      <p>ROI: {singleFamily.ROI} %</p>
+      <p>Cash Flow: ${singleFamily.cashFlow}</p>
+      <p>Cap rate: {singleFamily.capRate}%</p>
+      <p>ROE: {singleFamily.ROE}%</p>
+      <p>ROI: {singleFamily.ROI}%</p>
     </div>
   );
 };

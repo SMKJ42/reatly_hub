@@ -28,7 +28,7 @@ const SFHAquisitionOutputs = () => {
       <div className="equity">Equity: ${equity} </div>
       <div className="loan-balance">Loan Balance: ${loanBalance}</div>
       <div className="mortgage">
-        Mortgage P&I:
+        Mortgage P&I: $
         {mortgagePayment !== "0" && convertToNum(mortgagePayment)
           ? `$${mortgagePayment}`
           : "0"}
@@ -37,7 +37,7 @@ const SFHAquisitionOutputs = () => {
       {rennovationsRadio ? (
         <>
           <div className="rennovations-radio">
-            Post Renno LTV:{" "}
+            Post Renno LTV:
             {parseInt(singleFamily.rennovations) > 0 ? "0" : LTV}
           </div>
           <div className="rennovation-return">

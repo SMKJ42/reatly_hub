@@ -30,7 +30,7 @@ const SFHAquisitionInputs = () => {
   return (
     <div className="aquisition">
       <div className="price input-container">
-        <label>Price: </label>
+        <label>Purchase price: </label>
         <input
           type="text"
           value={singleFamily.price}
@@ -61,7 +61,7 @@ const SFHAquisitionInputs = () => {
       <div className="down-payment input-container">
         <div className="down-payment-inputs">
           <label>
-            Down-Payment: $
+            Down payment: $
             <input
               type="text"
               value={singleFamily.downPaymentDoll}
@@ -117,7 +117,7 @@ const SFHAquisitionInputs = () => {
       <div className="closing-costs input-container">
         <div className="closing-costs-inputs">
           <label>
-            Closing Costs: $
+            Closing costs: $
             <input
               type="text"
               value={
