@@ -311,7 +311,7 @@ export const singleFamilySlice = createSlice({
       const repairs = convertToNum(state.repairs);
       const rennovations = convertToNum(state.rennovations);
       const price = convertToNum(state.price);
-      const downPayment = convertToNum(state.downPaymentPerc);
+      const downPayment = convertToNum(state.downPaymentDoll);
 
       const costOfRenno = strNumsInput(repairs + rennovations + closingCosts);
 
@@ -333,11 +333,55 @@ export const singleFamilySlice = createSlice({
       const loanTerm = convertToNum(action.payload);
       const loanBalance = convertToNum(state.loanBalance);
       const interest = convertToNum(state.interest) / 100;
+      const taxes = convertToNum(state.taxes);
+      const insurance = convertToNum(state.insurance);
+      const hoa = convertToNum(state.hoa);
+      const vacancy = convertToNum(state.vacancy);
+      const capEx = convertToNum(state.capEx);
+      const maintenance = convertToNum(state.maintenance);
+      const management = convertToNum(state.management);
+      const expOther = convertToNum(state.expOther);
+      const rents = convertToNum(state.rents);
+      const incOther = convertToNum(state.incOther);
+      const equity = convertToNum(state.equity);
+      const aquisitionCosts = convertToNum(state.aquisitionCosts);
+      const price = convertToNum(state.price);
 
-      const mortgagePayment = strNumsInput(
-        calcMortgagePayment(loanBalance, interest, loanTerm)
+      const mortgagePayment = calcMortgagePayment(
+        loanBalance,
+        interest,
+        loanTerm
       );
-      return { ...state, loanTerm: action.payload, mortgagePayment };
+
+      const expenses =
+        taxes +
+        insurance +
+        hoa +
+        vacancy +
+        capEx +
+        maintenance +
+        management +
+        expOther +
+        mortgagePayment;
+
+      const monthlyPayment = mortgagePayment + taxes + insurance + hoa;
+
+      const cashFlow = rents + incOther - expenses;
+      const capRate = ((cashFlow + mortgagePayment) * 1200) / price;
+      const ROE = ((cashFlow * 12) / equity) * 100;
+      const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
+
+      return {
+        ...state,
+        loanTerm: action.payload,
+        mortgagePayment: strNumsInput(mortgagePayment, 2),
+        monthlyPayment: strNumsInput(monthlyPayment, 2),
+        expenses: strNumsInput(expenses, 2),
+        cashFlow: strNumsInput(cashFlow, 2),
+        capRate: strNumsInput(capRate, 2),
+        ROE: strNumsInput(ROE, 2),
+        ROI: strNumsInput(ROI, 2),
+      };
     },
 
     updateLoanType: (state, action: { payload: string }) => {
@@ -349,7 +393,7 @@ export const singleFamilySlice = createSlice({
       const rennovations = convertToNum(state.rennovations);
       const closingCosts = convertToNum(state.closingCostsPerc);
       const price = convertToNum(state.price);
-      const downPayment = convertToNum(state.downPaymentPerc);
+      const downPayment = convertToNum(state.downPaymentDoll);
       const ARV = convertToNum(state.ARV);
       const cashFlow = convertToNum(state.cashFlow);
 
@@ -361,7 +405,7 @@ export const singleFamilySlice = createSlice({
           : strNumsInput(ARV - price - repairs - rennovations);
       //
       const aquisitionCosts =
-        (downPayment / 100) * price + closingCosts + repairs + rennovations;
+        downPayment + (price * closingCosts) / 100 + repairs + rennovations;
       //
       const cashOnCash = strNumsInput(
         (cashFlow / (aquisitionCosts + repairs)) * 100
@@ -385,7 +429,7 @@ export const singleFamilySlice = createSlice({
       const repairs = convertToNum(state.repairs);
       const closingCosts = convertToNum(state.closingCostsPerc);
       const price = convertToNum(state.price);
-      const downPayment = convertToNum(state.downPaymentPerc);
+      const downPayment = convertToNum(state.downPaymentDoll);
       const ARV = convertToNum(state.ARV);
 
       const costOfRenno = strNumsInput(repairs + rennovations + closingCosts);
@@ -395,9 +439,8 @@ export const singleFamilySlice = createSlice({
           ? strNumsInput(price - price - repairs - rennovations)
           : strNumsInput(ARV - price - repairs - rennovations);
       //
-      const aquisitionCosts = strNumsInput(
-        (downPayment / 100) * price + closingCosts + repairs + rennovations
-      );
+      const aquisitionCosts =
+        downPayment + (price * closingCosts) / 100 + repairs + rennovations;
 
       const _rennovations = strNumsInput(rennovations);
 
@@ -406,7 +449,7 @@ export const singleFamilySlice = createSlice({
         rennovations: _rennovations[0] ? _rennovations : "0",
         costOfRenno,
         totalAquisitionReturn,
-        aquisitionCosts,
+        aquisitionCosts: strNumsInput(aquisitionCosts),
       };
     },
 
