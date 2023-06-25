@@ -1,7 +1,7 @@
-import type { ReactElement } from "react";
+import { type ReactElement } from "react";
 import UserLayout from "../../../components/layouts/UserLayout";
 import type { NextPageWithLayout } from "../../_app";
-import { useAppDispatch } from "~/redux/hooks";
+import { useAppDispatch, useAppSelector } from "~/redux/hooks";
 import { resetSFH, updateAddress } from "~/redux/slice/singleFamilySlice";
 import SFHAquisitionInputs from "~/components/calculators/singleFamily/aquisition/Inputs";
 import SFHAquisitionOutputs from "~/components/calculators/singleFamily/aquisition/Outputs";
@@ -12,28 +12,40 @@ import SFHIncomeOutputs from "~/components/calculators/singleFamily/incomes/outp
 import { api } from "~/utils/api";
 import { getSFHSubmit } from "~/components/calculators/singleFamily/getSFSubmit";
 
-const Dashboard: NextPageWithLayout = () => {
+const SingleFamilyCalc: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
 
   const ctx = api.useContext();
 
-  const { mutate, isLoading: isSaving } = api.singleFamily.create.useMutation({
-    onSuccess: () => {
-      console.log("success");
-      resetSFH();
-      void ctx.singleFamily.getAll.invalidate();
-    },
-    onError: (error) => {
-      console.log("failed");
-    },
-  });
+  const id = useAppSelector((state) => state.singleFamily?.id);
+  const address = useAppSelector((state) => state.singleFamily?.address);
+
+  const { mutate: create, isLoading: isSaving } =
+    api.singleFamily.create.useMutation({
+      onSuccess: () => {
+        console.log("success");
+        resetSFH();
+        void ctx.singleFamily.getAll.invalidate();
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    });
+
+  const { mutate: update, isLoading: isUpdating } =
+    api.singleFamily.update.useMutation({
+      onSuccess: () => {
+        console.log("success");
+        resetSFH();
+        void ctx.singleFamily.getAll.invalidate();
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    });
 
   function handlePDF() {
     //TODO: do something
-  }
-
-  function handleReset() {
-    dispatch(resetSFH());
   }
 
   return (
@@ -47,6 +59,7 @@ const Dashboard: NextPageWithLayout = () => {
           <div className="address flex justify-center py-2">
             <label className="mx-4">Address:</label>
             <input
+              value={address}
               type="text"
               className="mx-4"
               onChange={(e) => {
@@ -69,11 +82,19 @@ const Dashboard: NextPageWithLayout = () => {
           <div className="button-container w-100 flex justify-center">
             <input
               type="button"
-              value="save"
+              value={id ? "update" : "save"}
               className="SFH-submit-button"
-              disabled={isSaving}
+              disabled={isSaving || isUpdating}
               onClick={() => {
-                mutate({ ...getSFHSubmit() });
+                console.log("firing click");
+                if (isSaving || isUpdating) return;
+                if (!id) {
+                  console.log("creating");
+                  create({ ...getSFHSubmit() });
+                } else if (typeof id === "string") {
+                  console.log("updating");
+                  update({ ...getSFHSubmit(), id });
+                }
               }}
             />
             <input
@@ -81,15 +102,14 @@ const Dashboard: NextPageWithLayout = () => {
               value="reset"
               className="SFH-submit-button"
               onClick={() => {
-                handleReset();
+                dispatch(resetSFH());
               }}
             />
             <input
               type="button"
               value="PDF"
               className="PDF-download"
-              onClick={(e) => {
-                e.preventDefault();
+              onClick={() => {
                 handlePDF();
               }}
             />
@@ -100,8 +120,8 @@ const Dashboard: NextPageWithLayout = () => {
   );
 };
 
-Dashboard.getLayout = function getLayout(page: ReactElement) {
+SingleFamilyCalc.getLayout = function getLayout(page: ReactElement) {
   return <UserLayout>{page}</UserLayout>;
 };
 
-export default Dashboard;
+export default SingleFamilyCalc;

@@ -7,6 +7,7 @@ import {
 } from "../../homeBrews/calculations";
 
 export interface singleFamilyInterface {
+  id: boolean | string;
   address: string;
   price: string;
   interest: string;
@@ -16,7 +17,7 @@ export interface singleFamilyInterface {
   closingCostsDoll: string;
   loanTerm: string;
   loanType: string;
-  loanTypeOptions: string[];
+  loanTypeOptions?: string[];
   repairs: string;
   ARV: string;
   taxes: string;
@@ -24,14 +25,14 @@ export interface singleFamilyInterface {
   hoa: string;
   vacancy: string;
   capEx: string;
-  rennovationsRadio: boolean;
+  rennovationsRadio?: boolean;
   rennovations: string;
   maintenance: string;
   management: string;
   expOther: string;
   rents: string;
   incOther: string;
-  speculation: boolean;
+  speculation?: boolean;
   appreciation: string;
   loanBalance: string;
   costOfRenno: string;
@@ -51,10 +52,11 @@ export interface singleFamilyInterface {
   ROE: string;
   ROI: string;
   fixed: string;
-  variable: string;
+  variable?: string;
 }
 
 const initialState: singleFamilyInterface = {
+  id: false,
   address: "",
   price: "100,000",
   interest: "5",
@@ -108,6 +110,13 @@ export const singleFamilySlice = createSlice({
   reducers: {
     resetSFH: () => {
       return initialState;
+    },
+    HydrateSingleFamily: (
+      state,
+      action: { payload: singleFamilyInterface }
+    ) => {
+      console.log("firing reducer");
+      return { ...action.payload };
     },
     updateAddress: (state, action: { payload: string }) => {
       return { ...state, address: action.payload };
@@ -880,6 +889,7 @@ export const singleFamilySlice = createSlice({
 
 export const {
   resetSFH,
+  HydrateSingleFamily,
   updateAddress,
   updatePrice,
   updateInterest,

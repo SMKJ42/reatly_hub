@@ -1,9 +1,19 @@
-export const LoadingSpinner = () => {
+interface LoadingSpinnerProps {
+  size?: number;
+  color?: string;
+}
+
+export const StandardLoadingSpinner = (props: LoadingSpinnerProps) => {
+  let { size, color } = props;
+
+  if (!color) color = "fill-primary200";
+  if (!size) size = 8;
+
   return (
     <>
       <svg
         aria-hidden="true"
-        className="mr-2 h-8 w-8 animate-spin fill-primary200 text-gray-200 dark:text-gray-600"
+        className={`mr-2 h-${size} w-${size} animate-spin ${color} text-gray-200 dark:text-gray-600`}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

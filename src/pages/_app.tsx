@@ -5,10 +5,9 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { useEffect, type ReactElement, type ReactNode } from "react";
 import { type NextPage } from "next";
 import { Provider } from "react-redux";
-import store from "~/redux/store";
 import getLocalStorageItem from "~/homeBrews/clientCache/localStorage/getLocalStorageItem";
 import { setDarkMode, setLightMode } from "~/redux/slice/clientSlice";
-import { useAppDispatch } from "~/redux/hooks";
+import store from "~/redux/store";
 
 export type NextPageWithLayout<P = NonNullable<unknown>, IP = P> = NextPage<
   P,
@@ -21,7 +20,7 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+function MyApp({ Component, pageProps, ...rest }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   //getting dark mode from client, then set it in redux from outside the store
