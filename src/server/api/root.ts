@@ -1,6 +1,6 @@
 // import { exampleRouter } from "~/server/api/routers/example";
 import { createTRPCRouter } from "~/server/api/trpc";
-import { sFHRouter } from "./routers/sFH";
+import { sFHRouter } from "./routers/SFH";
 
 /**
  * This is the primary router for your server.

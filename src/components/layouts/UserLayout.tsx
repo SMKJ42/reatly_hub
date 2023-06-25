@@ -3,6 +3,8 @@ import Head from "next/head";
 import Link from "next/link";
 import ToggleTheme from "../shared/ToggleTheme";
 import { useAppSelector } from "~/redux/hooks";
+import { CalculatorsNav } from "./dropDown/calculators";
+import { useState } from "react";
 
 export default function UserLayout({
   children,
@@ -10,6 +12,9 @@ export default function UserLayout({
   children: React.ReactNode;
 }) {
   const colorTheme = useAppSelector((state) => state.client.colorTheme);
+
+  const [activeDropDown, setActiveDropDown] = useState(false);
+  const [dropDownOption, setDropDownOption] = useState("");
 
   return (
     <div className={`${colorTheme}`}>
@@ -37,10 +42,31 @@ export default function UserLayout({
             </svg>
           </Link>
         </div>
-        <div className="std-navigation flex flex-1 justify-around">
+        <div className="std-navigation flex flex-1">
+          <div
+            className="flex flex-1"
+            onMouseEnter={() => setActiveDropDown(false)}
+          ></div>
           <Link href="/user/dashboard">Dashboard</Link>
-          <Link href="/user/calculators">Calculators</Link>
+          <div
+            className="flex flex-1"
+            onMouseEnter={() => setActiveDropDown(false)}
+          ></div>
+          <CalculatorsNav
+            setDropDownOption={setDropDownOption}
+            dropDownOption={dropDownOption}
+            setActiveDropDown={setActiveDropDown}
+            activeDropDown={activeDropDown}
+          />
+          <div
+            className="flex flex-1"
+            onMouseEnter={() => setActiveDropDown(false)}
+          ></div>
           <Link href="/user/blog">Blog</Link>
+          <div
+            className="flex flex-1"
+            onMouseEnter={() => setActiveDropDown(false)}
+          ></div>
         </div>
         <div className="account-manager flex-3 flex-inital flex w-32 justify-around">
           <>
@@ -50,7 +76,12 @@ export default function UserLayout({
         </div>
         <ToggleTheme />
       </nav>
-      <main className="min-h-screen bg-bg100 dark:bg-darkBg100">
+      <main
+        className="min-h-screen bg-bg100 dark:bg-darkBg100"
+        onMouseEnter={() => {
+          setActiveDropDown(false);
+        }}
+      >
         {children}
       </main>
       <footer></footer>
