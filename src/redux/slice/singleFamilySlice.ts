@@ -85,7 +85,7 @@ const initialState: singleFamilyInterface = {
   costOfRenno: "0",
   totalAquisitionReturn: "0",
   aquisitionCosts: "23,500",
-  equity: "0",
+  equity: "20,000",
   LTV: "0.8",
   mortgagePayment: "429.46",
   cashFlow: "0",
@@ -220,7 +220,7 @@ export const singleFamilySlice = createSlice({
       );
 
       const cashFlow = rents + incOther - expenses;
-      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const capRate = ((cashFlow + mortgagePayment) * 1200) / price;
       const ROE = ((cashFlow * 12) / equity) * 100;
       const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
 
@@ -261,7 +261,7 @@ export const singleFamilySlice = createSlice({
       );
 
       const cashFlow = rents + incOther - expenses;
-      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const capRate = ((cashFlow + mortgagePayment) * 1200) / price;
       const ROE = ((cashFlow * 12) / equity) * 100;
       const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
 
@@ -284,12 +284,12 @@ export const singleFamilySlice = createSlice({
       const repairs = convertToNum(state.repairs);
       const rennovations = convertToNum(state.rennovations);
       const price = convertToNum(state.price);
-      const downPayment = convertToNum(state.downPaymentPerc);
+      const downPayment = convertToNum(state.downPaymentDoll);
 
       const costOfRenno = strNumsInput(repairs + rennovations + closingCosts);
       //
       const aquisitionCosts = strNumsInput(
-        (downPayment / 100) * price + closingCosts + repairs + rennovations
+        downPayment + (price * closingCosts) / 100 + repairs + rennovations
       );
 
       const closingCostsDoll = convertPercentToDecimal(closingCosts, price);
@@ -462,7 +462,7 @@ export const singleFamilySlice = createSlice({
       const monthlyPayment = mortgagePayment + taxes + insurance + hoa;
 
       const cashFlow = rents + incOther - expenses;
-      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const capRate = ((cashFlow + mortgagePayment) * 1200) / price;
       const ROE = ((cashFlow * 12) / equity) * 100;
       const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
 
@@ -507,7 +507,7 @@ export const singleFamilySlice = createSlice({
       const monthlyPayment = mortgagePayment + taxes + insurance + hoa;
 
       const cashFlow = rents + incOther - expenses;
-      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const capRate = ((cashFlow + mortgagePayment) * 1200) / price;
       const ROE = ((cashFlow * 12) / equity) * 100;
       const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
 
@@ -551,7 +551,7 @@ export const singleFamilySlice = createSlice({
         mortgagePayment;
 
       const cashFlow = rents + incOther - expenses;
-      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const capRate = ((cashFlow + mortgagePayment) * 1200) / price;
       const ROE = ((cashFlow * 12) / equity) * 100;
       const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
 
@@ -594,7 +594,7 @@ export const singleFamilySlice = createSlice({
         mortgagePayment;
 
       const cashFlow = rents + incOther - expenses;
-      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const capRate = ((cashFlow + mortgagePayment) * 1200) / price;
       const ROE = ((cashFlow * 12) / equity) * 100;
       const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
 
@@ -637,7 +637,7 @@ export const singleFamilySlice = createSlice({
         mortgagePayment;
 
       const cashFlow = rents + incOther - expenses;
-      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const capRate = ((cashFlow + mortgagePayment) * 1200) / price;
       const ROE = ((cashFlow * 12) / equity) * 100;
       const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
 
@@ -680,7 +680,7 @@ export const singleFamilySlice = createSlice({
         mortgagePayment;
 
       const cashFlow = rents + incOther - expenses;
-      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const capRate = ((cashFlow + mortgagePayment) * 1200) / price;
       const ROE = ((cashFlow * 12) / equity) * 100;
       const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
 
@@ -723,7 +723,7 @@ export const singleFamilySlice = createSlice({
         mortgagePayment;
 
       const cashFlow = rents + incOther - expenses;
-      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const capRate = ((cashFlow + mortgagePayment) * 1200) / price;
       const ROE = ((cashFlow * 12) / equity) * 100;
       const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
 
@@ -766,7 +766,7 @@ export const singleFamilySlice = createSlice({
         mortgagePayment;
 
       const cashFlow = rents + incOther - expenses;
-      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const capRate = ((cashFlow + mortgagePayment) * 1200) / price;
       const ROE = ((cashFlow * 12) / equity) * 100;
       const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
 
@@ -792,7 +792,7 @@ export const singleFamilySlice = createSlice({
 
       const cashFlow = rents + incOther - expenses;
 
-      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const capRate = ((cashFlow + mortgagePayment) * 1200) / price;
       const ROE = ((cashFlow * 12) / equity) * 100;
       const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
 
@@ -816,7 +816,7 @@ export const singleFamilySlice = createSlice({
       const mortgagePayment = convertToNum(state.mortgagePayment);
 
       const cashFlow = rents + incOther - expenses;
-      const capRate = ((cashFlow + mortgagePayment) * 12) / price;
+      const capRate = ((cashFlow + mortgagePayment) * 1200) / price;
       const ROE = ((cashFlow * 12) / equity) * 100;
       const ROI = ((cashFlow * 12) / aquisitionCosts) * 100;
 
