@@ -19,7 +19,7 @@ const SFHEXpensesInputs = () => {
   return (
     <div className="expenses">
       <div className="taxes input-container">
-        <label>Taxes: </label>
+        <label className="flex items-center">Taxes: </label>
         <input
           type="text"
           value={singleFamily.taxes === "0" ? "" : singleFamily.taxes}
@@ -29,7 +29,7 @@ const SFHEXpensesInputs = () => {
         />
       </div>
       <div className="insurance input-container">
-        <label>Insurance</label>
+        <label className="flex items-center">Insurance</label>
         <input
           type="text"
           value={singleFamily.insurance === "0" ? "" : singleFamily.insurance}
@@ -39,7 +39,7 @@ const SFHEXpensesInputs = () => {
         />
       </div>
       <div className="hoa input-container">
-        <label>HOA: </label>
+        <label className="flex items-center">HOA: </label>
         <input
           type="text"
           value={singleFamily.hoa === "0" ? "" : singleFamily.hoa}
@@ -49,7 +49,7 @@ const SFHEXpensesInputs = () => {
         />
       </div>
       <div className="vacancy input-container">
-        <label>Vacancy: </label>
+        <label className="flex items-center">Vacancy: </label>
         <input
           type="text"
           value={singleFamily.vacancy === "0" ? "" : singleFamily.vacancy}
@@ -59,7 +59,7 @@ const SFHEXpensesInputs = () => {
         />
       </div>
       <div className="cap-ex input-container">
-        <label>Cap-Ex: </label>
+        <label className="flex items-center">Cap-Ex: </label>
         <input
           type="text"
           value={singleFamily.capEx === "0" ? "" : singleFamily.capEx}
@@ -69,7 +69,7 @@ const SFHEXpensesInputs = () => {
         />
       </div>
       <div className="management input-container">
-        <label>Management: </label>
+        <label className="flex items-center">Management: </label>
         <input
           type="text"
           value={singleFamily.management === "0" ? "" : singleFamily.management}
@@ -79,7 +79,7 @@ const SFHEXpensesInputs = () => {
         />
       </div>
       <div className="maintenance input-container">
-        <label>Maintenance: </label>
+        <label className="flex items-center">Maintenance: </label>
         <input
           type="text"
           value={
@@ -91,7 +91,7 @@ const SFHEXpensesInputs = () => {
         />
       </div>
       <div className="other input-container">
-        <label>Other: </label>
+        <label className="flex items-center">Other expenses: </label>
         <input
           type="text"
           value={singleFamily.expOther === "0" ? "" : singleFamily.expOther}

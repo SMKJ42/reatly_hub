@@ -75,6 +75,7 @@ export default function UserLayout({
         className="bg-bg100 dark:bg-darkBg100"
         onMouseEnter={() => {
           setActiveDropDown(false);
+          setDropDownOption("");
         }}
       >
         {children}

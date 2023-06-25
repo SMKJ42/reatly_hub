@@ -30,7 +30,7 @@ const SFHAquisitionInputs = () => {
   return (
     <div className="aquisition">
       <div className="price input-container">
-        <label>Purchase price: </label>
+        <label className="flex items-center">Purchase price: </label>
         <input
           type="text"
           value={singleFamily.price}
@@ -40,8 +40,8 @@ const SFHAquisitionInputs = () => {
         />
       </div>
 
-      <div className="loan-type input-container">
-        <label>
+      <div className="loan-type input-container ">
+        <label className="flex w-full justify-between">
           Loan Type:
           {/* TODO: turn into drop-down modal */}
           <select
@@ -60,7 +60,7 @@ const SFHAquisitionInputs = () => {
       </div>
       <div className="down-payment input-container">
         <div className="down-payment-inputs">
-          <label>
+          <label className="flex w-full items-center justify-between">
             Down payment: $
             <input
               type="text"
@@ -91,7 +91,7 @@ const SFHAquisitionInputs = () => {
         </div>
       </div>
       <div className="interest input-container">
-        <label>Interest: </label>
+        <label className="flex items-center">Interest: </label>
         <div>
           <input
             type="text"
@@ -104,7 +104,7 @@ const SFHAquisitionInputs = () => {
         </div>
       </div>
       <div className="loan-term input-container">
-        <label>Term: </label>
+        <label className="flex items-center">Term: </label>
         <input
           type="text"
           value={singleFamily.loanTerm}
@@ -116,7 +116,7 @@ const SFHAquisitionInputs = () => {
 
       <div className="closing-costs input-container">
         <div className="closing-costs-inputs">
-          <label>
+          <label className="flex w-full items-center justify-between">
             Closing costs: $
             <input
               type="text"
@@ -148,7 +148,7 @@ const SFHAquisitionInputs = () => {
       </div>
 
       <div className="repairs input-container">
-        <label>Repairs: </label>
+        <label className="flex items-center">Repairs: </label>
         <input
           type="text"
           value={singleFamily.repairs === "0" ? "" : singleFamily.repairs}
@@ -157,6 +157,7 @@ const SFHAquisitionInputs = () => {
           }}
         />
       </div>
+
       <RennovationRadio />
       {singleFamily.rennovationsRadio && <Rennovations />}
     </div>

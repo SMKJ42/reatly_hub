@@ -5,7 +5,7 @@ import type { NextPageWithLayout } from "../../_app";
 const Dashboard: NextPageWithLayout = () => {
   return (
     <div className="">
-      <h1 className=""> mFH calculator :)</h1>
+      <h1 className=""> Coming Soon :)</h1>
       {/* <SFHContainer /> */}
     </div>
   );

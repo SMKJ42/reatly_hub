@@ -13,7 +13,7 @@ const SFHIncomeInputs = () => {
   return (
     <div className="incomes">
       <div className="rent-per input-container">
-        <label>Rent per unit: </label>
+        <label className="flex items-center">Rent per unit: </label>
         <input
           type="text"
           value={singleFamily.rents === "0" ? "" : singleFamily.rents}
@@ -23,7 +23,7 @@ const SFHIncomeInputs = () => {
         />
       </div>
       <div className="other input-container">
-        <label>Other: </label>
+        <label className="flex items-center">Other income: </label>
         <input
           type="text"
           value={singleFamily.incOther === "0" ? "" : singleFamily.incOther}
