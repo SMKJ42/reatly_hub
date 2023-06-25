@@ -4,14 +4,14 @@ import {
   strNumsInput,
 } from "../../../../homeBrews/numberDisplay";
 import { useAppDispatch, useAppSelector } from "~/redux/hooks";
-import { updateARV, updateRennovations } from "~/redux/slice/SFHSlice";
+import { updateARV, updateRennovations } from "~/redux/slice/singleFamilySlice";
 
 const Rennovations = () => {
   const dispatch = useAppDispatch();
-  const SFH = useAppSelector((state) => state.SFH);
+  const singleFamily = useAppSelector((state) => state.singleFamily);
 
   useEffect(() => {
-    dispatch(updateARV(SFH.price));
+    dispatch(updateARV(singleFamily.price));
     return () => {
       dispatch(updateARV("0"));
     };
@@ -24,7 +24,7 @@ const Rennovations = () => {
         <label>Rennovations: </label>
         <input
           type="text"
-          value={SFH.rennovations}
+          value={singleFamily.rennovations}
           onChange={(e) => {
             dispatch(
               // need to strip commas away before reasserting them
@@ -37,7 +37,9 @@ const Rennovations = () => {
         <label>Value after Renno: </label>
         <input
           type="text"
-          value={SFH.ARV === "0" ? SFH.price : SFH.ARV}
+          value={
+            singleFamily.ARV === "0" ? singleFamily.price : singleFamily.ARV
+          }
           onChange={(e) => {
             // need to strip commas away before reasserting them
             dispatch(updateARV(strNumsInput(convertToNum(e.target.value))));

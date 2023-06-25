@@ -4,7 +4,7 @@ import { convertToNum } from "../../../../homeBrews/numberDisplay";
 import { useAppSelector } from "~/redux/hooks";
 
 const SFHAquisitionOutputs = () => {
-  const SFH = useAppSelector((state) => state.SFH);
+  const singleFamily = useAppSelector((state) => state.singleFamily);
 
   const {
     aquisitionCosts,
@@ -18,7 +18,7 @@ const SFHAquisitionOutputs = () => {
     closingCosts,
     mortgagePayment,
     rennovationsRadio,
-  } = SFH;
+  } = singleFamily;
 
   return (
     <div className="aquisition-metrics">
@@ -37,7 +37,8 @@ const SFHAquisitionOutputs = () => {
       {rennovationsRadio ? (
         <>
           <div className="rennovations-radio">
-            Post Renno LTV: {parseInt(SFH.rennovations) > 0 ? "0" : LTV}
+            Post Renno LTV:{" "}
+            {parseInt(singleFamily.rennovations) > 0 ? "0" : LTV}
           </div>
           <div className="rennovation-return">
             Rennovation Return: $

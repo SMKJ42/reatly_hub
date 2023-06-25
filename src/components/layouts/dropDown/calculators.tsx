@@ -33,8 +33,8 @@ export const CalculatorsNav: React.FunctionComponent<dropDownProps> = (
 const CalculatorsDropDown = () => {
   return (
     <div className="absolute flex flex-1 flex-col bg-primary200 dark:bg-primary200">
-      <Link href="/user/calculators/sFH">SFH</Link>
-      <Link href="/user/calculators/mFH">MFH</Link>
+      <Link href="/user/calculators/single-family">SFH</Link>
+      <Link href="/user/calculators/multi-family">MFH</Link>
       <Link href="/user/calculators/history">History</Link>
     </div>
   );

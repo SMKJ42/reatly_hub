@@ -15,13 +15,15 @@ import {
   updateLoanType,
   updatePrice,
   updateRepairs,
-} from "../../../../redux/slice/SFHSlice";
-import type { SFHInterface } from "../../../../redux/slice/SFHSlice";
+} from "../../../../redux/slice/singleFamilySlice";
+import type { singleFamilyInterface } from "../../../../redux/slice/singleFamilySlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 
 const SFHAquisitionInputs = () => {
   const dispatch = useAppDispatch();
-  const SFH: SFHInterface = useAppSelector((state) => state.SFH);
+  const singleFamily: singleFamilyInterface = useAppSelector(
+    (state) => state.singleFamily
+  );
 
   const loanProducts = ["conventional", "fha", "va"];
 
@@ -31,7 +33,7 @@ const SFHAquisitionInputs = () => {
         <label>Price: </label>
         <input
           type="text"
-          value={SFH.price}
+          value={singleFamily.price}
           onChange={(e) => {
             dispatch(updatePrice(strNumsInput(e.target.value, 2)));
           }}
@@ -43,7 +45,7 @@ const SFHAquisitionInputs = () => {
           Loan Type:
           {/* TODO: turn into drop-down modal */}
           <select
-            value={SFH.loanType}
+            value={singleFamily.loanType}
             onChange={(e) => {
               dispatch(updateLoanType(e.target.value));
             }}
@@ -62,7 +64,7 @@ const SFHAquisitionInputs = () => {
             Down-Payment: $
             <input
               type="text"
-              value={SFH.downPaymentDoll}
+              value={singleFamily.downPaymentDoll}
               className="dollar"
               onChange={(e) => {
                 dispatch(
@@ -73,7 +75,7 @@ const SFHAquisitionInputs = () => {
             <input
               type="text"
               className="percent"
-              value={SFH.downPaymentPerc}
+              value={singleFamily.downPaymentPerc}
               onChange={(e) => {
                 if (convertToNum(e.target.value) <= 100) {
                   dispatch(
@@ -93,7 +95,7 @@ const SFHAquisitionInputs = () => {
         <div>
           <input
             type="text"
-            value={SFH.interest}
+            value={singleFamily.interest}
             onChange={(e) => {
               dispatch(updateInterest(strNumsInput(e.target.value, 2)));
             }}
@@ -105,7 +107,7 @@ const SFHAquisitionInputs = () => {
         <label>Term: </label>
         <input
           type="text"
-          value={SFH.loanTerm}
+          value={singleFamily.loanTerm}
           onChange={(e) => {
             dispatch(updateLoanTerm(strNumsInput(e.target.value, 2)));
           }}
@@ -118,7 +120,11 @@ const SFHAquisitionInputs = () => {
             Closing Costs: $
             <input
               type="text"
-              value={SFH.closingCostsDoll === "0" ? "" : SFH.closingCostsDoll}
+              value={
+                singleFamily.closingCostsDoll === "0"
+                  ? ""
+                  : singleFamily.closingCostsDoll
+              }
               className="dollar"
               onChange={(e) => {
                 dispatch(updateClosingCostsDoll(strNumsInput(e.target.value)));
@@ -126,7 +132,11 @@ const SFHAquisitionInputs = () => {
             />
             <input
               type="text"
-              value={SFH.closingCostsPerc === "0" ? "" : SFH.closingCostsPerc}
+              value={
+                singleFamily.closingCostsPerc === "0"
+                  ? ""
+                  : singleFamily.closingCostsPerc
+              }
               className="percent"
               onChange={(e) => {
                 dispatch(updateClosingCostsPerc(strNumsInput(e.target.value)));
@@ -141,14 +151,14 @@ const SFHAquisitionInputs = () => {
         <label>Repairs: </label>
         <input
           type="text"
-          value={SFH.repairs === "0" ? "" : SFH.repairs}
+          value={singleFamily.repairs === "0" ? "" : singleFamily.repairs}
           onChange={(e) => {
             dispatch(updateRepairs(strNumsInput(e.target.value, 2)));
           }}
         />
       </div>
       <RennovationRadio />
-      {SFH.rennovationsRadio && <Rennovations />}
+      {singleFamily.rennovationsRadio && <Rennovations />}
     </div>
   );
 };

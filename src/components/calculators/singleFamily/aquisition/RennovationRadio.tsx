@@ -1,5 +1,5 @@
 import React from "react";
-import { updateRennovationsRadio } from "~/redux/slice/SFHSlice";
+import { updateRennovationsRadio } from "~/redux/slice/singleFamilySlice";
 import { useAppDispatch } from "~/redux/hooks";
 
 const RennovationRadio = () => {

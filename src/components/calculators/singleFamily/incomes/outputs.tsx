@@ -2,14 +2,14 @@ import React from "react";
 import { useAppSelector } from "~/redux/hooks";
 
 const SFHIncomeOutputs = () => {
-  const SFH = useAppSelector((state) => state.SFH);
+  const singleFamily = useAppSelector((state) => state.singleFamily);
 
   return (
     <div>
-      <p>Cash Flow: {SFH.cashFlow}</p>
-      <p>Cap rate: {SFH.capRate} %</p>
-      <p>ROE: {SFH.ROE} %</p>
-      <p>ROI: {SFH.ROI} %</p>
+      <p>Cash Flow: {singleFamily.cashFlow}</p>
+      <p>Cap rate: {singleFamily.capRate} %</p>
+      <p>ROE: {singleFamily.ROE} %</p>
+      <p>ROI: {singleFamily.ROI} %</p>
     </div>
   );
 };

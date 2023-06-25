@@ -1,19 +1,15 @@
 import React from "react";
-import {
-  convertToNum,
-  strNumsInput,
-} from "../../../../homeBrews/numberDisplay";
 import { useAppSelector } from "~/redux/hooks";
 
 const SFHExpensesOutputs = () => {
-  const SFH = useAppSelector((state) => state.SFH);
+  const singleFamily = useAppSelector((state) => state.singleFamily);
 
   return (
     <div className="expenses summary">
-      <div>Mortgage payment: ${SFH.mortgagePayment}</div>
-      <div>Inlcuding escrow: ${SFH.monthlyPayment}</div>
+      <div>Mortgage payment: ${singleFamily.mortgagePayment}</div>
+      <div>Inlcuding escrow: ${singleFamily.monthlyPayment}</div>
       <br />
-      <div>Total projected expenses: ${SFH.expenses}</div>
+      <div>Total projected expenses: ${singleFamily.expenses}</div>
     </div>
   );
 };

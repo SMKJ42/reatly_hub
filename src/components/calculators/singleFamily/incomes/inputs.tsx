@@ -1,11 +1,14 @@
 import React from "react";
 import { strNumsInput } from "../../../../homeBrews/numberDisplay";
-import { updateIncOther, updateRents } from "../../../../redux/slice/SFHSlice";
+import {
+  updateIncOther,
+  updateRents,
+} from "../../../../redux/slice/singleFamilySlice";
 import { useAppDispatch, useAppSelector } from "~/redux/hooks";
 
 const SFHIncomeInputs = () => {
   const dispatch = useAppDispatch();
-  const SFH = useAppSelector((state) => state.SFH);
+  const singleFamily = useAppSelector((state) => state.singleFamily);
 
   return (
     <div className="incomes">
@@ -13,7 +16,7 @@ const SFHIncomeInputs = () => {
         <label>Rent per unit: </label>
         <input
           type="text"
-          value={SFH.rents === "0" ? "" : SFH.rents}
+          value={singleFamily.rents === "0" ? "" : singleFamily.rents}
           onChange={(e) => {
             dispatch(updateRents(strNumsInput(e.target.value, 2)));
           }}
@@ -23,7 +26,7 @@ const SFHIncomeInputs = () => {
         <label>Other: </label>
         <input
           type="text"
-          value={SFH.incOther === "0" ? "" : SFH.incOther}
+          value={singleFamily.incOther === "0" ? "" : singleFamily.incOther}
           onChange={(e) => {
             dispatch(updateIncOther(strNumsInput(e.target.value, 2)));
           }}

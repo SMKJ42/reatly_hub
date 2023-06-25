@@ -6,7 +6,7 @@ import {
   convertPercentToDecimal,
 } from "../../homeBrews/calculations";
 
-export interface SFHInterface {
+export interface singleFamilyInterface {
   address: string;
   price: string;
   interest: string;
@@ -54,7 +54,7 @@ export interface SFHInterface {
   variable: string;
 }
 
-const initialState: SFHInterface = {
+const initialState: singleFamilyInterface = {
   address: "",
   price: "100,000",
   interest: "5",
@@ -102,7 +102,7 @@ const initialState: SFHInterface = {
   variable: "0",
 };
 
-export const SFHSlice = createSlice({
+export const singleFamilySlice = createSlice({
   name: "SFH",
   initialState,
   reducers: {
@@ -857,6 +857,6 @@ export const {
   updateExpOther,
   updateRents,
   updateIncOther,
-} = SFHSlice.actions;
+} = singleFamilySlice.actions;
 
-export default SFHSlice.reducer;
+export default singleFamilySlice.reducer;

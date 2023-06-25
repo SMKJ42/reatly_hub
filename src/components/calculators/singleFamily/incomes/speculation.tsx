@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "~/redux/hooks";
 
 const RennovationRadio = () => {
   const dispatch = useAppDispatch();
-  const SFH = useAppSelector((state) => state.SFH);
+  const singleFamily = useAppSelector((state) => state.singleFamily);
 
   return (
     <div className="rennovation-radios-container">
@@ -16,7 +16,7 @@ const RennovationRadio = () => {
           id="rennovation-yes"
           name="rennovations"
           onChange={() => {
-            SFH.rennovationsRadio
+            singleFamily.rennovationsRadio
               ? dispatch({ type: "UPDATE_RENNOVATIONS_RADIO", payload: false })
               : dispatch({ type: "UPDATE_RENNOVATIONS_RADIO", payload: true });
           }}
@@ -28,7 +28,7 @@ const RennovationRadio = () => {
           name="rennovations"
           defaultChecked
           onChange={() => {
-            SFH.rennovationsRadio
+            singleFamily.rennovationsRadio
               ? dispatch({ type: "UPDATE_RENNOVATIONS_RADIO", payload: true })
               : dispatch({ type: "UPDATE_RENNOVATIONS_RADIO", payload: false });
           }}

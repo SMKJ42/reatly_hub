@@ -9,12 +9,12 @@ import {
   updateManagement,
   updateTaxes,
   updateVacancy,
-} from "../../../../redux/slice/SFHSlice";
+} from "../../../../redux/slice/singleFamilySlice";
 import { useAppDispatch, useAppSelector } from "~/redux/hooks";
 
 const SFHEXpensesInputs = () => {
   const dispatch = useAppDispatch();
-  const SFH = useAppSelector((state) => state.SFH);
+  const singleFamily = useAppSelector((state) => state.singleFamily);
 
   return (
     <div className="expenses">
@@ -22,7 +22,7 @@ const SFHEXpensesInputs = () => {
         <label>Taxes: </label>
         <input
           type="text"
-          value={SFH.taxes === "0" ? "" : SFH.taxes}
+          value={singleFamily.taxes === "0" ? "" : singleFamily.taxes}
           onChange={(e) => {
             dispatch(updateTaxes(strNumsInput(e.target.value, 2)));
           }}
@@ -32,7 +32,7 @@ const SFHEXpensesInputs = () => {
         <label>Insurance</label>
         <input
           type="text"
-          value={SFH.insurance === "0" ? "" : SFH.insurance}
+          value={singleFamily.insurance === "0" ? "" : singleFamily.insurance}
           onChange={(e) => {
             dispatch(updateInsurance(strNumsInput(e.target.value, 2)));
           }}
@@ -42,7 +42,7 @@ const SFHEXpensesInputs = () => {
         <label>HOA: </label>
         <input
           type="text"
-          value={SFH.hoa === "0" ? "" : SFH.hoa}
+          value={singleFamily.hoa === "0" ? "" : singleFamily.hoa}
           onChange={(e) => {
             dispatch(updateHOA(strNumsInput(e.target.value, 2)));
           }}
@@ -52,7 +52,7 @@ const SFHEXpensesInputs = () => {
         <label>Vacancy: </label>
         <input
           type="text"
-          value={SFH.vacancy === "0" ? "" : SFH.vacancy}
+          value={singleFamily.vacancy === "0" ? "" : singleFamily.vacancy}
           onChange={(e) => {
             dispatch(updateVacancy(strNumsInput(e.target.value, 2)));
           }}
@@ -62,7 +62,7 @@ const SFHEXpensesInputs = () => {
         <label>Cap-Ex: </label>
         <input
           type="text"
-          value={SFH.capEx === "0" ? "" : SFH.capEx}
+          value={singleFamily.capEx === "0" ? "" : singleFamily.capEx}
           onChange={(e) => {
             dispatch(updateCapex(strNumsInput(e.target.value, 2)));
           }}
@@ -72,7 +72,7 @@ const SFHEXpensesInputs = () => {
         <label>Management: </label>
         <input
           type="text"
-          value={SFH.management === "0" ? "" : SFH.management}
+          value={singleFamily.management === "0" ? "" : singleFamily.management}
           onChange={(e) => {
             dispatch(updateManagement(strNumsInput(e.target.value, 2)));
           }}
@@ -82,7 +82,9 @@ const SFHEXpensesInputs = () => {
         <label>Maintenance: </label>
         <input
           type="text"
-          value={SFH.maintenance === "0" ? "" : SFH.maintenance}
+          value={
+            singleFamily.maintenance === "0" ? "" : singleFamily.maintenance
+          }
           onChange={(e) => {
             dispatch(updateMaintenance(strNumsInput(e.target.value, 2)));
           }}
@@ -92,7 +94,7 @@ const SFHEXpensesInputs = () => {
         <label>Other: </label>
         <input
           type="text"
-          value={SFH.expOther === "0" ? "" : SFH.expOther}
+          value={singleFamily.expOther === "0" ? "" : singleFamily.expOther}
           onChange={(e) => {
             dispatch(updateExpOther(strNumsInput(e.target.value, 2)));
           }}
