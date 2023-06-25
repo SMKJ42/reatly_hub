@@ -118,6 +118,9 @@ export const singleFamilySlice = createSlice({
       console.log("firing reducer");
       return { ...action.payload };
     },
+    updateId: (state, action: { payload: string }) => {
+      return { ...state, id: action.payload };
+    },
     updateAddress: (state, action: { payload: string }) => {
       return { ...state, address: action.payload };
     },
@@ -890,6 +893,7 @@ export const singleFamilySlice = createSlice({
 export const {
   resetSFH,
   HydrateSingleFamily,
+  updateId,
   updateAddress,
   updatePrice,
   updateInterest,

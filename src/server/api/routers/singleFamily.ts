@@ -97,7 +97,7 @@ export const singleFamilyRouter = createTRPCRouter({
           fixed: input.fixed,
         },
       });
-      return singleFamilyPod;
+      return { ...singleFamilyPod };
     }),
 
   update: privateProcedure

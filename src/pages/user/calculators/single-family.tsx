@@ -1,8 +1,12 @@
-import { type ReactElement } from "react";
+import { useState, type ReactElement } from "react";
 import UserLayout from "../../../components/layouts/UserLayout";
 import type { NextPageWithLayout } from "../../_app";
 import { useAppDispatch, useAppSelector } from "~/redux/hooks";
-import { resetSFH, updateAddress } from "~/redux/slice/singleFamilySlice";
+import {
+  resetSFH,
+  updateAddress,
+  updateId,
+} from "~/redux/slice/singleFamilySlice";
 import SFHAquisitionInputs from "~/components/calculators/singleFamily/aquisition/Inputs";
 import SFHAquisitionOutputs from "~/components/calculators/singleFamily/aquisition/Outputs";
 import SFHEXpensesInputs from "~/components/calculators/singleFamily/expenses/inputs";
@@ -11,21 +15,24 @@ import SFHIncomeInputs from "~/components/calculators/singleFamily/incomes/input
 import SFHIncomeOutputs from "~/components/calculators/singleFamily/incomes/outputs";
 import { api } from "~/utils/api";
 import { getSFHSubmit } from "~/components/calculators/singleFamily/getSFSubmit";
+import { useRouter } from "next/router";
 
 const SingleFamilyCalc: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
-
   const ctx = api.useContext();
 
   const id = useAppSelector((state) => state.singleFamily?.id);
   const address = useAppSelector((state) => state.singleFamily?.address);
 
+  const [success, setSuccess] = useState(false);
+
   const { mutate: create, isLoading: isSaving } =
     api.singleFamily.create.useMutation({
-      onSuccess: () => {
-        console.log("success");
-        resetSFH();
-        void ctx.singleFamily.getAll.invalidate();
+      onSuccess: (opts) => {
+        console.log(opts);
+        dispatch(resetSFH());
+        dispatch(updateId(opts.id));
+        setSuccess(true);
       },
       onError: (error) => {
         console.log(error);
@@ -35,8 +42,8 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
   const { mutate: update, isLoading: isUpdating } =
     api.singleFamily.update.useMutation({
       onSuccess: () => {
-        console.log("success");
-        resetSFH();
+        dispatch(resetSFH());
+        setSuccess(true);
         void ctx.singleFamily.getAll.invalidate();
       },
       onError: (error) => {
@@ -50,6 +57,7 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
 
   return (
     <div>
+      {success && <Success setSuccess={setSuccess} />}
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -119,6 +127,41 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
     </div>
   );
 };
+
+type SuccessProps = {
+  setSuccess: (boolean: boolean) => void;
+};
+
+function Success(props: SuccessProps) {
+  const { setSuccess } = props;
+  const router = useRouter();
+  return (
+    <div className="absolute flex h-full w-full items-center justify-center">
+      <div className="flex h-auto flex-col justify-center rounded-lg bg-primary200 p-8">
+        <h1 className="text-center">Success!</h1>
+        <h2 className="text-center">Your deal has been saved</h2>
+        <div className="mt-4 flex justify-center">
+          <input
+            type="button"
+            value="History"
+            className="mr-4 rounded-md px-3"
+            onClick={() => {
+              void router.push("/user/calculators/history");
+            }}
+          />
+          <input
+            type="button"
+            value="Dismiss"
+            className="rounded-md px-3"
+            onClick={() => {
+              setSuccess(false);
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 SingleFamilyCalc.getLayout = function getLayout(page: ReactElement) {
   return <UserLayout>{page}</UserLayout>;

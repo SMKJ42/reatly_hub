@@ -67,7 +67,7 @@ const Pod = (pod: PodInterface) => {
         {isDeleting ? <StandardLoadingSpinner /> : null}
         <h3 className="text-center">{pod.address}</h3>
         <p className="">Cash flow: ${pod.cashFlow}</p>
-        <p className="">COC: {pod.capEx}%</p>
+        <p className="">CapEx: {pod.capEx}%</p>
         <p className="">ROE: {pod.ROE}%</p>
         <p className="">ROI: {pod.ROI}%</p>
         <div className="mt-2 flex w-full justify-around rounded-md ">
