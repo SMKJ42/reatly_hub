@@ -1,7 +1,7 @@
 import store from "../../../redux/store";
 
 export function getSFHSubmit() {
-  const state = store.getState().SFH;
+  const state = store.getState().singleFamily;
   const output = {
     address: state.address,
     price: state.price,
