@@ -292,7 +292,10 @@ export const singleFamilySlice = createSlice({
         downPayment + (price * closingCosts) / 100 + repairs + rennovations
       );
 
-      const closingCostsDoll = convertPercentToDecimal(closingCosts, price);
+      const closingCostsDoll = convertPercentToDecimal(
+        closingCosts / 100,
+        price
+      );
 
       return {
         ...state,
