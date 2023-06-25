@@ -77,7 +77,7 @@ export default function UserLayout({
         <ToggleTheme />
       </nav>
       <main
-        className="min-h-screen bg-bg100 dark:bg-darkBg100"
+        className="bg-bg100 dark:bg-darkBg100"
         onMouseEnter={() => {
           setActiveDropDown(false);
         }}

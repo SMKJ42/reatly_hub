@@ -44,10 +44,11 @@ const Dashboard: NextPageWithLayout = () => {
         }}
       >
         <div className="deal-analysis">
-          <div className="address">
-            <label>Address:</label>
+          <div className="address flex justify-center py-2">
+            <label className="mx-4">Address:</label>
             <input
               type="text"
+              className="mx-4"
               onChange={(e) => {
                 dispatch(updateAddress(e.target.value));
               }}

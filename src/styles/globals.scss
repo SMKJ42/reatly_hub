@@ -41,6 +41,8 @@ $--darkBg300: "#444444";
 
 main {
   @apply dark:text-bg300;
+  height: 95vh;
+
   input,
   select {
     @apply dark:bg-bg200 dark:text-black;
@@ -55,4 +57,11 @@ main {
 
 nav {
   @apply dark:bg-darkBg300 dark:text-darkText100;
+  height: 5vh;
+  div {
+    div,
+    a {
+      @apply flex items-center;
+    }
+  }
 }

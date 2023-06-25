@@ -57,7 +57,7 @@ export default function PublicLayout({
         </div>
         <ToggleTheme />
       </nav>
-      <main className="min-h-screen bg-bg100 dark:bg-darkBg100">
+      <main className="bg-bg100 dark:bg-darkBg100">
         {children}
       </main>
       <footer></footer>
