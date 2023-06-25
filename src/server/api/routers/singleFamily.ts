@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 
-export const sFHRouter = createTRPCRouter({
+export const singleFamilyRouter = createTRPCRouter({
   create: privateProcedure
     .input(
       z.object({
@@ -51,7 +51,7 @@ export const sFHRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const authorId: string = ctx.userId;
 
-      const sFHpod = await ctx.prisma.sFH.create({
+      const singleFamilyPod = await ctx.prisma.singleFamily.create({
         data: {
           authorId,
           address: input.address,
@@ -98,18 +98,18 @@ export const sFHRouter = createTRPCRouter({
         },
       });
 
-      return sFHpod;
+      return singleFamilyPod;
     }),
 
   getAll: privateProcedure.query(async ({ ctx }) => {
     const authorId: string = ctx.userId;
 
-    const sFHpod = await ctx.prisma.sFH.findMany({
+    const singleFamilyPod = await ctx.prisma.singleFamily.findMany({
       where: {
         authorId,
       },
     });
 
-    return sFHpod;
+    return singleFamilyPod;
   }),
 });

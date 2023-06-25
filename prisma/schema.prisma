@@ -20,7 +20,7 @@ model user {
     role      String @default("user")
 }
 
-model sFH {
+model singleFamily {
     authorId            String
     id                  String   @id @default(cuid())
     createdAt           DateTime @default(now())
@@ -71,7 +71,7 @@ model sFH {
     @@index([authorId])
 }
 
-model mFH {
+model multiFamily {
     id        String @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

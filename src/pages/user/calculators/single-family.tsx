@@ -17,11 +17,11 @@ const Dashboard: NextPageWithLayout = () => {
 
   const ctx = api.useContext();
 
-  const { mutate, isLoading: isSaving } = api.sFH.create.useMutation({
+  const { mutate, isLoading: isSaving } = api.singleFamily.create.useMutation({
     onSuccess: () => {
       console.log("success");
       resetSFH();
-      void ctx.sFH.getAll.invalidate();
+      void ctx.singleFamily.getAll.invalidate();
     },
     onError: (error) => {
       console.log("failed");
