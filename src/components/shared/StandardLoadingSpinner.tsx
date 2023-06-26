@@ -6,8 +6,6 @@ interface LoadingSpinnerProps {
 export const StandardLoadingSpinner = (props: LoadingSpinnerProps) => {
   let { size, color } = props;
 
-  console.log(size);
-
   if (!color) color = "fill-primary200";
   if (!size) size = 8;
 

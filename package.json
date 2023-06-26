@@ -19,6 +19,8 @@
     "@trpc/next": "^10.26.0",
     "@trpc/react-query": "^10.26.0",
     "@trpc/server": "^10.26.0",
+    "axios": "^1.4.0",
+    "cheerio": "^1.0.0-rc.12",
     "next": "^13.4.2",
     "next-redux-wrapper": "^8.1.0",
     "nodemon": "^2.0.22",
