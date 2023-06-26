@@ -28,28 +28,31 @@ const loanTypes: { [key: string]: string } = {
 };
 
 const getSelectRate = async (req: string) => {
-  if (req === "") {
-    throw new Error(
-      "No request found in loanTypes map src/server/mortgageRates.ts"
-    );
-  }
-  const regex = /\b\d{4}-\d{2}-\d{2}\b/;
+  //regex to parse out unimporant text thats writen in 'node' lingo
+  const dayOfUpdate = /\b\d{4}-\d{2}-\d{2}\b/;
   try {
+    if (req === "") {
+      throw new Error(
+        "No request found in loanTypes map src/server/mortgageRates.ts"
+      );
+    }
+
     return axios
       .get(`https://fred.stlouisfed.org/series/${req}`)
       .then((res: { data: string }) => {
         const htmlString = res.data;
         const $ = load(htmlString);
+        //access the first instance of series-meta-observation-value
         const $rate = $("div.gx-0 > span.series-meta-observation-value");
         const rate = $rate.text();
         const $date = $rate.parent();
-        const _date = $date.text().match(regex);
+        const _date = $date.text().match(dayOfUpdate);
         const date = _date ? _date[0] : "";
         if (rate === "" || rate === undefined || rate === null) {
-          throw new Error("No rate found");
+          throw new Error("No rate found src/server/cron/mortgageRates.ts");
         }
         if (date === "" || date === undefined || date === null) {
-          throw new Error("No date found");
+          throw new Error("No date found src/server/cron/mortgageRates.ts");
         }
         return { rate, date };
       })
