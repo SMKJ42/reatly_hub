@@ -86,3 +86,11 @@ model flip {
 
     //TODO: later evalutation... setting this up
 }
+
+model mortgageRates {
+    name       String 
+    createdAt  DateTime @unique @default(now())
+    rate       Int
+
+    @@index([createdAt])
+}

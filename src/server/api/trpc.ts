@@ -10,7 +10,8 @@ import { getAuth } from "@clerk/nextjs/server";
 import { TRPCError, initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
-import { ZodError } from "zod";
+import { ZodError, z } from "zod";
+import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
 
 /**
@@ -100,7 +101,9 @@ export const createTRPCRouter = t.router;
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
+
 export const publicProcedure = t.procedure;
+``;
 
 const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
   if (!ctx.userId) {
@@ -117,3 +120,32 @@ const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
 });
 
 export const privateProcedure = t.procedure.use(enforceUserIsAuthed);
+
+export const mortgageRatesRouter = t.router({
+  create: t.procedure
+    .input(
+      z.object({
+        key: z.string(),
+        name: z.string(),
+        rate: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (input.key !== env.THE_KEY_TO_RULE_THEM_ALL) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You don't have access to this resource",
+        });
+      }
+
+      // console.log(ctx);
+      // console.log(input);
+
+      await ctx.prisma.mortgageRates.create({
+        data: {
+          name: input.name,
+          rate: input.rate,
+        },
+      });
+    }),
+});

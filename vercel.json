@@ -1,0 +1,5 @@
+{
+  "crons": [
+    { "path": "cron/mortgageRates?key=t60CCLzljTNSBcFrpuLnLKWAiSajUkdg" }
+  ]
+}

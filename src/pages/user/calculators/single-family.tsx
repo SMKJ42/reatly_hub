@@ -29,7 +29,6 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
   const { mutate: create, isLoading: isSaving } =
     api.singleFamily.create.useMutation({
       onSuccess: (opts) => {
-        console.log(opts);
         dispatch(resetSFH());
         dispatch(updateId(opts.id));
         setSuccess(true);

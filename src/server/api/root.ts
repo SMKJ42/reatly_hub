@@ -1,7 +1,7 @@
 // import { exampleRouter } from "~/server/api/routers/example";
 import { createTRPCRouter } from "~/server/api/trpc";
 import { singleFamilyRouter } from "./routers/singleFamily";
-
+import { mortgageRatesRouter } from "./trpc";
 /**
  * This is the primary router for your server.
  *
@@ -10,6 +10,7 @@ import { singleFamilyRouter } from "./routers/singleFamily";
 
 export const appRouter = createTRPCRouter({
   singleFamily: singleFamilyRouter,
+  mortgageRates: mortgageRatesRouter,
 });
 
 // export type definition of API
