@@ -1,18 +1,8 @@
 {
   "crons": [
-    { "path": "api/cron/mortageRates?key=t60CCLzljTNSBcFrpuLnLKWAiSajUkdg" }
-  ],
-  "functions": {
-    "mortgageRates": {
-      "handler": "mortgageRates.handler",
-      "events": [
-        {
-          "http": {
-            "path": "mortgageRates",
-            "schedule": "0 3 * * *"
-          }
-        }
-      ]
+    {
+      "path": "api/cron/mortageRates?key=t60CCLzljTNSBcFrpuLnLKWAiSajUkdg",
+      "schedule": "0 3 * * *"
     }
-  }
+  ]
 }
