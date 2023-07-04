@@ -22,7 +22,7 @@ import { prisma } from "~/server/db";
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 
-type CreateContextOptions = Record<string, never>;
+// type CreateContextOptions = Record<string, never>;
 
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
@@ -34,11 +34,12 @@ type CreateContextOptions = Record<string, never>;
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-const createInnerTRPCContext = (_opts: CreateContextOptions) => {
-  return {
-    prisma,
-  };
-};
+
+// const createInnerTRPCContext = (_opts: CreateContextOptions) => {
+//   return {
+//     prisma,
+//   };
+// };
 
 /**
  * This is the actual context you will use in your router. It will be used to process every request
@@ -49,6 +50,11 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
 export const createTRPCContext = (_opts: CreateNextContextOptions) => {
   const { req } = _opts;
   const sesh = getAuth(req);
+
+  // const promise = new Promise((resolve) => {
+  //   setTimeout(resolve, 0);
+  // });
+  // await promise;
 
   const userId = sesh.userId;
 
@@ -122,6 +128,10 @@ const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
 export const privateProcedure = t.procedure.use(enforceUserIsAuthed);
 
 export const mortgageRatesRouter = t.router({
+  query: t.procedure.query(async ({ ctx }) => {
+    const rates = await ctx.prisma.mortgageRates.findMany();
+    return rates;
+  }),
   create: t.procedure
     .input(
       z.object({
@@ -136,16 +146,13 @@ export const mortgageRatesRouter = t.router({
           code: "UNAUTHORIZED",
           message: "You don't have access to this resource",
         });
+      } else {
+        await ctx.prisma.mortgageRates.create({
+          data: {
+            name: input.name,
+            rate: input.rate,
+          },
+        });
       }
-
-      // console.log(ctx);
-      // console.log(input);
-
-      await ctx.prisma.mortgageRates.create({
-        data: {
-          name: input.name,
-          rate: input.rate,
-        },
-      });
     }),
 });
