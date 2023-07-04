@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { appRouter } from "~/server/api/root";
 import { createTRPCContext } from "~/server/api/trpc";
 
-export default async function handler(
+export default async function getMortgageRates(
   request: NextApiRequest,
   response: NextApiResponse
 ) {
