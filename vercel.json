@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "api/cron/mortageRates?key=t60CCLzljTNSBcFrpuLnLKWAiSajUkdg",
+      "path": "/api/cron/mortageRates?key=t60CCLzljTNSBcFrpuLnLKWAiSajUkdg",
       "schedule": "0 3 * * *"
     }
   ]
