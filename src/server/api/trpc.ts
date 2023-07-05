@@ -72,7 +72,7 @@ export const createTRPCContext = (_opts: CreateNextContextOptions) => {
  * errors on the backend.
  */
 
-const t = initTRPC.context<typeof createTRPCContext>().create({
+export const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
     return {
@@ -109,7 +109,6 @@ export const createTRPCRouter = t.router;
  */
 
 export const publicProcedure = t.procedure;
-``;
 
 const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
   if (!ctx.userId) {
@@ -126,33 +125,3 @@ const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
 });
 
 export const privateProcedure = t.procedure.use(enforceUserIsAuthed);
-
-export const mortgageRatesRouter = t.router({
-  query: t.procedure.query(async ({ ctx }) => {
-    const rates = await ctx.prisma.mortgageRates.findMany();
-    return rates;
-  }),
-  create: t.procedure
-    .input(
-      z.object({
-        key: z.string(),
-        name: z.string(),
-        rate: z.number(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      if (input.key !== env.THE_KEY_TO_RULE_THEM_ALL) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You don't have access to this resource",
-        });
-      } else {
-        await ctx.prisma.mortgageRates.create({
-          data: {
-            name: input.name,
-            rate: input.rate,
-          },
-        });
-      }
-    }),
-});
