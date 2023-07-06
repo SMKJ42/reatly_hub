@@ -65,6 +65,8 @@ const SFHAquisitionInputs = () => {
               const interest = loanProducts?.find(
                 (product) => product.name === e.target.value
               )?.rate as number;
+              const term = e.target.value.includes("15") ? "15" : "30";
+              dispatch(updateLoanTerm(term));
               dispatch(updateInterest(strNumsInput(interest, 2)));
             }}
           >
