@@ -5,6 +5,7 @@ import {
   convertDecimalToPercent,
   convertPercentToDecimal,
 } from "../../homeBrews/calculations";
+import { type mortgageRates } from "@prisma/client";
 
 export interface singleFamilyInterface {
   id: boolean | string;
@@ -17,7 +18,7 @@ export interface singleFamilyInterface {
   closingCostsDoll: string;
   loanTerm: string;
   loanType: string;
-  loanTypeOptions?: string[];
+  loanTypeOptions?: mortgageRates[];
   repairs: string;
   ARV: string;
   taxes: string;
@@ -66,7 +67,8 @@ const initialState: singleFamilyInterface = {
   closingCostsDoll: "3,500",
   loanTerm: "30",
   loanType: "conventional",
-  loanTypeOptions: ["conventional", "FHA", "VA", "USDA"],
+  // loanTypeOptions: ["conventional", "FHA", "VA", "USDA"],
+
   repairs: "0",
   ARV: "0",
   taxes: "0",
@@ -123,6 +125,9 @@ export const singleFamilySlice = createSlice({
     },
     updateAddress: (state, action: { payload: string }) => {
       return { ...state, address: action.payload };
+    },
+    updateLoanTypeOptions: (state, action: { payload: mortgageRates[] }) => {
+      return { ...state, loanTypeOptions: action.payload };
     },
     updatePrice: (state, action: { payload: string }) => {
       const price = convertToNum(action.payload);
@@ -220,6 +225,8 @@ export const singleFamilySlice = createSlice({
       const equity = convertToNum(state.equity);
       const aquisitionCosts = convertToNum(state.aquisitionCosts);
       const price = convertToNum(state.price);
+
+      console.log("interest", interest);
 
       const mortgagePayment = calcMortgagePayment(
         loanBalance,
@@ -997,6 +1004,7 @@ export const {
   HydrateSingleFamily,
   updateId,
   updateAddress,
+  updateLoanTypeOptions,
   updatePrice,
   updateInterest,
   updateDownPaymentPerc,

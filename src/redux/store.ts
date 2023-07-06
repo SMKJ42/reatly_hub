@@ -10,6 +10,12 @@ const store = configureStore({
     counter: counterReducer,
     client: clientReducer,
   },
+  devTools: true,
+  middleware(getDefaultMiddleware) {
+    return getDefaultMiddleware({
+      serializableCheck: false,
+    });
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -1,19 +1,48 @@
 import type { ReactElement } from "react";
 import UserLayout from "../../components/layouts/UserLayout";
 import type { NextPageWithLayout } from "../_app";
-import { UserProfile } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
+import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
+import Image from "next/image";
+import Link from "next/link";
 
-const Dashboard: NextPageWithLayout = () => {
+const UserAccount: NextPageWithLayout = () => {
+  const { isLoaded, isSignedIn, user } = useUser();
+
+  if (!isLoaded) return <StandardLoadingSpinner />;
+  if (!isSignedIn)
+    return (
+      <p>
+        <Link href="sign-in">Sign in</Link> to view your account
+      </p>
+    );
+
+  console.log(user);
+
+  const name = user?.firstName
+    ? user.firstName
+    : user?.username
+    ? user.username
+    : "user";
+
   return (
-    <h1 className="">
-      User Calculators :)
-      <UserProfile />
-    </h1>
+    <>
+      <h1 className="">Account</h1>
+      <Image
+        src={user?.profileImageUrl ? user.profileImageUrl : ""}
+        alt={`${name}'s profile image`}
+        width={80}
+        height={80}
+      ></Image>
+      <p>{name}</p>
+      <p>Want to be a blog contributor?</p>
+      <button>Apply</button>
+    </>
   );
 };
 
-Dashboard.getLayout = function getLayout(page: ReactElement) {
+UserAccount.getLayout = function getLayout(page: ReactElement) {
   return <UserLayout>{page}</UserLayout>;
 };
 
-export default Dashboard;
+export default UserAccount;

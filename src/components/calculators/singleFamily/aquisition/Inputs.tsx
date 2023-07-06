@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import RennovationRadio from "./RennovationRadio";
 import Rennovations from "./Rennovations";
 import {
@@ -13,6 +13,7 @@ import {
   updateInterest,
   updateLoanTerm,
   updateLoanType,
+  updateLoanTypeOptions,
   updatePrice,
   updateRepairs,
 } from "../../../../redux/slice/singleFamilySlice";
@@ -38,6 +39,19 @@ const SFHAquisitionInputs = () => {
 
   const { data: loanProducts, isLoading: loanProductsLoading } =
     api.nextMortgageRates.getAll.useQuery();
+
+  // sync state with query
+  useEffect(() => {
+    if (!loanProductsLoading && loanProducts) {
+      dispatch(updateLoanTypeOptions(loanProducts));
+      loanProducts[0] ? dispatch(updateLoanType(loanProducts[0].name)) : null;
+      loanProducts[0]
+        ? dispatch(updateInterest(strNumsInput(loanProducts[0].rate, 3)))
+        : null;
+      const term = loanProducts[0]?.name.includes("15") ? "15" : "30";
+      dispatch(updateLoanTerm(term));
+    }
+  }, [loanProducts]);
 
   if (loanProductsLoading) return <StandardLoadingSpinner size={88} />;
 
