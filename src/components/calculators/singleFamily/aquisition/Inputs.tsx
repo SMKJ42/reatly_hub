@@ -18,6 +18,17 @@ import {
 } from "../../../../redux/slice/singleFamilySlice";
 import type { singleFamilyInterface } from "../../../../redux/slice/singleFamilySlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { api } from "~/utils/api";
+import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
+
+const loanProductMap: { [key: string]: string } = {
+  MORTGAGE30US: "30 Year Fixed",
+  MORTGAGE15US: "15 Year Fixed",
+  OBMMIFHA30YF: "30 Year Fixed FHA",
+  OBMMIVA30YF: "30 Year Fixed VA",
+  OBMMIUSDA30YF: "30 Year Fixed USDA",
+  OBMMIC30YF: "30 Year Fixed Conforming",
+};
 
 const SFHAquisitionInputs = () => {
   const dispatch = useAppDispatch();
@@ -25,7 +36,10 @@ const SFHAquisitionInputs = () => {
     (state) => state.singleFamily
   );
 
-  const loanProducts = ["conventional", "fha", "va"];
+  const { data: loanProducts, isLoading: loanProductsLoading } =
+    api.nextMortgageRates.getAll.useQuery();
+
+  if (loanProductsLoading) return <StandardLoadingSpinner size={88} />;
 
   return (
     <div className="aquisition">
@@ -48,11 +62,15 @@ const SFHAquisitionInputs = () => {
             value={singleFamily.loanType}
             onChange={(e) => {
               dispatch(updateLoanType(e.target.value));
+              const interest = loanProducts?.find(
+                (product) => product.name === e.target.value
+              )?.rate as number;
+              dispatch(updateInterest(strNumsInput(interest, 2)));
             }}
           >
-            {loanProducts.map((product, index) => (
-              <option value={product} key={index}>
-                {product}
+            {loanProducts?.map((product) => (
+              <option key={product.name} value={product.name}>
+                {loanProductMap[product.name]}
               </option>
             ))}
           </select>

@@ -106,9 +106,9 @@ export const amortizationSchedule = (
 export const convertPercentToDecimal = (percent: number, ref: number) => {
   // const num1 = convertToNum(percent) / 100;
   // const num2 = convertToNum(ref);
-  return strNumsInput(percent * ref, 2);
+  return (percent * ref) / 100;
 };
 
 export const convertDecimalToPercent = (percent: number, ref: number) => {
-  return strNumsInput((percent / ref) * 100, 3);
+  return (percent / ref) * 100;
 };

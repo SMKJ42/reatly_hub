@@ -15,18 +15,6 @@ const loanTypes = {
   thirtyYearConforming: "OBMMIC30YF",
 };
 
-// type FredFulfilledResponse = {
-// id: string ;
-// title: string;
-// units: ;
-// units_short: ;
-// seasonal_adjustment: ;
-// seasonal_adjustment_short: ;
-// last_updated: ;
-// popularity: ;
-// notes;
-// };
-
 export default function getMortgageRates(
   request: NextApiRequest,
   response: NextApiResponse

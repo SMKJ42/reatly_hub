@@ -1,13 +1,9 @@
 import { z } from "zod";
-import { t } from "../trpc";
+import { createTRPCRouter, privateProcedure, t } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { env } from "~/env.mjs";
 
 export const mortgageRatesRouter = t.router({
-  query: t.procedure.query(async ({ ctx }) => {
-    const rates = await ctx.prisma.mortgageRates.findMany();
-    return rates;
-  }),
   create: t.procedure
     .input(
       z.object({
@@ -60,4 +56,11 @@ export const mortgageRatesRouter = t.router({
         });
       }
     }),
+});
+
+export const nextMortgageRatesRouter = createTRPCRouter({
+  getAll: privateProcedure.query(async ({ ctx }) => {
+    const data = await ctx.prisma.mortgageRates.findMany({});
+    return data;
+  }),
 });

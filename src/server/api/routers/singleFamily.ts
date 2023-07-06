@@ -218,14 +218,12 @@ export const singleFamilyRouter = createTRPCRouter({
     }),
 
   getAll: privateProcedure.query(async ({ ctx }) => {
-    const authorId: string = ctx.userId;
-
+    const authorId = ctx.userId;
     const singleFamilyPod = await ctx.prisma.singleFamily.findMany({
       where: {
         authorId,
       },
     });
-
     return singleFamilyPod;
   }),
 });
