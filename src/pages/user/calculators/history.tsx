@@ -9,6 +9,7 @@ import {
   type singleFamilyInterface,
 } from "~/redux/slice/singleFamilySlice";
 import { useAppDispatch } from "~/redux/hooks";
+import { type mortgageRates } from "@prisma/client";
 
 const Dashboard: NextPageWithLayout = () => {
   const { data, isLoading: loadingHistory } =
@@ -36,7 +37,7 @@ const Dashboard: NextPageWithLayout = () => {
 interface PodInterface extends singleFamilyInterface {
   id: string;
   authorId: string;
-  loanTypeOptions?: string[];
+  loanTypeOptions?: mortgageRates[];
   rennovationsRadio?: boolean;
   speculation?: boolean;
   variable?: string;
@@ -69,7 +70,6 @@ const Pod = (pod: PodInterface) => {
               dispatch(
                 HydrateSingleFamily({
                   ...pod,
-                  loanTypeOptions: ["conventional", "FHA", "VA", "USDA"],
                   rennovationsRadio: false,
                   speculation: false,
                   variable: "0",
