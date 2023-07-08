@@ -20,6 +20,7 @@ export default function PublicLayout({
   useEffect(() => {
     if (!userLoaded) return;
     if (user.isSignedIn) void router.push("/user/dashboard");
+    //eslint-disable-next-line
   }, [userLoaded]);
 
   return (

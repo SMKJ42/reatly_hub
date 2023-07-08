@@ -69,6 +69,7 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
       const term = loanProducts[0]?.name.includes("15") ? "15" : "30";
       dispatch(updateLoanTerm(term));
     }
+    // eslint-disable-next-line
   }, [loanProducts]);
 
   if (loanProductsLoading) return <StandardLoadingSpinner size={88} />;

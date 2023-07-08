@@ -1,7 +1,6 @@
-import { ReactElement, useState } from "react";
+import { type ReactElement, useState } from "react";
 import UserLayout from "../../components/layouts/UserLayout";
 import type { NextPageWithLayout } from "../_app";
-import { NextComponentType } from "next";
 import { useAppDispatch, useAppSelector } from "~/redux/hooks";
 import {
   decrement,
