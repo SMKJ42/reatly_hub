@@ -54,12 +54,12 @@ export default function getMortgageRates(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     const data: { date: string; value: string } = input.data.observations[0];
 
-    let name = input.config.url ? input.config.url.split("=")[1] : "";
-    name = name?.split("&")[0] ? (name.split("&")[0] as string) : "";
+    let code = input.config.url ? input.config.url.split("=")[1] : "";
+    code = code?.split("&")[0] ? (code.split("&")[0] as string) : "";
 
     const output = {
       key,
-      name,
+      code,
       rate: parseFloat(data.value),
       updatedAt: new Date(data.date).toISOString(),
     };

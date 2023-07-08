@@ -88,10 +88,11 @@ model flip {
 }
 
 model mortgageRates {
-    name       String @unique
+    code       String @unique
+    name       String
     rate       Float
-    updatedAt  DateTime 
+    updatedAt  DateTime
     checkedAt  DateTime @updatedAt
 
-    @@index([name])
+    @@index([code])
 }

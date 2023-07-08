@@ -1,8 +1,7 @@
-import { type Store, configureStore } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import singleFamilyReducer from "./slice/singleFamilySlice";
 import counterReducer from "./slice/counterSlice";
 import clientReducer from "./slice/clientSlice";
-import { createWrapper, type Context } from "next-redux-wrapper";
 
 const store = configureStore({
   reducer: {

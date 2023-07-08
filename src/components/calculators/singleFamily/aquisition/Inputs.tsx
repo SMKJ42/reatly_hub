@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import RennovationRadio from "./RennovationRadio";
 import Rennovations from "./Rennovations";
 import {
@@ -13,14 +13,12 @@ import {
   updateInterest,
   updateLoanTerm,
   updateLoanType,
-  updateLoanTypeOptions,
   updatePrice,
   updateRepairs,
 } from "../../../../redux/slice/singleFamilySlice";
 import type { singleFamilyInterface } from "../../../../redux/slice/singleFamilySlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { api } from "~/utils/api";
-import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
+import { type mortgageRates } from "@prisma/client";
 
 const loanProductMap: { [key: string]: string } = {
   MORTGAGE30US: "30 Year Fixed",
@@ -31,29 +29,15 @@ const loanProductMap: { [key: string]: string } = {
   OBMMIC30YF: "30 Year Fixed Conforming",
 };
 
-const SFHAquisitionInputs = () => {
+const SFHAquisitionInputs = (props: {
+  loanProducts: mortgageRates[] | undefined;
+}) => {
   const dispatch = useAppDispatch();
   const singleFamily: singleFamilyInterface = useAppSelector(
     (state) => state.singleFamily
   );
 
-  const { data: loanProducts, isLoading: loanProductsLoading } =
-    api.nextMortgageRates.getAll.useQuery();
-
-  // sync state with query
-  useEffect(() => {
-    if (!loanProductsLoading && loanProducts) {
-      dispatch(updateLoanTypeOptions(loanProducts));
-      loanProducts[0] ? dispatch(updateLoanType(loanProducts[0].name)) : null;
-      loanProducts[0]
-        ? dispatch(updateInterest(strNumsInput(loanProducts[0].rate, 3)))
-        : null;
-      const term = loanProducts[0]?.name.includes("15") ? "15" : "30";
-      dispatch(updateLoanTerm(term));
-    }
-  }, [loanProducts]);
-
-  if (loanProductsLoading) return <StandardLoadingSpinner size={88} />;
+  const { loanProducts } = props;
 
   return (
     <div className="aquisition">
@@ -125,7 +109,21 @@ const SFHAquisitionInputs = () => {
         </div>
       </div>
       <div className="interest input-container">
-        <label className="flex items-center">Interest: </label>
+        <label className="flex items-center">
+          Interest:
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="h-4 w-4"
+          >
+            <path
+              fillRule="evenodd"
+              d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </label>
         <div>
           <input
             type="text"

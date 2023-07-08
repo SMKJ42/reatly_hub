@@ -9,8 +9,9 @@ export const mortgageRatesRouter = t.router({
       z.object({
         key: z.string(),
         updatedAt: z.string().datetime(),
-        name: z.string(),
+        code: z.string(),
         rate: z.number(),
+        name: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -23,8 +24,9 @@ export const mortgageRatesRouter = t.router({
         await ctx.prisma.mortgageRates.create({
           data: {
             updatedAt: input.updatedAt,
-            name: input.name,
+            code: input.code,
             rate: input.rate,
+            name: input.name,
           },
         });
       }
@@ -34,7 +36,7 @@ export const mortgageRatesRouter = t.router({
       z.object({
         key: z.string(),
         updatedAt: z.string().datetime(),
-        name: z.string(),
+        code: z.string(),
         rate: z.number(),
       })
     )
@@ -47,7 +49,7 @@ export const mortgageRatesRouter = t.router({
       } else {
         await ctx.prisma.mortgageRates.update({
           where: {
-            name: input.name,
+            code: input.code,
           },
           data: {
             updatedAt: input.updatedAt,
