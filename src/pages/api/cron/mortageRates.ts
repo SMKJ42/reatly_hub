@@ -36,7 +36,7 @@ export default function getMortgageRates(
     .then((results) => {
       results.forEach((resolvedPromise) => {
         if (resolvedPromise.status === "fulfilled") {
-          updataRates(resolvedPromise.value as AxiosResponse<any, any>);
+          updataRates(resolvedPromise.value as AxiosResponse);
         }
       });
       return response.status(200).json({ message: "success" });
@@ -50,7 +50,7 @@ export default function getMortgageRates(
       return response.status(500).json({ message: "internal server error" });
     });
 
-  function updataRates(input: AxiosResponse<any, any>) {
+  function updataRates(input: AxiosResponse) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     const data: { date: string; value: string } = input.data.observations[0];
 
@@ -70,7 +70,7 @@ export default function getMortgageRates(
 }
 
 function fetchRatePromises(objectInput: {
-  [key: string]: string | Promise<AxiosResponse<any, any>>;
+  [key: string]: string | Promise<AxiosResponse>;
 }) {
   Object.keys(objectInput).forEach((key) => {
     objectInput[key] = returnPromise(objectInput[key] as string);

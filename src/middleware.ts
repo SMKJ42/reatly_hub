@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export default authMiddleware({
   publicRoutes: ["/", "/blog", "/home", `/blog/[slug]`, "/api/trpc/[trpc]"],
-  afterAuth(auth, req, evt) {
+  afterAuth(auth, req) {
     if (!auth.userId && !auth.isPublicRoute) {
       const redirectUrl = new URL(req.url);
       redirectUrl.pathname = "/";
