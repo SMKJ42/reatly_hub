@@ -50,28 +50,11 @@ const SFHAquisitionInputs = (props: {
       const year = selectedType.updatedAt.getFullYear();
       setMortgageObject({
         name: selectedType.name,
-        code: selectedType.name,
+        code: selectedType.code,
         updatedAt: `${month} ${day}, ${year}`,
       });
     }
   }
-
-  // useEffect(() => {
-  //   const selectedType = loanProducts?.find(
-  //     (product) => product.name === singleFamily.loanType
-  //   );
-  //   if (selectedType) {
-  //     const day = selectedType.updatedAt.getDate();
-  //     const month = monthNumToString(selectedType.updatedAt.getMonth());
-  //     const year = selectedType.updatedAt.getFullYear();
-  //     setMortgageObject({
-  //       name: selectedType.name,
-  //       code: selectedType.name,
-  //       updatedAt: `${month} ${day}, ${year}`,
-  //     });
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [singleFamily.loanType]);
 
   return (
     <div className="aquisition">
