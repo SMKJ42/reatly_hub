@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
-import { type AppState } from "~/redux/store";
+import { type RootState } from "~/redux/store";
 
 export function useSFHObject() {
-  const state = useSelector((state: AppState) => state.singleFamily);
+  const state = useSelector((state: RootState) => state.singleFamily);
   const output = {
     address: state.address,
     price: state.price,
