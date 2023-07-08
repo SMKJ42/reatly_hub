@@ -28,7 +28,7 @@ const Rennovations = () => {
           onChange={(e) => {
             dispatch(
               // need to strip commas away before reasserting them
-              updateRennovations(strNumsInput(convertToNum(e.target.value)))
+              updateRennovations(strNumsInput(e.target.value))
             );
           }}
         />
@@ -42,7 +42,7 @@ const Rennovations = () => {
           }
           onChange={(e) => {
             // need to strip commas away before reasserting them
-            dispatch(updateARV(strNumsInput(convertToNum(e.target.value))));
+            dispatch(updateARV(strNumsInput(e.target.value)));
           }}
         ></input>
       </div>

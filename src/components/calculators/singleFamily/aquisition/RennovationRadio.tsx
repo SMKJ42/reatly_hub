@@ -7,9 +7,7 @@ const RennovationRadio = () => {
 
   return (
     <div className="rennovation-radios-container flex w-full justify-between">
-      <label htmlFor="" className="rennovations">
-        Rennovations?
-      </label>
+      <label className="rennovations">Rennovations?</label>
       <div className="rennovation-radios input-container w-1/3">
         <div>
           <input

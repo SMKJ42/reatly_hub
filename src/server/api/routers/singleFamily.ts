@@ -1,5 +1,20 @@
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
+import { checkRateLimit } from "../error";
+
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(3, "20 s"),
+  analytics: true,
+  /**
+   * Optional prefix for the keys used in redis. This is useful if you want to share a redis
+   * instance with other applications and want to avoid key collisions. The default prefix is
+   * "@upstash/ratelimit"
+   */
+  prefix: "@upstash/ratelimit",
+});
 
 export const singleFamilyRouter = createTRPCRouter({
   create: privateProcedure
@@ -50,6 +65,9 @@ export const singleFamilyRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const authorId: string = ctx.userId;
+
+      const { success } = await ratelimit.limit(authorId);
+      checkRateLimit(success);
 
       const singleFamilyPod = await ctx.prisma.singleFamily.create({
         data: {
@@ -150,6 +168,9 @@ export const singleFamilyRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const authorId: string = ctx.userId;
 
+      const { success } = await ratelimit.limit(authorId);
+      checkRateLimit(success);
+
       const singleFamilyPod = await ctx.prisma.singleFamily.update({
         where: {
           id: input.id,
@@ -209,6 +230,11 @@ export const singleFamilyRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const authorId: string = ctx.userId;
+
+      const { success } = await ratelimit.limit(authorId);
+      checkRateLimit(success);
+
       const deleteSingleFamilyPod = await ctx.prisma.singleFamily.delete({
         where: {
           id: input.id,
@@ -219,6 +245,10 @@ export const singleFamilyRouter = createTRPCRouter({
 
   getAll: privateProcedure.query(async ({ ctx }) => {
     const authorId = ctx.userId;
+
+    const { success } = await ratelimit.limit(authorId);
+    checkRateLimit(success);
+
     const singleFamilyPod = await ctx.prisma.singleFamily.findMany({
       where: {
         authorId,

@@ -226,8 +226,6 @@ export const singleFamilySlice = createSlice({
       const aquisitionCosts = convertToNum(state.aquisitionCosts);
       const price = convertToNum(state.price);
 
-      console.log("interest", interest);
-
       const mortgagePayment = calcMortgagePayment(
         loanBalance,
         interest,

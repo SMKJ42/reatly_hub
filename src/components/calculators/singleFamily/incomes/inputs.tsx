@@ -18,7 +18,7 @@ const SFHIncomeInputs = () => {
           type="text"
           value={singleFamily.rents === "0" ? "" : singleFamily.rents}
           onChange={(e) => {
-            dispatch(updateRents(strNumsInput(e.target.value, 2)));
+            dispatch(updateRents(strNumsInput(e.target.value)));
           }}
         />
       </div>
@@ -28,7 +28,7 @@ const SFHIncomeInputs = () => {
           type="text"
           value={singleFamily.incOther === "0" ? "" : singleFamily.incOther}
           onChange={(e) => {
-            dispatch(updateIncOther(strNumsInput(e.target.value, 2)));
+            dispatch(updateIncOther(strNumsInput(e.target.value)));
           }}
         />
       </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { rennovationReturn } from "../../../../homeBrews/calculations";
 import { convertToNum } from "../../../../homeBrews/numberDisplay";
 import { useAppSelector } from "~/redux/hooks";
@@ -33,21 +33,21 @@ const SFHAquisitionOutputs = () => {
           ? `${mortgagePayment}`
           : "0"}
       </div>
-      <div className="ltv">LTV : {isNaN(parseInt(LTV)) ? 0 : LTV}</div>
+      <div className="ltv">LTV : {isNaN(convertToNum(LTV)) ? 0 : LTV}</div>
       {rennovationsRadio ? (
         <>
           <div className="rennovations-radio">
             Post Renno LTV:
-            {parseInt(singleFamily.rennovations) > 0 ? "0" : LTV}
+            {convertToNum(singleFamily.rennovations) > 0 ? "0" : LTV}
           </div>
           <div className="rennovation-return">
             Rennovation Return: $
             {rennovationReturn(
-              parseInt(ARV),
-              parseInt(price),
-              parseInt(repairs),
-              parseInt(rennovations),
-              parseInt(closingCosts)
+              convertToNum(ARV),
+              convertToNum(price),
+              convertToNum(repairs),
+              convertToNum(rennovations),
+              convertToNum(closingCosts)
             )}
           </div>
         </>

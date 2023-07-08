@@ -50,16 +50,11 @@ export const createTRPCContext = (_opts: CreateNextContextOptions) => {
   const { req } = _opts;
   const sesh = getAuth(req);
 
-  // const promise = new Promise((resolve) => {
-  //   setTimeout(resolve, 0);
-  // });
-  // await promise;
-
   const userId = sesh.userId;
 
   return {
     prisma,
-    userId: userId,
+    userId,
   };
 };
 

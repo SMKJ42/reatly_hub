@@ -24,7 +24,7 @@ const SFHEXpensesInputs = () => {
           type="text"
           value={singleFamily.taxes === "0" ? "" : singleFamily.taxes}
           onChange={(e) => {
-            dispatch(updateTaxes(strNumsInput(e.target.value, 2)));
+            dispatch(updateTaxes(strNumsInput(e.target.value)));
           }}
         />
       </div>
@@ -34,7 +34,7 @@ const SFHEXpensesInputs = () => {
           type="text"
           value={singleFamily.insurance === "0" ? "" : singleFamily.insurance}
           onChange={(e) => {
-            dispatch(updateInsurance(strNumsInput(e.target.value, 2)));
+            dispatch(updateInsurance(strNumsInput(e.target.value)));
           }}
         />
       </div>
@@ -44,7 +44,7 @@ const SFHEXpensesInputs = () => {
           type="text"
           value={singleFamily.hoa === "0" ? "" : singleFamily.hoa}
           onChange={(e) => {
-            dispatch(updateHOA(strNumsInput(e.target.value, 2)));
+            dispatch(updateHOA(strNumsInput(e.target.value)));
           }}
         />
       </div>
@@ -54,7 +54,7 @@ const SFHEXpensesInputs = () => {
           type="text"
           value={singleFamily.vacancy === "0" ? "" : singleFamily.vacancy}
           onChange={(e) => {
-            dispatch(updateVacancy(strNumsInput(e.target.value, 2)));
+            dispatch(updateVacancy(strNumsInput(e.target.value)));
           }}
         />
       </div>
@@ -64,7 +64,7 @@ const SFHEXpensesInputs = () => {
           type="text"
           value={singleFamily.capEx === "0" ? "" : singleFamily.capEx}
           onChange={(e) => {
-            dispatch(updateCapex(strNumsInput(e.target.value, 2)));
+            dispatch(updateCapex(strNumsInput(e.target.value)));
           }}
         />
       </div>
@@ -74,7 +74,7 @@ const SFHEXpensesInputs = () => {
           type="text"
           value={singleFamily.management === "0" ? "" : singleFamily.management}
           onChange={(e) => {
-            dispatch(updateManagement(strNumsInput(e.target.value, 2)));
+            dispatch(updateManagement(strNumsInput(e.target.value)));
           }}
         />
       </div>
@@ -86,7 +86,7 @@ const SFHEXpensesInputs = () => {
             singleFamily.maintenance === "0" ? "" : singleFamily.maintenance
           }
           onChange={(e) => {
-            dispatch(updateMaintenance(strNumsInput(e.target.value, 2)));
+            dispatch(updateMaintenance(strNumsInput(e.target.value)));
           }}
         />
       </div>
@@ -96,7 +96,7 @@ const SFHEXpensesInputs = () => {
           type="text"
           value={singleFamily.expOther === "0" ? "" : singleFamily.expOther}
           onChange={(e) => {
-            dispatch(updateExpOther(strNumsInput(e.target.value, 2)));
+            dispatch(updateExpOther(strNumsInput(e.target.value)));
           }}
         />
       </div>

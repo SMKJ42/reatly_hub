@@ -13,7 +13,16 @@ const stripComma = (input: number | string) => {
 //limits the maximum amount of decimal places
 const enforceDecimal = (string: string, max: number) => {
   const regExp = new RegExp(`(\\.\\d{${max}})\\d+$`);
-  const output = string.replace(regExp, "$1");
+  let output = string.replace(regExp, "$1");
+  if (max) {
+    const decimalIndex = output.indexOf(".");
+    if (decimalIndex === -1) {
+      return output;
+    }
+    while (output.length - decimalIndex <= max) {
+      output += "0";
+    }
+  }
   return output;
 };
 
