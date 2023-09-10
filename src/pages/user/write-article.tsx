@@ -2,9 +2,9 @@ import type { ReactElement } from "react";
 import PublicLayout from "../../components/layouts/PublicLayout";
 import type { NextPageWithLayout } from "../_app";
 import { useState } from "react";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import UserLayout from "~/components/layouts/UserLayout";
+import dynamic from "next/dynamic";
 
 // const availableTags = [
 //   "finance",
@@ -16,10 +16,22 @@ import UserLayout from "~/components/layouts/UserLayout";
 //   "multi family",
 // ];
 
+const ReactQuill = dynamic(
+  () =>
+    import("../../components/blog/ReactQuil").then(
+      (element) => element.ReactQuil
+    ),
+  {
+    ssr: false,
+  }
+);
+
 const WriteArticle: NextPageWithLayout = () => {
   //value holds the content of the editor in HTML format
   const [value, setValue] = useState("");
   const [title, setTitle] = useState("");
+
+  console.log(value);
 
   return (
     <>

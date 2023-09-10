@@ -11,7 +11,7 @@ import {
 import { useAppDispatch } from "~/redux/hooks";
 import { type mortgageRates } from "@prisma/client";
 
-const History: NextPageWithLayout = () => {
+const Dashboard: NextPageWithLayout = () => {
   const { data, isLoading: loadingHistory } =
     api.singleFamily.getAll.useQuery();
 
@@ -36,7 +36,6 @@ const History: NextPageWithLayout = () => {
 
 interface PodInterface extends singleFamilyInterface {
   id: string;
-  authorId: string;
   loanTypeOptions?: mortgageRates[];
   rennovationsRadio?: boolean;
   speculation?: boolean;
@@ -143,8 +142,8 @@ function ConfirmDelete(props: {
   );
 }
 
-History.getLayout = function getLayout(page: ReactElement) {
+Dashboard.getLayout = function getLayout(page: ReactElement) {
   return <UserLayout>{page}</UserLayout>;
 };
 
-export default History;
+export default Dashboard;

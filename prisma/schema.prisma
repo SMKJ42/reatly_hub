@@ -107,12 +107,12 @@ model article {
   updatedAt DateTime @updatedAt
   views     Int      @default(0)
 
-  likeCount Int @default(0)
+  likeCount Int      @default(0)
 
   title        String
   content      String
-  author       user?          @relation(fields: [authorId], references: [id])
-  authorId     String?
+  author       user         @relation(fields: [authorId], references: [id])
+  authorId     String
   articleLikes articleLikes[]
 
   @@index([createdAt])
