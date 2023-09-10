@@ -21,7 +21,7 @@ const ratelimit = new Ratelimit({
 
 const serverRateLimit = new Ratelimit({
   redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(2, "1 d"),
+  limiter: Ratelimit.slidingWindow(10, "1 d"),
   analytics: true,
 });
 
@@ -91,9 +91,8 @@ export const mortgageRatesRouter = t.router({
 });
 
 export const nextMortgageRatesRouter = createTRPCRouter({
-  getAll: privateProcedure.query(async ({ ctx }) => {
+  getAll: privateProcedure.input(z.null()).query(async ({ ctx }) => {
     const { success } = await ratelimit.limit(ctx.userId);
-
     checkRateLimit(success);
 
     const data = await ctx.prisma.mortgageRates.findMany({});

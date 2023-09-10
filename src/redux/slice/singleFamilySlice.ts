@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { convertToNum, strNumsInput } from "../../homeBrews/numberDisplay";
+import { convertToNum, strNumsInput } from "../../lib/numberDisplay";
 import {
   calcMortgagePayment,
   convertDecimalToPercent,
   convertPercentToDecimal,
-} from "../../homeBrews/calculations";
+} from "../../lib/calculations";
 import { type mortgageRates } from "@prisma/client";
 
 export interface singleFamilyInterface {
@@ -90,7 +90,7 @@ const initialState: singleFamilyInterface = {
   totalAquisitionReturn: "0",
   aquisitionCosts: "23,500",
   equity: "20,000",
-  LTV: "0.8",
+  LTV: "0.800",
   mortgagePayment: "429.46",
   cashFlow: "0",
   expenses: "429.46",

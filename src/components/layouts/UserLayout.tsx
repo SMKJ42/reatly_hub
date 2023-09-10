@@ -42,7 +42,7 @@ export default function UserLayout({
             className="flex flex-1"
             onMouseEnter={() => setActiveDropDown(false)}
           ></div>
-          <Link href="/user/dashboard">Dashboard</Link>
+          <Link href="/user">Dashboard</Link>
           <div
             className="flex flex-1"
             onMouseEnter={() => setActiveDropDown(false)}

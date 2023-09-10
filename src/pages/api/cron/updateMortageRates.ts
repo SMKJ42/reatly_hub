@@ -19,24 +19,26 @@ export default function getMortgageRates(
   request: NextApiRequest,
   response: NextApiResponse
 ) {
-  const ctx = createTRPCContext({ req: request, res: response });
-  const caller = appRouter.createCaller(ctx);
-
   const key = request.query.key as string;
-
   if (!key) {
     return response
       .status(400)
       .json({ message: "You do not have access to this resource" });
   }
 
+  const ctx = createTRPCContext({ req: request, res: response });
+  const caller = appRouter.createCaller(ctx);
+
+  //create promise array from loan types
   const queryObject = fetchRatePromises(loanTypes);
   const promiseArray = Object.values(queryObject);
+
+  //once all pormises settle, update each rate.
   Promise.allSettled(promiseArray)
     .then((results) => {
       results.forEach((resolvedPromise) => {
         if (resolvedPromise.status === "fulfilled") {
-          updataRates(resolvedPromise.value as AxiosResponse);
+          updataThisRate(resolvedPromise.value as AxiosResponse);
         }
       });
       return response.status(200).json({ message: "success" });
@@ -50,30 +52,32 @@ export default function getMortgageRates(
       return response.status(500).json({ message: "internal server error" });
     });
 
-  function updataRates(input: AxiosResponse) {
+  function updataThisRate(input: AxiosResponse) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     const data: { date: string; value: string } = input.data.observations[0];
 
-    let code = input.config.url ? input.config.url.split("=")[1] : "";
-    code = code?.split("&")[0] ? (code.split("&")[0] as string) : "";
+    let coercedCode = input.config.url ? input.config.url.split("=")[1] : "";
+    coercedCode = coercedCode?.split("&")[0]
+      ? (coercedCode.split("&")[0] as string)
+      : "";
 
-    const output = {
+    const validReq = {
       key,
-      code,
+      code: coercedCode,
       rate: parseFloat(data.value),
       updatedAt: new Date(data.date).toISOString(),
     };
-    if (output) {
-      void caller.mortgageRates.update(output);
+    if (validReq) {
+      void caller.mortgageRates.update(validReq);
     }
   }
 }
 
-function fetchRatePromises(objectInput: {
+function fetchRatePromises(requestLoanType: {
   [key: string]: string | Promise<AxiosResponse>;
 }) {
-  Object.keys(objectInput).forEach((key) => {
-    objectInput[key] = returnPromise(objectInput[key] as string);
+  Object.keys(requestLoanType).forEach((key) => {
+    requestLoanType[key] = returnPromise(requestLoanType[key] as string);
   });
 
   function returnPromise(value: string) {
@@ -82,5 +86,5 @@ function fetchRatePromises(objectInput: {
     return axios.get(url);
   }
 
-  return objectInput;
+  return requestLoanType;
 }

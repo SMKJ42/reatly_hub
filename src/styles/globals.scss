@@ -28,13 +28,7 @@ $--darkBg300: "#444444";
 .input-container {
   @apply flex justify-between whitespace-nowrap;
   input {
-    @apply my-2 rounded-sm;
-  }
-  .dollar {
-    @apply mr-2 w-1/3;
-  }
-  .percent {
-    @apply w-1/6;
+    @apply my-2;
   }
 }
 
@@ -44,7 +38,7 @@ main {
 
   input,
   select {
-    @apply dark:bg-bg200 dark:text-black;
+    @apply rounded-sm px-1 py-px dark:bg-bg200 dark:text-black;
   }
   .container {
     @apply mx-10 h-full;

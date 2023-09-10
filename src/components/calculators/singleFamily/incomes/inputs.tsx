@@ -1,5 +1,5 @@
 import React from "react";
-import { strNumsInput } from "../../../../homeBrews/numberDisplay";
+import { strNumsInput } from "../../../../lib/numberDisplay";
 import {
   updateIncOther,
   updateRents,
@@ -16,6 +16,7 @@ const SFHIncomeInputs = () => {
         <label className="flex items-center">Rent per unit: </label>
         <input
           type="text"
+          className="!bg-green-200"
           value={singleFamily.rents === "0" ? "" : singleFamily.rents}
           onChange={(e) => {
             dispatch(updateRents(strNumsInput(e.target.value)));
@@ -26,6 +27,7 @@ const SFHIncomeInputs = () => {
         <label className="flex items-center">Other income: </label>
         <input
           type="text"
+          className="!bg-green-200"
           value={singleFamily.incOther === "0" ? "" : singleFamily.incOther}
           onChange={(e) => {
             dispatch(updateIncOther(strNumsInput(e.target.value)));

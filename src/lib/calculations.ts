@@ -1,5 +1,3 @@
-import { strNumsInput } from "./numberDisplay";
-
 export const addArrayFunction = (input: number[]) => {
   return input.reduce((a, b) => a + b, 0);
 };

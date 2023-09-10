@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import RennovationRadio from "./RennovationRadio";
 import Rennovations from "./Rennovations";
-import {
-  convertToNum,
-  strNumsInput,
-} from "../../../../homeBrews/numberDisplay";
+import { convertToNum, strNumsInput } from "../../../../lib/numberDisplay";
 import {
   updateClosingCostsDoll,
   updateClosingCostsPerc,
@@ -20,7 +17,7 @@ import type { singleFamilyInterface } from "../../../../redux/slice/singleFamily
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { type mortgageRates } from "@prisma/client";
 import { mortgageCitation } from "public/Citation";
-import { monthNumToString } from "~/homeBrews/dateFormatter/month";
+import { monthNumToString } from "~/lib/dateFormatter/month";
 
 const SFHAquisitionInputs = (props: {
   loanProducts: mortgageRates[] | undefined;
@@ -40,6 +37,7 @@ const SFHAquisitionInputs = (props: {
     updatedAt: null as nullishString,
   });
 
+  //this is for the display on the mortgage citation
   function getMortgageObject() {
     const selectedType = loanProducts?.find(
       (product) => product.name === singleFamily.loanType
@@ -57,16 +55,20 @@ const SFHAquisitionInputs = (props: {
   }
 
   return (
-    <div className="aquisition">
+    <div>
       <div className="price input-container">
         <label className="flex items-center">Purchase price: </label>
-        <input
-          type="text"
-          value={singleFamily.price}
-          onChange={(e) => {
-            dispatch(updatePrice(strNumsInput(e.target.value)));
-          }}
-        />
+        <div className="flex items-center">
+          <p className="rounded-l-sm bg-bg200 px-1 py-px text-black">$</p>
+          <input
+            type="text"
+            value={singleFamily.price}
+            onChange={(e) => {
+              dispatch(updatePrice(strNumsInput(e.target.value)));
+            }}
+            className="rounded-l-none"
+          />
+        </div>
       </div>
 
       <div className="loan-type input-container ">
@@ -122,21 +124,24 @@ const SFHAquisitionInputs = (props: {
           </select>
         </label>
       </div>
-      <div className="down-payment input-container">
-        <div className="down-payment-inputs">
-          <label className="flex w-full items-center justify-between">
-            Down payment: $
+      <div className="down-payment mt-2 flex w-full items-center">
+        <label className="mr-4 whitespace-nowrap">Down payment:</label>
+        <div className="flex justify-between">
+          <div className="flex">
+            <p className="rounded-l-sm bg-bg200 px-1 py-px text-black">$</p>
             <input
               type="text"
               value={singleFamily.downPaymentDoll}
-              className="dollar"
+              className="w-[120%] rounded-l-none"
               onChange={(e) => {
                 dispatch(updateDownPaymentDoll(strNumsInput(e.target.value)));
               }}
             />
+          </div>
+          <div className="flex justify-end">
             <input
               type="text"
-              className="percent"
+              className="w-5/12 rounded-r-none"
               value={singleFamily.downPaymentPerc}
               onChange={(e) => {
                 if (convertToNum(e.target.value) <= 100) {
@@ -146,21 +151,24 @@ const SFHAquisitionInputs = (props: {
                 }
               }}
             />
-            %
-          </label>
+            <p className="w-fit rounded-r-sm bg-bg200 px-1 py-px text-black">
+              %
+            </p>
+          </div>
         </div>
       </div>
       <div className="interest input-container">
         <label className="flex items-center">Interest:</label>
-        <div>
+        <div className="flex items-center">
           <input
             type="text"
             value={singleFamily.interest}
+            className="rounded-r-none"
             onChange={(e) => {
               dispatch(updateInterest(strNumsInput(e.target.value)));
             }}
           />
-          %
+          <p className="rounded-r-sm bg-bg200 px-1 py-px text-black">%</p>
         </div>
       </div>
       <div className="loan-term input-container">
@@ -174,10 +182,11 @@ const SFHAquisitionInputs = (props: {
         />
       </div>
 
-      <div className="closing-costs input-container">
-        <div className="closing-costs-inputs">
-          <label className="flex w-full items-center justify-between">
-            Closing costs: $
+      <div className="closing-costs mt-2 flex w-full items-center">
+        <label className="mr-4 whitespace-nowrap">Closing costs:</label>
+        <div className="flex justify-between">
+          <div className="flex">
+            <p className="rounded-l-sm bg-bg200 px-1 py-px text-black">$</p>
             <input
               type="text"
               value={
@@ -185,11 +194,13 @@ const SFHAquisitionInputs = (props: {
                   ? ""
                   : singleFamily.closingCostsDoll
               }
-              className="dollar"
+              className="w-[120%] rounded-l-none"
               onChange={(e) => {
                 dispatch(updateClosingCostsDoll(strNumsInput(e.target.value)));
               }}
             />
+          </div>
+          <div className="flex justify-end">
             <input
               type="text"
               value={
@@ -197,13 +208,15 @@ const SFHAquisitionInputs = (props: {
                   ? ""
                   : singleFamily.closingCostsPerc
               }
-              className="percent"
+              className="w-5/12 rounded-r-none"
               onChange={(e) => {
                 dispatch(updateClosingCostsPerc(strNumsInput(e.target.value)));
               }}
             />
-            %
-          </label>
+            <p className="w-fit rounded-r-sm bg-bg200 px-1 py-px text-black">
+              %
+            </p>
+          </div>
         </div>
       </div>
 

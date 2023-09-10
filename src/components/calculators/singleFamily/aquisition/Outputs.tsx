@@ -1,6 +1,6 @@
 import React from "react";
-import { rennovationReturn } from "../../../../homeBrews/calculations";
-import { convertToNum } from "../../../../homeBrews/numberDisplay";
+import { rennovationReturn } from "../../../../lib/calculations";
+import { convertToNum } from "../../../../lib/numberDisplay";
 import { useAppSelector } from "~/redux/hooks";
 
 const SFHAquisitionOutputs = () => {

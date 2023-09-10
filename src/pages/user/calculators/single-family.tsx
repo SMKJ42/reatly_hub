@@ -20,7 +20,7 @@ import SFHIncomeOutputs from "~/components/calculators/singleFamily/incomes/outp
 import { api } from "~/utils/api";
 import { getSFHSubmit } from "~/components/calculators/singleFamily/getSFSubmit";
 import { useRouter } from "next/router";
-import { strNumsInput } from "~/homeBrews/numberDisplay";
+import { strNumsInput } from "~/lib/numberDisplay";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 
 const SingleFamilyCalc: NextPageWithLayout = () => {
@@ -57,7 +57,9 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
     });
 
   const { data: loanProducts, isLoading: loanProductsLoading } =
-    api.nextMortgageRates.getAll.useQuery();
+    api.nextMortgageRates.getAll.useQuery(null, {
+      refetchOnWindowFocus: false,
+    });
 
   useEffect(() => {
     if (!loanProductsLoading && loanProducts) {
@@ -87,29 +89,25 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
         }}
       >
         <div className="deal-analysis">
-          <div className="address flex justify-center py-2">
-            <label className="mx-4" aria-required>
-              Address:
-              <input
-                value={address}
-                type="text"
-                className="mx-4"
-                onChange={(e) => {
-                  dispatch(updateAddress(e.target.value));
-                }}
-                required
-              />
-            </label>
-          </div>
-          <div className="aquisition-container container grid grid-cols-2 justify-center gap-20">
+          <div className="container grid grid-cols-1 justify-center gap-x-12 md:grid-cols-2">
+            <div className="address col-s col-span-2 flex justify-center py-2">
+              <label className="mx-4" aria-required>
+                Address:
+                <input
+                  value={address}
+                  type="text"
+                  className="mx-4"
+                  onChange={(e) => {
+                    dispatch(updateAddress(e.target.value));
+                  }}
+                  required
+                />
+              </label>
+            </div>
             <SFHAquisitionInputs loanProducts={loanProducts} />
             <SFHAquisitionOutputs />
-          </div>
-          <div className="expenses-container container grid grid-cols-2 justify-center gap-20">
             <SFHEXpensesInputs />
             <SFHExpensesOutputs />
-          </div>
-          <div className="income-container container grid grid-cols-2 justify-center gap-20">
             <SFHIncomeInputs />
             <SFHIncomeOutputs />
           </div>

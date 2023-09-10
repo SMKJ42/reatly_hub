@@ -7,7 +7,7 @@ export const StandardLoadingSpinner = (props: LoadingSpinnerProps) => {
   let { size, color } = props;
 
   if (!color) color = "fill-primary200";
-  if (!size) size = 8;
+  if (!size) size = 16;
 
   return (
     <>

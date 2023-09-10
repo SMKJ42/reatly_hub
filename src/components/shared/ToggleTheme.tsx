@@ -1,7 +1,7 @@
 // 'use client';
 
 import React from "react";
-import setLocalStorageItem from "~/homeBrews/clientCache/localStorage/setLocalStorageItem";
+import setLocalStorageItem from "~/lib/clientCache/localStorage/setLocalStorageItem";
 import { useAppDispatch, useAppSelector } from "~/redux/hooks";
 import { setDarkMode, setLightMode } from "~/redux/slice/clientSlice";
 

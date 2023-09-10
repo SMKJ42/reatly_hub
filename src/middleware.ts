@@ -13,7 +13,7 @@ export default authMiddleware({
     if (auth.userId && auth.isPublicRoute) {
       // eslint-disable-next-line
       const redirectUrl = new URL(req.url);
-      redirectUrl.pathname = "/user/dashboard";
+      redirectUrl.pathname = "/user/calculators/history";
       // eslint-disable-next-line
       return NextResponse.redirect(redirectUrl);
     }

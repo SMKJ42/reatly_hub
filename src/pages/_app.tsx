@@ -5,7 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { useEffect, type ReactElement, type ReactNode } from "react";
 import { type NextPage } from "next";
 import { Provider } from "react-redux";
-import getLocalStorageItem from "~/homeBrews/clientCache/localStorage/getLocalStorageItem";
+import getLocalStorageItem from "~/lib/clientCache/localStorage/getLocalStorageItem";
 import { setDarkMode, setLightMode } from "~/redux/slice/clientSlice";
 import store from "~/redux/store";
 

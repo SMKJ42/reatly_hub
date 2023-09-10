@@ -1,5 +1,5 @@
 import React from "react";
-import { strNumsInput } from "../../../../homeBrews/numberDisplay";
+import { strNumsInput } from "../../../../lib/numberDisplay";
 import {
   updateCapex,
   updateExpOther,
@@ -22,6 +22,7 @@ const SFHEXpensesInputs = () => {
         <label className="flex items-center">Taxes: </label>
         <input
           type="text"
+          className="!bg-red-200"
           value={singleFamily.taxes === "0" ? "" : singleFamily.taxes}
           onChange={(e) => {
             dispatch(updateTaxes(strNumsInput(e.target.value)));
@@ -32,6 +33,7 @@ const SFHEXpensesInputs = () => {
         <label className="flex items-center">Insurance</label>
         <input
           type="text"
+          className="!bg-red-200"
           value={singleFamily.insurance === "0" ? "" : singleFamily.insurance}
           onChange={(e) => {
             dispatch(updateInsurance(strNumsInput(e.target.value)));
@@ -42,6 +44,7 @@ const SFHEXpensesInputs = () => {
         <label className="flex items-center">HOA: </label>
         <input
           type="text"
+          className="!bg-red-200"
           value={singleFamily.hoa === "0" ? "" : singleFamily.hoa}
           onChange={(e) => {
             dispatch(updateHOA(strNumsInput(e.target.value)));
@@ -52,6 +55,7 @@ const SFHEXpensesInputs = () => {
         <label className="flex items-center">Vacancy: </label>
         <input
           type="text"
+          className="!bg-red-200"
           value={singleFamily.vacancy === "0" ? "" : singleFamily.vacancy}
           onChange={(e) => {
             dispatch(updateVacancy(strNumsInput(e.target.value)));
@@ -62,6 +66,7 @@ const SFHEXpensesInputs = () => {
         <label className="flex items-center">Cap-Ex: </label>
         <input
           type="text"
+          className="!bg-red-200"
           value={singleFamily.capEx === "0" ? "" : singleFamily.capEx}
           onChange={(e) => {
             dispatch(updateCapex(strNumsInput(e.target.value)));
@@ -72,6 +77,7 @@ const SFHEXpensesInputs = () => {
         <label className="flex items-center">Management: </label>
         <input
           type="text"
+          className="!bg-red-200"
           value={singleFamily.management === "0" ? "" : singleFamily.management}
           onChange={(e) => {
             dispatch(updateManagement(strNumsInput(e.target.value)));
@@ -82,6 +88,7 @@ const SFHEXpensesInputs = () => {
         <label className="flex items-center">Maintenance: </label>
         <input
           type="text"
+          className="!bg-red-200"
           value={
             singleFamily.maintenance === "0" ? "" : singleFamily.maintenance
           }
@@ -94,6 +101,7 @@ const SFHEXpensesInputs = () => {
         <label className="flex items-center">Other expenses: </label>
         <input
           type="text"
+          className="!bg-red-200"
           value={singleFamily.expOther === "0" ? "" : singleFamily.expOther}
           onChange={(e) => {
             dispatch(updateExpOther(strNumsInput(e.target.value)));
