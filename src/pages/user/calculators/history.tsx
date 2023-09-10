@@ -11,7 +11,7 @@ import {
 import { useAppDispatch } from "~/redux/hooks";
 import { type mortgageRates } from "@prisma/client";
 
-const Dashboard: NextPageWithLayout = () => {
+const History: NextPageWithLayout = () => {
   const { data, isLoading: loadingHistory } =
     api.singleFamily.getAll.useQuery();
 
@@ -143,8 +143,8 @@ function ConfirmDelete(props: {
   );
 }
 
-Dashboard.getLayout = function getLayout(page: ReactElement) {
+History.getLayout = function getLayout(page: ReactElement) {
   return <UserLayout>{page}</UserLayout>;
 };
 
-export default Dashboard;
+export default History;

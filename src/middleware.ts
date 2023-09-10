@@ -2,19 +2,19 @@ import { authMiddleware } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 export default authMiddleware({
-  publicRoutes: ["/", "/blog", "/home", `/blog/[slug]`, "/api/trpc/[trpc]"],
+  publicRoutes: ["/", "/public/education", "/api/trpc/[trpc]"],
   afterAuth(auth, req) {
     if (!auth.userId && !auth.isPublicRoute) {
       const redirectUrl = new URL(req.url);
       redirectUrl.pathname = "/";
-      // eslint-disable-next-line
       return NextResponse.redirect(redirectUrl);
     }
     if (auth.userId && auth.isPublicRoute) {
-      // eslint-disable-next-line
       const redirectUrl = new URL(req.url);
       redirectUrl.pathname = "/user/calculators/history";
-      // eslint-disable-next-line
+      if (req.url.includes("user/writeArticle") && !auth.orgRole) {
+        redirectUrl.pathname = "/user";
+      }
       return NextResponse.redirect(redirectUrl);
     }
   },

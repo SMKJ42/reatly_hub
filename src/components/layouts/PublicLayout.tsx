@@ -18,8 +18,8 @@ export default function PublicLayout({
   const { isLoaded: userLoaded } = useUser();
 
   useEffect(() => {
-    if (!userLoaded) return;
-    if (user.isSignedIn) void router.push("/user/dashboard");
+    // if (!userLoaded) return;
+    // if (user.isSignedIn) void router.push("/user");
     //eslint-disable-next-line
   }, [userLoaded]);
 
@@ -45,8 +45,12 @@ export default function PublicLayout({
           </Link>
         </div>
         <div className="std-navigation flex flex-1 justify-around">
-          <Link href="about">home</Link>
-          <Link href="public/blog">blog</Link>
+          <Link href="/" className="hover:underline">
+            home
+          </Link>
+          <Link href="/public/education" className="hover:underline">
+            education
+          </Link>
         </div>
         <div className="account-manager flex-3 flex-inital mx-4 flex w-32 justify-around">
           <SignInButton />

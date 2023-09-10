@@ -49,11 +49,13 @@ import { prisma } from "~/server/db";
 export const createTRPCContext = (_opts: CreateNextContextOptions) => {
   const { req } = _opts;
   const sesh = getAuth(req);
+  const role = sesh.orgRole;
 
   const userId = sesh.userId;
 
   return {
     prisma,
+    role,
     userId,
   };
 };

@@ -25,7 +25,7 @@ export default function UserLayout({
       </Head>
       <nav className="flex">
         <div className="logo-container ml-4 flex flex-none">
-          <Link href="/user/dashboard">
+          <Link href="/">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -57,14 +57,14 @@ export default function UserLayout({
             className="flex flex-1"
             onMouseEnter={() => setActiveDropDown(false)}
           ></div>
-          <Link href="/user/blog">Blog</Link>
+          <Link href="/user/articles">Articles</Link>
           <div
             className="flex flex-1"
             onMouseEnter={() => setActiveDropDown(false)}
           ></div>
         </div>
         <div className="account-manager mx-4 flex justify-around">
-          <Link href="/user/account">account</Link>
+          <Link href="/user/account">Account</Link>
           <div className="sign-out-btn w-42 ml-4">
             <SignOutButton />
           </div>

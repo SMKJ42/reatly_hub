@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import UserLayout from "../../../components/layouts/UserLayout";
 import type { NextPageWithLayout } from "../../_app";
 
-const Dashboard: NextPageWithLayout = () => {
+const MultiFamily: NextPageWithLayout = () => {
   return (
     <div className="">
       <h1 className=""> Coming Soon :)</h1>
@@ -11,8 +11,8 @@ const Dashboard: NextPageWithLayout = () => {
   );
 };
 
-Dashboard.getLayout = function getLayout(page: ReactElement) {
+MultiFamily.getLayout = function getLayout(page: ReactElement) {
   return <UserLayout>{page}</UserLayout>;
 };
 
-export default Dashboard;
+export default MultiFamily;

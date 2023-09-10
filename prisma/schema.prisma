@@ -2,97 +2,135 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-    provider     = "mysql"
-    url          = env("DATABASE_URL")
-    relationMode = "prisma"
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 model user {
-    id        String @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    email     String @unique
-    name      String?
-    role      String @default("user")
+  id           String         @id @default(cuid())
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  email        String         @unique
+  name         String?
+  role         String         @default("user")
+  singleFamily singleFamily[]
+  articles      article[]
+  articleLikes articleLikes[]
 }
 
 model singleFamily {
-    authorId            String
-    id                  String   @id @default(cuid())
-    createdAt           DateTime @default(now())
-    updatedAt           DateTime @updatedAt
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-    address             String
-    price               String
-    interest            String
-    downPaymentPerc     String
-    downPaymentDoll     String
-    closingCostsPerc    String
-    closingCostsDoll    String
-    loanTerm            String
-    loanType            String
-    repairs             String
-    ARV                 String
-    taxes               String
-    insurance           String
-    hoa                 String
-    vacancy             String
-    capEx               String
-    rennovations        String
-    maintenance         String
-    management          String
-    expOther            String
-    rents               String
-    incOther            String
-    appreciation        String
-    loanBalance         String
-    costOfRenno         String
-    totalAquisitionReturn String
-    aquisitionCosts     String
-    equity              String
-    LTV                 String
-    mortgagePayment     String
-    cashFlow            String
-    expenses            String
-    monthlyPayment      String
-    cashOnCash          String
-    rennoEquity         String
-    rennoReturn         String
-    closingCosts        String
-    capRate             String
-    ROE                 String
-    ROI                 String
-    fixed               String
+  address               String
+  price                 String
+  interest              String
+  downPaymentPerc       String
+  downPaymentDoll       String
+  closingCostsPerc      String
+  closingCostsDoll      String
+  loanTerm              String
+  loanType              String
+  repairs               String
+  ARV                   String
+  taxes                 String
+  insurance             String
+  hoa                   String
+  vacancy               String
+  capEx                 String
+  rennovations          String
+  maintenance           String
+  management            String
+  expOther              String
+  rents                 String
+  incOther              String
+  appreciation          String
+  loanBalance           String
+  costOfRenno           String
+  totalAquisitionReturn String
+  aquisitionCosts       String
+  equity                String
+  LTV                   String
+  mortgagePayment       String
+  cashFlow              String
+  expenses              String
+  monthlyPayment        String
+  cashOnCash            String
+  rennoEquity           String
+  rennoReturn           String
+  closingCosts          String
+  capRate               String
+  ROE                   String
+  ROI                   String
+  fixed                 String
+  author                  user?   @relation(fields: [authorId], references: [id])
+  authorId              String?
 
-    @@index([authorId])
+  @@index([authorId])
 }
 
 model multiFamily {
-    id        String @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-    //TODO: later evalutation... setting this up
+  //TODO: later evalutation... setting this up
 }
 
 model flip {
-    id        String @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-    //TODO: later evalutation... setting this up
+  //TODO: later evalutation... setting this up
 }
 
 model mortgageRates {
-    code       String @unique
-    name       String
-    rate       Float
-    updatedAt  DateTime
-    checkedAt  DateTime @updatedAt
+  code      String   @unique
+  name      String
+  rate      Float
+  updatedAt DateTime
+  checkedAt DateTime @updatedAt
 
-    @@index([code])
+  @@index([code])
+}
+
+model article {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  views     Int      @default(0)
+
+  likeCount Int @default(0)
+
+  title        String
+  content      String
+  author       user?          @relation(fields: [authorId], references: [id])
+  authorId     String?
+  articleLikes articleLikes[]
+
+  @@index([createdAt])
+  @@index([authorId])
+  @@index([likeCount])
+}
+
+model articleLikes {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  article   article @relation(fields: [articleId], references: [id])
+  articleId String
+
+  user   user   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@index([articleId])
+  @@index([userId])
 }
