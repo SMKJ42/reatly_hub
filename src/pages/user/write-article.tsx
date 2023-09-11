@@ -31,8 +31,6 @@ const WriteArticle: NextPageWithLayout = () => {
   const [value, setValue] = useState("");
   const [title, setTitle] = useState("");
 
-  console.log(value);
-
   return (
     <>
       <form

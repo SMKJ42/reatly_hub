@@ -14,8 +14,8 @@ const Home: NextPageWithLayout = () => {
         <ul className="text-lg [&>*]:pb-2">
           <li>
             <p>
-              The education center will give you some insight into smart real
-              estate decisions.
+              Our articles will give you some insight to smart real estate
+              decisions.
             </p>
           </li>
           <li>

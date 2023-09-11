@@ -49,7 +49,7 @@ export default function PublicLayout({
             home
           </Link>
           <Link href="/public/education" className="hover:underline">
-            education
+            articles
           </Link>
         </div>
         <div className="account-manager flex-3 flex-inital mx-4 flex w-32 justify-around">
