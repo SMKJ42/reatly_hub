@@ -17,8 +17,8 @@ const SFHEXpensesInputs = () => {
   const singleFamily = useAppSelector((state) => state.singleFamily);
 
   return (
-    <div className="expenses">
-      <div className="taxes input-container">
+    <div className="grid grid-cols-2 gap-x-4 md:grid-cols-1 md:gap-0">
+      <div className="taxes input-container flex-col md:flex-row">
         <label className="flex items-center">Taxes: </label>
         <input
           type="text"
@@ -29,7 +29,7 @@ const SFHEXpensesInputs = () => {
           }}
         />
       </div>
-      <div className="insurance input-container">
+      <div className="insurance input-container flex-col md:flex-row">
         <label className="flex items-center">Insurance</label>
         <input
           type="text"
@@ -40,7 +40,7 @@ const SFHEXpensesInputs = () => {
           }}
         />
       </div>
-      <div className="hoa input-container">
+      <div className="hoa input-container flex-col md:flex-row">
         <label className="flex items-center">HOA: </label>
         <input
           type="text"
@@ -51,7 +51,7 @@ const SFHEXpensesInputs = () => {
           }}
         />
       </div>
-      <div className="vacancy input-container">
+      <div className="vacancy input-container flex-col md:flex-row">
         <label className="flex items-center">Vacancy: </label>
         <input
           type="text"
@@ -62,7 +62,7 @@ const SFHEXpensesInputs = () => {
           }}
         />
       </div>
-      <div className="cap-ex input-container">
+      <div className="cap-ex input-container flex-col md:flex-row">
         <label className="flex items-center">Cap-Ex: </label>
         <input
           type="text"
@@ -73,7 +73,7 @@ const SFHEXpensesInputs = () => {
           }}
         />
       </div>
-      <div className="management input-container">
+      <div className="management input-container flex-col md:flex-row">
         <label className="flex items-center">Management: </label>
         <input
           type="text"
@@ -84,7 +84,7 @@ const SFHEXpensesInputs = () => {
           }}
         />
       </div>
-      <div className="maintenance input-container">
+      <div className="maintenance input-container flex-col md:flex-row">
         <label className="flex items-center">Maintenance: </label>
         <input
           type="text"
@@ -97,7 +97,7 @@ const SFHEXpensesInputs = () => {
           }}
         />
       </div>
-      <div className="other input-container">
+      <div className="other input-container flex-col md:flex-row">
         <label className="flex items-center">Other expenses: </label>
         <input
           type="text"

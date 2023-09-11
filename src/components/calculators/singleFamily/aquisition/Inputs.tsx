@@ -56,34 +56,40 @@ const SFHAquisitionInputs = (props: {
 
   return (
     <div>
-      <div className="price input-container">
+      <div className="price input-container flex-col md:flex-row">
         <label className="flex items-center">Purchase price: </label>
         <div className="flex items-center">
-          <p className="rounded-l-sm bg-bg200 px-1 py-px text-black">$</p>
+          <p className="mt-2 rounded-l-sm bg-bg200 px-1 py-px text-black">$</p>
           <input
             type="text"
             value={singleFamily.price}
             onChange={(e) => {
               dispatch(updatePrice(strNumsInput(e.target.value)));
             }}
-            className="rounded-l-none"
+            className="w-full rounded-l-none"
           />
         </div>
       </div>
 
-      <div className="loan-type input-container ">
+      <div className="loan-type input-container flex-col md:flex-row ">
         <label
-          className="flex w-full justify-between"
+          className="flex w-full items-center md:justify-between"
           onMouseLeave={() =>
             setMortgageObject({ code: null, name: null, updatedAt: null })
           }
         >
-          Loan Type:
+          <span
+            onMouseEnter={() =>
+              setMortgageObject({ code: null, name: null, updatedAt: null })
+            }
+          >
+            Loan Type:
+          </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="h-4 w-4 shrink-0"
+            viewBox="0 0 22 22"
+            fill="lightBlue"
+            className="ml-2 h-4 w-4 shrink-0 "
             onMouseEnter={() => getMortgageObject()}
           >
             <path
@@ -92,47 +98,56 @@ const SFHAquisitionInputs = (props: {
               clipRule="evenodd"
             />
           </svg>
-          {mortgageObject.code !== null && (
-            <div className="mortgage-citation absolute m-6 w-3/5 bg-bg100 text-black">
-              <p className="whitespace-normal">
-                {mortgageCitation(
-                  mortgageObject.name ?? "",
-                  mortgageObject.code ?? "",
-                  mortgageObject.updatedAt ?? ""
-                )}
-              </p>
-            </div>
-          )}
-          <select
-            value={singleFamily.loanType}
-            className="flex w-3/5"
-            onChange={(e) => {
-              dispatch(updateLoanType(e.target.value));
-              const interest = loanProducts?.find(
-                (product) => product.name === e.target.value
-              )?.rate as number;
-              const term = e.target.value.includes("15") ? "15" : "30";
-              dispatch(updateLoanTerm(term));
-              dispatch(updateInterest(strNumsInput(interest)));
-            }}
-          >
-            {loanProducts?.map((product) => (
-              <option key={product.code} value={product.name}>
-                {product.name}
-              </option>
-            ))}
-          </select>
+          <div
+            className=" h-full grow"
+            onMouseOver={() =>
+              setMortgageObject({ code: null, name: null, updatedAt: null })
+            }
+          ></div>
         </label>
+
+        {mortgageObject.code !== null && (
+          <div className="mortgage-citation absolute m-6 w-3/5 bg-bg100 text-black">
+            <p className="whitespace-normal">
+              {mortgageCitation(
+                mortgageObject.name ?? "",
+                mortgageObject.code ?? "",
+                mortgageObject.updatedAt ?? ""
+              )}
+            </p>
+          </div>
+        )}
+
+        <select
+          value={singleFamily.loanType}
+          onChange={(e) => {
+            dispatch(updateLoanType(e.target.value));
+            const interest = loanProducts?.find(
+              (product) => product.name === e.target.value
+            )?.rate as number;
+            const term = e.target.value.includes("15") ? "15" : "30";
+            dispatch(updateLoanTerm(term));
+            dispatch(updateInterest(strNumsInput(interest)));
+          }}
+        >
+          {loanProducts?.map((product) => (
+            <option key={product.code} value={product.name}>
+              {product.name}
+            </option>
+          ))}
+        </select>
       </div>
-      <div className="down-payment mt-2 flex w-full items-center">
+      <div className="down-payment flex w-full flex-col md:flex-row md:items-center">
         <label className="mr-4 whitespace-nowrap">Down payment:</label>
         <div className="flex justify-between">
-          <div className="flex">
-            <p className="rounded-l-sm bg-bg200 px-1 py-px text-black">$</p>
+          <div className="flex w-full">
+            <p className="mt-2 rounded-l-sm bg-bg200 px-1 py-px text-black">
+              $
+            </p>
             <input
               type="text"
               value={singleFamily.downPaymentDoll}
-              className="w-[120%] rounded-l-none"
+              className="w-[120%] grow rounded-l-none"
               onChange={(e) => {
                 dispatch(updateDownPaymentDoll(strNumsInput(e.target.value)));
               }}
@@ -151,27 +166,27 @@ const SFHAquisitionInputs = (props: {
                 }
               }}
             />
-            <p className="w-fit rounded-r-sm bg-bg200 px-1 py-px text-black">
+            <p className="mt-2 w-fit rounded-r-sm bg-bg200 px-1 py-px text-black">
               %
             </p>
           </div>
         </div>
       </div>
-      <div className="interest input-container">
+      <div className="interest input-container flex-col md:flex-row">
         <label className="flex items-center">Interest:</label>
         <div className="flex items-center">
           <input
             type="text"
             value={singleFamily.interest}
-            className="rounded-r-none"
+            className="w-full rounded-r-none"
             onChange={(e) => {
               dispatch(updateInterest(strNumsInput(e.target.value)));
             }}
           />
-          <p className="rounded-r-sm bg-bg200 px-1 py-px text-black">%</p>
+          <p className="mt-2 rounded-r-sm bg-bg200 px-1 py-px text-black">%</p>
         </div>
       </div>
-      <div className="loan-term input-container">
+      <div className="loan-term input-container flex-col md:flex-row">
         <label className="flex items-center">Term: </label>
         <input
           type="text"
@@ -182,11 +197,13 @@ const SFHAquisitionInputs = (props: {
         />
       </div>
 
-      <div className="closing-costs mt-2 flex w-full items-center">
+      <div className="closing-costs flex w-full flex-col md:flex-row md:items-center">
         <label className="mr-4 whitespace-nowrap">Closing costs:</label>
         <div className="flex justify-between">
-          <div className="flex">
-            <p className="rounded-l-sm bg-bg200 px-1 py-px text-black">$</p>
+          <div className="flex w-full">
+            <p className="mt-2 rounded-l-sm bg-bg200 px-1 py-px text-black">
+              $
+            </p>
             <input
               type="text"
               value={
@@ -194,7 +211,7 @@ const SFHAquisitionInputs = (props: {
                   ? ""
                   : singleFamily.closingCostsDoll
               }
-              className="w-[120%] rounded-l-none"
+              className="w-[120%] grow rounded-l-none"
               onChange={(e) => {
                 dispatch(updateClosingCostsDoll(strNumsInput(e.target.value)));
               }}
@@ -213,14 +230,14 @@ const SFHAquisitionInputs = (props: {
                 dispatch(updateClosingCostsPerc(strNumsInput(e.target.value)));
               }}
             />
-            <p className="w-fit rounded-r-sm bg-bg200 px-1 py-px text-black">
+            <p className="mt-2 w-fit rounded-r-sm bg-bg200 px-1 py-px text-black">
               %
             </p>
           </div>
         </div>
       </div>
 
-      <div className="repairs input-container">
+      <div className="repairs input-container flex-col md:flex-row">
         <label className="flex items-center">Repairs: </label>
         <input
           type="text"
@@ -231,7 +248,7 @@ const SFHAquisitionInputs = (props: {
         />
       </div>
 
-      <RennovationRadio />
+      {/* <RennovationRadio /> */}
       {singleFamily.rennovationsRadio && <Rennovations />}
     </div>
   );

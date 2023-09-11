@@ -27,8 +27,13 @@ $--darkBg300: "#444444";
 
 .input-container {
   @apply flex justify-between whitespace-nowrap;
-  input {
-    @apply my-2;
+}
+
+.sfh-deal-analysis {
+  label,
+  input,
+  select {
+    @apply mt-2;
   }
 }
 
@@ -39,9 +44,6 @@ main {
   input,
   select {
     @apply rounded-sm px-1 py-px dark:bg-bg200 dark:text-black;
-  }
-  .container {
-    @apply mx-10 h-full;
   }
 }
 

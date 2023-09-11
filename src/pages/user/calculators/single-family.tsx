@@ -88,28 +88,32 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
           e.preventDefault();
         }}
       >
-        <div className="deal-analysis">
-          <div className="container grid grid-cols-1 justify-center gap-x-12 md:grid-cols-2">
-            <div className="address col-s col-span-2 flex justify-center py-2">
-              <label className="mx-4" aria-required>
+        <div className="sfh-deal-analysis flex w-full flex-col items-center">
+          <div className="container mx-4 grid w-fit grid-cols-1 justify-center gap-x-12 md:w-full md:grid-cols-2">
+            <div className="address col-s flex flex-col items-center justify-center py-2 md:col-span-2 md:flex-row">
+              <label className="mx-4 text-lg font-semibold" aria-required>
                 Address:
-                <input
-                  value={address}
-                  type="text"
-                  className="mx-4"
-                  onChange={(e) => {
-                    dispatch(updateAddress(e.target.value));
-                  }}
-                  required
-                />
               </label>
+              <input
+                value={address}
+                type="text"
+                className="mx-4 w-full md:w-1/3"
+                onChange={(e) => {
+                  dispatch(updateAddress(e.target.value));
+                }}
+                required
+              />
             </div>
             <SFHAquisitionInputs loanProducts={loanProducts} />
             <SFHAquisitionOutputs />
-            <SFHEXpensesInputs />
-            <SFHExpensesOutputs />
-            <SFHIncomeInputs />
-            <SFHIncomeOutputs />
+            <div>
+              <SFHEXpensesInputs />
+              <SFHIncomeInputs />
+            </div>
+            <div>
+              <SFHExpensesOutputs />
+              <SFHIncomeOutputs />
+            </div>
           </div>
           <div className="button-container w-100 flex justify-center">
             <input

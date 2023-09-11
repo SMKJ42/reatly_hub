@@ -48,7 +48,7 @@ export default function PublicLayout({
           <Link href="/" className="hover:underline">
             home
           </Link>
-          <Link href="/public/education" className="hover:underline">
+          <Link href="/public/articles" className="hover:underline">
             articles
           </Link>
         </div>
