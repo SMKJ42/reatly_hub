@@ -1,5 +1,4 @@
 import type { ReactElement } from "react";
-import PublicLayout from "../../components/layouts/PublicLayout";
 import type { NextPageWithLayout } from "../_app";
 import { useState } from "react";
 import "react-quill/dist/quill.snow.css";

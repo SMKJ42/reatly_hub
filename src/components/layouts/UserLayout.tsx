@@ -62,7 +62,12 @@ export default function UserLayout({
             className="flex flex-1"
             onMouseEnter={() => setActiveDropDown(false)}
           ></div>
+          <div
+            className="flex flex-1"
+            onMouseEnter={() => setActiveDropDown(false)}
+          ></div>
         </div>
+
         <div className="account-manager mx-4 flex justify-around">
           <Link href="/user/account">Account</Link>
           <div className="sign-out-btn w-42 ml-4">

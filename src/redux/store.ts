@@ -1,12 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import singleFamilyReducer from "./slice/singleFamilySlice";
-import counterReducer from "./slice/counterSlice";
 import clientReducer from "./slice/clientSlice";
 
 const store = configureStore({
   reducer: {
     singleFamily: singleFamilyReducer,
-    counter: counterReducer,
     client: clientReducer,
   },
   devTools: true,

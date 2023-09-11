@@ -1,8 +1,6 @@
-import { SignInButton, useUser } from "@clerk/nextjs";
+import { SignInButton } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import ToggleTheme from "../shared/ToggleTheme";
 import { useAppSelector } from "~/redux/hooks";
 
@@ -12,16 +10,6 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   const colorTheme = useAppSelector((state) => state.client.colorTheme);
-  const user = useUser();
-
-  const router = useRouter();
-  const { isLoaded: userLoaded } = useUser();
-
-  useEffect(() => {
-    // if (!userLoaded) return;
-    // if (user.isSignedIn) void router.push("/user");
-    //eslint-disable-next-line
-  }, [userLoaded]);
 
   return (
     <div className={`${colorTheme}`}>
