@@ -25,7 +25,7 @@ export const userPriveledges = [
   "user",
 ];
 
-export const userRouter = t.router({
+export const rolesRouter = t.router({
   //TODO:
   createAuthor: t.procedure
     .input(

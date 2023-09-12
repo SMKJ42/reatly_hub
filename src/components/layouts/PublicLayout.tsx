@@ -1,6 +1,8 @@
-import { SignInButton } from "@clerk/nextjs";
+import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import ToggleTheme from "../shared/ToggleTheme";
 import { useAppSelector } from "~/redux/hooks";
 
@@ -10,6 +12,9 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   const colorTheme = useAppSelector((state) => state.client.colorTheme);
+  const user = useUser();
+
+  const { isLoaded: userLoaded } = useUser();
 
   return (
     <div className={`${colorTheme}`}>
@@ -39,9 +44,14 @@ export default function PublicLayout({
           <Link href="/public/articles" className="hover:underline">
             articles
           </Link>
+          {userLoaded && user.isSignedIn && (
+            <>
+              <Link href="user/">Dashboard</Link>
+            </>
+          )}
         </div>
         <div className="account-manager flex-3 flex-inital mx-4 flex w-32 justify-around">
-          <SignInButton />
+          {userLoaded && user.isSignedIn ? <SignOutButton /> : <SignInButton />}
         </div>
         <ToggleTheme />
       </nav>

@@ -57,7 +57,7 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
     });
 
   const { data: loanProducts, isLoading: loanProductsLoading } =
-    api.nextMortgageRates.getAll.useQuery(null, {
+    api.mortgageRates.getAll.useQuery(null, {
       refetchOnWindowFocus: false,
     });
 

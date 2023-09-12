@@ -6,6 +6,8 @@ import {
   nextMortgageRatesRouter,
 } from "./routers/mortgageRates";
 import { articleAuthorRouter, articleRouter } from "./routers/articles";
+import { adminRouter } from "./routers/users/admin";
+import { rolesRouter } from "./routers/users/clerkRoles";
 /**
  * This is the primary router for your server.
  *
@@ -14,10 +16,9 @@ import { articleAuthorRouter, articleRouter } from "./routers/articles";
 
 export const appRouter = createTRPCRouter({
   singleFamily: singleFamilyRouter,
-  mortgageRates: mortgageRatesRouter,
-  nextMortgageRates: nextMortgageRatesRouter,
-  articleAuthorRouter: articleAuthorRouter,
-  articleRouter: articleRouter,
+  mortgageRates: { ...mortgageRatesRouter, ...nextMortgageRatesRouter },
+  article: { ...articleRouter, author: articleAuthorRouter },
+  admin: { ...adminRouter, roles: rolesRouter },
 });
 
 // export type definition of API

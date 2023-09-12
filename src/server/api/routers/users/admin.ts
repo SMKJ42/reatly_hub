@@ -25,7 +25,7 @@ export const userPriveledges = [
   "user",
 ];
 
-export const userRouter = t.router({
+export const adminRouter = t.router({
   getUserCount: t.procedure.mutation(async ({ ctx }) => {
     if (!ctx.userId || !adminPriveledges.includes(ctx.role as string)) {
       throw new TRPCError({

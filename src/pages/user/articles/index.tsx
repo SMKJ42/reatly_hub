@@ -1,12 +1,12 @@
 import type { ReactElement } from "react";
-import UserLayout from "../../components/layouts/UserLayout";
-import type { NextPageWithLayout } from "../_app";
+import UserLayout from "../../../components/layouts/UserLayout";
+import type { NextPageWithLayout } from "../../_app";
 import Link from "next/link";
 
 const Articles: NextPageWithLayout = () => {
   return (
     <>
-      <Link href="/user/write-article">Create Article</Link>
+      <Link href="/user/articles/write-article">Create Article</Link>
       <h1 className=""> User Blog :) </h1>
     </>
   );

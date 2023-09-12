@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import type { NextPageWithLayout } from "../_app";
+import type { NextPageWithLayout } from "../../_app";
 import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import UserLayout from "~/components/layouts/UserLayout";
@@ -17,7 +17,7 @@ import dynamic from "next/dynamic";
 
 const ReactQuill = dynamic(
   () =>
-    import("../../components/blog/ReactQuil").then(
+    import("../../../components/blog/ReactQuil").then(
       (element) => element.ReactQuil
     ),
   {
