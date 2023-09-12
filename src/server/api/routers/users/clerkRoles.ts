@@ -27,6 +27,31 @@ export const userPriveledges = [
 
 export const rolesRouter = t.router({
   //TODO:
+
+  DANGER_createOwner: t.procedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.userId || ctx.role !== "owner") {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You don't have access to this resource",
+        });
+      }
+
+      const { success } = await serverRateLimit.limit(ctx.userId);
+      checkRateLimit(success);
+
+      await clerkClient.users.updateUserMetadata(input.userId, {
+        privateMetadata: {
+          role: "owner",
+        },
+      });
+    }),
+
   createAuthor: t.procedure
     .input(
       z.object({

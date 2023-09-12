@@ -5,6 +5,8 @@ import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
 import { Redis } from "@upstash/redis";
 import { checkRateLimit } from "../error";
 import { prisma } from "~/server/db";
+import { adminPriveledges } from "./users/admin";
+import { getArticlePreview, getUsersOwnArticle } from "~/server/lib/articles";
 
 // Create a new ratelimiter, that allows 3 requests per 20 second
 const ratelimit = new Ratelimit({
@@ -45,20 +47,26 @@ export const articleAuthorRouter = t.router({
       const { success } = await serverRateLimit.limit(ctx.userId);
       checkRateLimit(success);
 
+      const preview = getArticlePreview(input.content);
+
+      if (preview.length < 200) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Article must be at least 200 characters long",
+        });
+      }
+
       await ctx.prisma.article.create({
         data: {
           title: input.title,
           content: input.content,
-          author: {
-            connect: {
-              id: ctx.userId,
-            },
-          },
+          authorId: ctx.userId,
+          preview,
         },
       });
     }),
   //TODO:
-  update: t.procedure
+  DANGEROUS_update: t.procedure
     .input(
       z.object({
         content: z.string(),
@@ -76,7 +84,20 @@ export const articleAuthorRouter = t.router({
       const { success } = await serverRateLimit.limit(ctx.userId);
       checkRateLimit(success);
 
-      await getUsersOwnArticle(ctx.userId);
+      //safe guard against updating other users articles
+      await getUsersOwnArticle({
+        userId: ctx.userId,
+        role: ctx.role as string,
+      });
+
+      const preview = getArticlePreview(input.content);
+
+      if (preview.length < 200) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Article must be at least 200 characters long",
+        });
+      }
 
       await ctx.prisma.article.update({
         where: {
@@ -84,10 +105,11 @@ export const articleAuthorRouter = t.router({
         },
         data: {
           content: input.content,
+          preview,
         },
       });
     }),
-  //TODO:
+
   delete: t.procedure
     .input(
       z.object({
@@ -95,6 +117,9 @@ export const articleAuthorRouter = t.router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      console.log("ctx.role: ", ctx.role);
+      console.log("ctx.userId: ", ctx.userId);
+
       if (!ctx.userId || ctx.role === "user") {
         throw new TRPCError({
           code: "UNAUTHORIZED",
@@ -105,7 +130,11 @@ export const articleAuthorRouter = t.router({
       const { success } = await serverRateLimit.limit(ctx.userId);
       checkRateLimit(success);
 
-      await getUsersOwnArticle(ctx.userId);
+      //safe guard against updating other users articles
+      await getUsersOwnArticle({
+        userId: ctx.userId,
+        role: ctx.role as string,
+      });
 
       await ctx.prisma.article.delete({
         where: {
@@ -115,25 +144,44 @@ export const articleAuthorRouter = t.router({
     }),
 });
 
-async function getUsersOwnArticle(uid: string) {
-  const article = await prisma.article.findUnique({
-    where: {
-      id: uid,
-    },
-  });
-
-  if (article?.authorId !== uid) {
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "You don't have access to this resource",
-    });
-  }
-
-  return article;
-}
-
 export const articleRouter = createTRPCRouter({
   //TODO:
+
+  previewMostRecent: t.procedure
+    .input(z.object({ page: z.number() }))
+    .query(async ({ ctx, input }) => {
+      // const { success } = await serverRateLimit.limit();
+      // checkRateLimit(success);
+
+      const articles = await prisma.article.findMany({
+        take: 10,
+        skip: (input.page - 1) * 10,
+        orderBy: {
+          createdAt: "desc",
+        },
+        select: {
+          id: true,
+          title: true,
+          preview: true,
+          createdAt: true,
+        },
+      });
+      return articles;
+    }),
+
+  getArticleById: t.procedure
+    .input(z.object({ articleId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      // const { success } = await serverRateLimit.limit();
+      // checkRateLimit(success);
+
+      const article = await prisma.article.findUnique({
+        where: {
+          id: input.articleId,
+        },
+      });
+      return article;
+    }),
   //getMostViewed
   //getMostRecent
   //getMostLiked

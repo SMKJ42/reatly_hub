@@ -1,13 +1,44 @@
-import type { ReactElement } from "react";
+import { type ReactElement, useState } from "react";
 import UserLayout from "../../../components/layouts/UserLayout";
 import type { NextPageWithLayout } from "../../_app";
 import Link from "next/link";
+import { api } from "~/utils/api";
 
 const Articles: NextPageWithLayout = () => {
+  const ctx = api.useContext();
+
+  const [page, setPage] = useState(1);
+  const { data: articles, isLoading } = api.article.previewMostRecent.useQuery({
+    page,
+  });
+
+  const { mutate: deleteArticle } = api.author.delete.useMutation({
+    onSuccess: () => {
+      console.log("success");
+      void ctx.article.invalidate();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   return (
     <>
       <Link href="/user/articles/write-article">Create Article</Link>
-      <h1 className=""> User Blog :) </h1>
+      <h1 className=""> Articles :) </h1>
+      {articles?.map((article) => (
+        <div key={article.id}>
+          <h2 className="text-2xl">{article.title}</h2>
+          <p className="text-xl">{article.preview}...</p>
+          <button
+            onClick={() => {
+              deleteArticle({ articleId: article.id });
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      ))}
     </>
   );
 };

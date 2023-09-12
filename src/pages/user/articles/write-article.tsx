@@ -4,6 +4,7 @@ import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import UserLayout from "~/components/layouts/UserLayout";
 import dynamic from "next/dynamic";
+import { api } from "~/utils/api";
 
 // const availableTags = [
 //   "finance",
@@ -30,11 +31,24 @@ const WriteArticle: NextPageWithLayout = () => {
   const [value, setValue] = useState("");
   const [title, setTitle] = useState("");
 
+  const { mutate: create, isLoading: isSaving } = api.author.create.useMutation(
+    {
+      onSuccess: (opts) => {
+        console.log("success");
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    }
+  );
+
   return (
     <>
       <form
         onSubmit={(e) => {
+          console.log(e);
           e.preventDefault();
+          handleSubmit();
         }}
       >
         <div className="flex justify-center pb-4 pt-8">
@@ -48,20 +62,29 @@ const WriteArticle: NextPageWithLayout = () => {
             }}
           />
         </div>
-        <ReactQuill theme="snow" value={value} onChange={setValue} />
-        <div className="flex w-full justify-center pt-4">
+        <div className=" mx-8 ">
+          <ReactQuill theme="snow" value={value} onChange={setValue} />
+        </div>
+        <div className="flex w-full justify-center pb-8 pt-4">
           <div className="flex w-1/3 justify-between">
             <button className="rounded-lg bg-bg200 px-2 py-1 text-black">
               Save
             </button>
             <button className="rounded-lg bg-bg200 px-2 py-1 text-black">
-              Publish
+              Request to Publish
             </button>
           </div>
         </div>
       </form>
     </>
   );
+
+  function handleSubmit() {
+    create({
+      title: title,
+      content: value,
+    });
+  }
 };
 
 WriteArticle.getLayout = function getLayout(page: ReactElement) {

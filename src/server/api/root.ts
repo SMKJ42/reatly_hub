@@ -17,8 +17,10 @@ import { rolesRouter } from "./routers/users/clerkRoles";
 export const appRouter = createTRPCRouter({
   singleFamily: singleFamilyRouter,
   mortgageRates: { ...mortgageRatesRouter, ...nextMortgageRatesRouter },
-  article: { ...articleRouter, author: articleAuthorRouter },
-  admin: { ...adminRouter, roles: rolesRouter },
+  article: articleRouter,
+  author: articleAuthorRouter,
+  admin: adminRouter,
+  owner: rolesRouter,
 });
 
 // export type definition of API

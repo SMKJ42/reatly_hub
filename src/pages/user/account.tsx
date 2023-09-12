@@ -9,6 +9,12 @@ import Link from "next/link";
 const UserAccount: NextPageWithLayout = () => {
   const { isLoaded, isSignedIn, user } = useUser();
 
+  const name = user?.firstName
+    ? user.firstName
+    : user?.username
+    ? user.username
+    : "user";
+
   if (!isLoaded) return <StandardLoadingSpinner />;
   if (!isSignedIn)
     return (
@@ -16,14 +22,6 @@ const UserAccount: NextPageWithLayout = () => {
         <Link href="sign-in">Sign in</Link> to view your account
       </p>
     );
-
-  console.log(user);
-
-  const name = user?.firstName
-    ? user.firstName
-    : user?.username
-    ? user.username
-    : "user";
 
   return (
     <>
