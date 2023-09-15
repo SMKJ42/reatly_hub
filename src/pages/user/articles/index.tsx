@@ -8,14 +8,16 @@ const Articles: NextPageWithLayout = () => {
   const ctx = api.useContext();
 
   const [page, setPage] = useState(1);
-  const { data: articles, isLoading } = api.article.previewMostRecent.useQuery({
-    page,
-  });
+  const { data: articles, isLoading } = api.articles.previewMostRecent.useQuery(
+    {
+      page,
+    }
+  );
 
   const { mutate: deleteArticle } = api.author.delete.useMutation({
     onSuccess: () => {
       console.log("success");
-      void ctx.article.invalidate();
+      void ctx.articles.invalidate();
     },
     onError: (error) => {
       console.log(error);
@@ -30,13 +32,10 @@ const Articles: NextPageWithLayout = () => {
         <div key={article.id}>
           <h2 className="text-2xl">{article.title}</h2>
           <p className="text-xl">{article.preview}...</p>
-          <button
-            onClick={() => {
-              deleteArticle({ articleId: article.id });
-            }}
-          >
-            Delete
-          </button>
+
+          <Link href="/user/articles/[id]" as={`/user/articles/${article.id}`}>
+            Read more
+          </Link>
         </div>
       ))}
     </>

@@ -49,10 +49,10 @@ export const articleAuthorRouter = t.router({
 
       const preview = getArticlePreview(input.content);
 
-      if (preview.length < 200) {
+      if (preview.content.length < 200 - preview.offset) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "Article must be at least 200 characters long",
+          message: "Article must be at least 195 characters long",
         });
       }
 
@@ -61,12 +61,12 @@ export const articleAuthorRouter = t.router({
           title: input.title,
           content: input.content,
           authorId: ctx.userId,
-          preview,
+          preview: preview.content,
         },
       });
     }),
   //TODO:
-  DANGEROUS_update: t.procedure
+  update: t.procedure
     .input(
       z.object({
         content: z.string(),
@@ -92,10 +92,10 @@ export const articleAuthorRouter = t.router({
 
       const preview = getArticlePreview(input.content);
 
-      if (preview.length < 200) {
+      if (preview.content.length < 200 - preview.offset) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "Article must be at least 200 characters long",
+          message: "Article must be at least 195 characters long",
         });
       }
 
@@ -105,7 +105,7 @@ export const articleAuthorRouter = t.router({
         },
         data: {
           content: input.content,
-          preview,
+          preview: preview.content,
         },
       });
     }),
@@ -180,7 +180,18 @@ export const articleRouter = createTRPCRouter({
           id: input.articleId,
         },
       });
-      return article;
+
+      if (!article) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Article not found",
+        });
+      }
+
+      return {
+        ...article,
+        content: article.content,
+      };
     }),
   //getMostViewed
   //getMostRecent

@@ -25,18 +25,19 @@ export async function getUsersOwnArticle(props: {
 }
 
 export function getArticlePreview(html: string) {
-  html
+  html = html
     // reduce the string into a manageable size before removing html tags
     .slice(0, 600)
     // remove html tags
-    .replaceAll(/(<([^>]+)>)/gi, "")
-    // reduce the string further into a manageable size to display on UI
-    .slice(0, 200);
-  for (let i = html.length; i > 0; i--) {
+    .replaceAll(/(<([^>]+)>)/gi, " ");
+  // reduce the string further into a manageable size to display on UI
+  let count = 0;
+  for (let i = 200; i > 0; i--) {
     if (html[i] !== " ") {
-      html = html.slice(0, i);
-    }
+      count++;
+    } else break;
   }
+  html = html.slice(0, 200 - count);
 
-  return html;
+  return { content: html, offset: count };
 }

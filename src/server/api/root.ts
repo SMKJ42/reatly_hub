@@ -17,7 +17,7 @@ import { rolesRouter } from "./routers/users/clerkRoles";
 export const appRouter = createTRPCRouter({
   singleFamily: singleFamilyRouter,
   mortgageRates: { ...mortgageRatesRouter, ...nextMortgageRatesRouter },
-  article: articleRouter,
+  articles: articleRouter,
   author: articleAuthorRouter,
   admin: adminRouter,
   owner: rolesRouter,
