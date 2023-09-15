@@ -3,7 +3,6 @@ import { createTRPCRouter } from "~/server/api/trpc";
 import { singleFamilyRouter } from "./routers/singleFamily";
 import {
   mortgageRatesRouter,
-  nextMortgageRatesRouter,
 } from "./routers/mortgageRates";
 import { articleAuthorRouter, articleRouter } from "./routers/articles";
 import { adminRouter } from "./routers/users/admin";
@@ -16,7 +15,7 @@ import { rolesRouter } from "./routers/users/clerkRoles";
 
 export const appRouter = createTRPCRouter({
   singleFamily: singleFamilyRouter,
-  mortgageRates: { ...mortgageRatesRouter, ...nextMortgageRatesRouter },
+  mortgageRates: mortgageRatesRouter,
   articles: articleRouter,
   author: articleAuthorRouter,
   admin: adminRouter,

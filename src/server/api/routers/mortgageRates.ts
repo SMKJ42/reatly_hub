@@ -25,8 +25,15 @@ const serverRateLimit = new Ratelimit({
   analytics: true,
 });
 
-export const mortgageRatesRouter = t.router({
-  create: t.procedure
+export const mortgageRatesRouter = createTRPCRouter({
+  getAll: privateProcedure.input(z.null()).query(async ({ ctx }) => {
+    const { success } = await ratelimit.limit(ctx.userId);
+    checkRateLimit(success);
+
+    const data = await ctx.prisma.mortgageRates.findMany({});
+    return data;
+  }),
+    create: t.procedure
     .input(
       z.object({
         key: z.string(),
@@ -88,14 +95,4 @@ export const mortgageRatesRouter = t.router({
         });
       }
     }),
-});
-
-export const nextMortgageRatesRouter = createTRPCRouter({
-  getAll: privateProcedure.input(z.null()).query(async ({ ctx }) => {
-    const { success } = await ratelimit.limit(ctx.userId);
-    checkRateLimit(success);
-
-    const data = await ctx.prisma.mortgageRates.findMany({});
-    return data;
-  }),
 });

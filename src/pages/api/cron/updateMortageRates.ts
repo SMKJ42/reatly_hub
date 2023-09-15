@@ -15,7 +15,7 @@ const loanTypes = {
   thirtyYearConforming: "OBMMIC30YF",
 };
 
-export default function getMortgageRates(
+export default async function getMortgageRates(
   request: NextApiRequest,
   response: NextApiResponse
 ) {
@@ -26,7 +26,7 @@ export default function getMortgageRates(
       .json({ message: "You do not have access to this resource" });
   }
 
-  const ctx = createTRPCContext({ req: request, res: response });
+  const ctx = await createTRPCContext({ req: request, res: response });
   const caller = appRouter.createCaller(ctx);
 
   //create promise array from loan types
@@ -67,7 +67,7 @@ export default function getMortgageRates(
       rate: parseFloat(data.value),
       updatedAt: new Date(data.date).toISOString(),
     };
-    if (validReq) {
+    if (validReq && caller.mortgageRates) {
       void caller.mortgageRates.update(validReq);
     }
   }
