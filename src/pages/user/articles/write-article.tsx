@@ -31,6 +31,8 @@ const WriteArticle: NextPageWithLayout = () => {
   const [value, setValue] = useState("");
   const [title, setTitle] = useState("");
 
+  console.log(value);
+
   const { mutate: create, isLoading: isSaving } = api.author.create.useMutation(
     {
       onSuccess: (opts) => {

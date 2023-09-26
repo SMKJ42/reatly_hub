@@ -88,6 +88,23 @@ model mortgageRates {
   @@index([code])
 }
 
+model articleStaging {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title        String
+  content      String @db.MediumText
+  preview      String @db.TinyText
+  authorId     String
+
+  reviewed     Boolean @default(false)
+  published    Boolean @default(false)
+
+  @@index([createdAt])
+  @@index([authorId])
+}
+
 model article {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())

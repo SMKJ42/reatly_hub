@@ -1,8 +1,4 @@
-import {
-  type ReactElement,
-  useState,
-  useEffect,
-} from "react";
+import { type ReactElement, useState, useEffect } from "react";
 import UserLayout from "../../../components/layouts/UserLayout";
 import type { NextPageWithLayout } from "../../_app";
 import { api } from "~/utils/api";
@@ -32,7 +28,7 @@ const Articles: NextPageWithLayout = () => {
   if (!articleData) return <div>Article not found</div>;
 
   return (
-    <article className="prose lg:prose-xl">
+    <article className="prose dark:prose-invert lg:prose-xl">
       <h1 id={`title-${articleData.title}`}>{articleData.title}</h1>
       <div
         className={`article-${slug as string}`}
@@ -40,7 +36,7 @@ const Articles: NextPageWithLayout = () => {
       ></div>
     </article>
   );
-};  
+};
 
 Articles.getLayout = function getLayout(page: ReactElement) {
   return <UserLayout>{page}</UserLayout>;

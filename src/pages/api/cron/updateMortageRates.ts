@@ -27,6 +27,7 @@ export default async function getMortgageRates(
   }
 
   const ctx = await createTRPCContext({ req: request, res: response });
+
   const caller = appRouter.createCaller(ctx);
 
   //create promise array from loan types
@@ -67,7 +68,7 @@ export default async function getMortgageRates(
       rate: parseFloat(data.value),
       updatedAt: new Date(data.date).toISOString(),
     };
-    if (validReq && caller.mortgageRates) {
+    if (validReq) {
       void caller.mortgageRates.update(validReq);
     }
   }
