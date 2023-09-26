@@ -5,21 +5,8 @@ import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
 import { Redis } from "@upstash/redis";
 import { checkRateLimit } from "../error";
 import { prisma } from "~/server/db";
-import { adminPriveledges } from "./users/admin";
 import { getArticlePreview, getUsersOwnArticle } from "~/server/lib/articles";
-
-// Create a new ratelimiter, that allows 3 requests per 20 second
-const ratelimit = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(3, "20 s"),
-  analytics: true,
-  /**
-   * Optional prefix for the keys used in redis. This is useful if you want to share a redis
-   * instance with other applications and want to avoid key collisions. The default prefix is
-   * "@upstash/ratelimit"
-   */
-  prefix: "@upstash/ratelimit",
-});
+import sanitizeHtml from "sanitize-html";
 
 const serverRateLimit = new Ratelimit({
   redis: Redis.fromEnv(),
@@ -29,11 +16,12 @@ const serverRateLimit = new Ratelimit({
 
 export const articleAuthorRouter = t.router({
   //TODO:
-  create: t.procedure
+  stage_article: t.procedure
     .input(
       z.object({
         title: z.string(),
         content: z.string(),
+        publicId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -47,26 +35,22 @@ export const articleAuthorRouter = t.router({
       const { success } = await serverRateLimit.limit(ctx.userId);
       checkRateLimit(success);
 
-      const preview = getArticlePreview(input.content);
+      const sanContent = sanitizeHtml(input.content);
+      const preview = getArticlePreview(sanContent);
 
-      if (preview.content.length < 200 - preview.offset) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Article must be at least 195 characters long",
-        });
-      }
-
-      await ctx.prisma.article.create({
+      const output = await ctx.prisma.staged_article.create({
         data: {
+          id: input.publicId,
           title: input.title,
-          content: input.content,
+          content: sanContent,
           authorId: ctx.userId,
           preview: preview.content,
         },
       });
+
+      return output;
     }),
-  //TODO:
-  update: t.procedure
+  updateStagedArticle: t.procedure
     .input(
       z.object({
         content: z.string(),
@@ -90,27 +74,49 @@ export const articleAuthorRouter = t.router({
         role: ctx.role as string,
       });
 
-      const preview = getArticlePreview(input.content);
+      const sanContent = sanitizeHtml(input.content);
+      const preview = getArticlePreview(sanContent);
 
-      if (preview.content.length < 200 - preview.offset) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Article must be at least 195 characters long",
-        });
-      }
-
-      await ctx.prisma.article.update({
+      await ctx.prisma.staged_article.update({
         where: {
           id: input.articleId,
         },
         data: {
-          content: input.content,
+          content: sanContent,
           preview: preview.content,
         },
       });
     }),
+  deletePublicArticle: t.procedure
+    .input(
+      z.object({
+        articleId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.userId || ctx.role === "user") {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You don't have access to this resource",
+        });
+      }
 
-  delete: t.procedure
+      const { success } = await serverRateLimit.limit(ctx.userId);
+      checkRateLimit(success);
+
+      //safe guard against updating other users articles
+      await getUsersOwnArticle({
+        userId: ctx.userId,
+        role: ctx.role as string,
+      });
+
+      await ctx.prisma.article.delete({
+        where: {
+          id: input.articleId,
+        },
+      });
+    }),
+  deleteStagedArticle: t.procedure
     .input(
       z.object({
         articleId: z.string(),
@@ -136,12 +142,52 @@ export const articleAuthorRouter = t.router({
         role: ctx.role as string,
       });
 
-      await ctx.prisma.article.delete({
+      await ctx.prisma.staged_article.delete({
         where: {
           id: input.articleId,
         },
       });
     }),
+  /*
+   * deletes published and staged articles
+   */
+  deepDeleteArticle: t.procedure
+    .input(
+      z.object({
+        articleId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.userId || ctx.role === "user") {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You don't have access to this resource",
+        });
+      }
+
+      const { success } = await serverRateLimit.limit(ctx.userId);
+      checkRateLimit(success);
+
+      //safe guard against updating other users articles
+      await getUsersOwnArticle({
+        userId: ctx.userId,
+        role: ctx.role as string,
+      });
+
+      await ctx.prisma.article.delete({
+        where: {
+          id: input.articleId,
+        },
+      });
+      await ctx.prisma.staged_article.deleteMany({
+        where: {
+          publicId: input.articleId,
+        },
+      });
+    }),
+
+  // publishArticle: t.procedure
+  // requestPublish: t.procedure
 });
 
 export const articleRouter = createTRPCRouter({
@@ -172,9 +218,6 @@ export const articleRouter = createTRPCRouter({
   getArticleById: t.procedure
     .input(z.object({ articleId: z.string() }))
     .query(async ({ ctx, input }) => {
-      // const { success } = await serverRateLimit.limit();
-      // checkRateLimit(success);
-
       const article = await prisma.article.findUnique({
         where: {
           id: input.articleId,
@@ -188,9 +231,19 @@ export const articleRouter = createTRPCRouter({
         });
       }
 
+      void prisma.article.update({
+        where: {
+          id: input.articleId,
+        },
+        data: {
+          viewCount: {
+            increment: 1,
+          },
+        },
+      });
+
       return {
         ...article,
-        content: article.content,
       };
     }),
   //getMostViewed

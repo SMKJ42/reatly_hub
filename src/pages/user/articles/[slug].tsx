@@ -30,6 +30,7 @@ const Articles: NextPageWithLayout = () => {
   return (
     <article className="prose dark:prose-invert lg:prose-xl">
       <h1 id={`title-${articleData.title}`}>{articleData.title}</h1>
+      <p>Views: {articleData.views}</p>
       <div
         className={`article-${slug as string}`}
         dangerouslySetInnerHTML={article ? { __html: article } : undefined}
