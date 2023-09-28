@@ -4,12 +4,9 @@ import type { NextPageWithLayout } from "../../_app";
 import { api } from "~/utils/api";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 import { useRouter } from "next/router";
-import {
-  HydrateSingleFamily,
-  type singleFamilyInterface,
-} from "~/redux/slice/singleFamilySlice";
+import { HydrateSingleFamily } from "~/redux/slice/singleFamilySlice";
 import { useAppDispatch } from "~/redux/hooks";
-import { type mortgageRates } from "@prisma/client";
+import type { PodInterface } from "~/server/lib/types/client";
 
 const Dashboard: NextPageWithLayout = () => {
   const { data, isLoading: loadingHistory } =
@@ -33,14 +30,6 @@ const Dashboard: NextPageWithLayout = () => {
     </div>
   );
 };
-
-interface PodInterface extends singleFamilyInterface {
-  id: string;
-  loanTypeOptions?: mortgageRates[];
-  rennovationsRadio?: boolean;
-  speculation?: boolean;
-  variable?: string;
-}
 
 const Pod = (pod: PodInterface) => {
   const router = useRouter();

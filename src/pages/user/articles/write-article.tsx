@@ -6,16 +6,6 @@ import UserLayout from "~/components/layouts/UserLayout";
 import dynamic from "next/dynamic";
 import { api } from "~/utils/api";
 
-// const availableTags = [
-//   "finance",
-//   "pick it right",
-//   "investing",
-//   "saving",
-//   "strategy",
-//   "single family",
-//   "multi family",
-// ];
-
 const ReactQuill = dynamic(
   () =>
     import("../../../components/blog/ReactQuil").then(
@@ -33,16 +23,15 @@ const WriteArticle: NextPageWithLayout = () => {
 
   console.log(value);
 
-  const { mutate: create, isLoading: isSaving } = api.author.create.useMutation(
-    {
+  const { mutate: create, isLoading: isSaving } =
+    api.author.stage_article.useMutation({
       onSuccess: (opts) => {
         console.log("success");
       },
       onError: (error) => {
         console.log(error);
       },
-    }
-  );
+    });
 
   return (
     <>

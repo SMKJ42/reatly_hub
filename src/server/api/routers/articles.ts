@@ -6,28 +6,68 @@ import { getArticlePreview, getUsersOwnArticle } from "~/server/lib/articles";
 import sanitizeHtml from "sanitize-html";
 import { batchRequestRateLimit } from "~/server/lib/rateLimits";
 import { checkRateLimit } from "../error";
+import type { StagedArticleConstructor } from "../../lib/types/serverRoutes";
 
 export const articleAuthorRouter = t.router({
   //TODO:
-  stage_article: authorRouter
+  save_article: authorRouter
     .input(
       z.object({
         title: z.string(),
         content: z.string(),
-        publicId: z.string(),
+        publicId: z.string().nullish(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const sanContent = sanitizeHtml(input.content);
       const preview = getArticlePreview(sanContent);
 
+      const article: StagedArticleConstructor = {
+        title: input.title,
+        content: sanContent,
+        authorId: ctx.userId,
+        preview: preview.content,
+      };
+
+      if (input.publicId) {
+        article.id = input.publicId;
+      }
+
       const output = await ctx.prisma.staged_article.create({
         data: {
-          id: input.publicId,
-          title: input.title,
-          content: sanContent,
-          authorId: ctx.userId,
-          preview: preview.content,
+          ...article,
+        },
+      });
+
+      return output;
+    }),
+
+  stage_article: authorRouter
+    .input(
+      z.object({
+        title: z.string(),
+        content: z.string(),
+        publicId: z.string().nullish(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const sanContent = sanitizeHtml(input.content);
+      const preview = getArticlePreview(sanContent);
+
+      const article: StagedArticleConstructor = {
+        title: input.title,
+        content: sanContent,
+        authorId: ctx.userId,
+        preview: preview.content,
+      };
+
+      if (input.publicId) {
+        article["id"] = input.publicId;
+      }
+
+      const output = await ctx.prisma.staged_article.create({
+        data: {
+          ...article,
         },
       });
 

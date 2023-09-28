@@ -6,55 +6,7 @@ import {
   convertPercentToDecimal,
 } from "../../lib/calculations";
 import { type mortgageRates } from "@prisma/client";
-
-export interface singleFamilyInterface {
-  id: boolean | string;
-  address: string;
-  price: string;
-  interest: string;
-  downPaymentPerc: string;
-  downPaymentDoll: string;
-  closingCostsPerc: string;
-  closingCostsDoll: string;
-  loanTerm: string;
-  loanType: string;
-  loanTypeOptions?: mortgageRates[];
-  repairs: string;
-  ARV: string;
-  taxes: string;
-  insurance: string;
-  hoa: string;
-  vacancy: string;
-  capEx: string;
-  rennovationsRadio?: boolean;
-  rennovations: string;
-  maintenance: string;
-  management: string;
-  expOther: string;
-  rents: string;
-  incOther: string;
-  speculation?: boolean;
-  appreciation: string;
-  loanBalance: string;
-  costOfRenno: string;
-  totalAquisitionReturn: string;
-  aquisitionCosts: string;
-  equity: string;
-  LTV: string;
-  mortgagePayment: string;
-  cashFlow: string;
-  expenses: string;
-  monthlyPayment: string;
-  cashOnCash: string;
-  rennoEquity: string;
-  rennoReturn: string;
-  closingCosts: string;
-  capRate: string;
-  ROE: string;
-  ROI: string;
-  fixed: string;
-  variable?: string;
-}
+import type { singleFamilyInterface } from "~/server/lib/types/redux";
 
 const initialState: singleFamilyInterface = {
   id: false,

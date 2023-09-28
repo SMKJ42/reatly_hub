@@ -59,9 +59,9 @@ export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
 
   let ip = "";
 
-  if (req.headers["x-real-ip"]) {
+  if (req.headers?.["x-real-ip"]) {
     ip = req.headers["x-real-ip"] as string;
-  } else if (req.headers["x-forwarded-for"]) {
+  } else if (req.headers?.["x-forwarded-for"]) {
     const forwarded = req.headers["x-forwarded-for"] as string;
     ip = forwarded.split(/\s*,\s*/)[0] as string;
   } else {

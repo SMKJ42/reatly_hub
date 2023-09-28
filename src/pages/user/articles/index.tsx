@@ -14,7 +14,7 @@ const Articles: NextPageWithLayout = () => {
     }
   );
 
-  const { mutate: deleteArticle } = api.author.delete.useMutation({
+  const { mutate: deleteArticle } = api.author.deleteStagedArticle.useMutation({
     onSuccess: () => {
       console.log("success");
       void ctx.articles.invalidate();
