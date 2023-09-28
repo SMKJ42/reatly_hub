@@ -94,6 +94,7 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
               <label className="mx-4 text-lg font-semibold" aria-required>
                 Address:
               </label>
+
               <input
                 value={address}
                 type="text"
@@ -102,6 +103,14 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
                   dispatch(updateAddress(e.target.value));
                 }}
                 required
+              />
+              <input
+                type="button"
+                value="reset"
+                className="px-2"
+                onClick={() => {
+                  dispatch(resetSFH());
+                }}
               />
             </div>
             <SFHAquisitionInputs loanProducts={loanProducts} />
@@ -115,11 +124,10 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
               <SFHIncomeOutputs />
             </div>
           </div>
-          <div className="button-container w-100 flex justify-center">
-            <input
+          <div className="button-container my-4 flex w-60 justify-around  md:w-96">
+            <button
               type="submit"
-              value={id ? "update" : "save"}
-              className="SFH-submit-button"
+              className="mr-4 rounded-md px-4 py-1 dark:bg-white dark:text-black"
               disabled={isSaving || isUpdating}
               onClick={() => {
                 if (isSaving || isUpdating) return;
@@ -129,23 +137,19 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
                   update({ ...getSFHSubmit(), id });
                 }
               }}
-            />
-            <input
-              type="button"
-              value="reset"
-              className="SFH-submit-button"
-              onClick={() => {
-                dispatch(resetSFH());
-              }}
-            />
-            <input
+            >
+              {id ? "update" : "save"}
+            </button>
+            <button
               type="button"
               value="PDF"
-              className="PDF-download"
+              className="mr-4 rounded-md px-4 py-1 dark:bg-white dark:text-black"
               onClick={() => {
                 handlePDF();
               }}
-            />
+            >
+              PDF
+            </button>
           </div>
         </div>
       </form>

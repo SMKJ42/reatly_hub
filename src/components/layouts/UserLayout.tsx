@@ -69,7 +69,7 @@ export default function UserLayout({
 
         <div className="account-manager mx-4 flex justify-around">
           <Link href="/user/account">Account</Link>
-          <div className="sign-out-btn w-42 ml-4">
+          <div className="sign-out-btn w-42 ml-8">
             <SignOutButton />
           </div>
         </div>

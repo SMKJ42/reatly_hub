@@ -19,29 +19,36 @@ const SFHAquisitionOutputs = () => {
     mortgagePayment,
     rennovationsRadio,
   } = singleFamily;
-
   return (
     <div className="aquisition-metrics">
       <div className="aquisition-costs">
-        Aquisition costs: ${aquisitionCosts}
+        <span className="mr-1 font-bold">Aquisition costs:</span>$
+        {aquisitionCosts}
       </div>
-      <div className="equity">Equity: ${equity} </div>
-      <div className="loan-balance">Loan Balance: ${loanBalance}</div>
+      <div className="equity">
+        <span className="mr-1 font-bold">Equity:</span>${equity}{" "}
+      </div>
+      <div className="loan-balance">
+        <span className="mr-1 font-bold">Loan Balance:</span>${loanBalance}
+      </div>
       <div className="mortgage">
-        Mortgage P&I: $
+        <span className="mr-1 font-bold">Mortgage P&I:</span>$
         {mortgagePayment !== "0" && convertToNum(mortgagePayment)
           ? `${mortgagePayment}`
           : "0"}
       </div>
-      <div className="ltv">LTV : {isNaN(convertToNum(LTV)) ? 0 : LTV}</div>
+      <div className="ltv">
+        <span className="mr-1 font-bold">LTV:</span>
+        {isNaN(convertToNum(LTV)) ? 0 : LTV}
+      </div>
       {rennovationsRadio ? (
         <>
           <div className="rennovations-radio">
-            Post Renno LTV:
+            <span className="mr-1 font-bold">Post Renno LTV:</span>
             {convertToNum(singleFamily.rennovations) > 0 ? "0" : LTV}
           </div>
           <div className="rennovation-return">
-            Rennovation Return: $
+            <span className="mr-1 font-bold">Rennovation Return:</span>$
             {rennovationReturn(
               convertToNum(ARV),
               convertToNum(price),
