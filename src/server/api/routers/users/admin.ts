@@ -3,27 +3,9 @@ import { t } from "../../trpc";
 
 import { checkRateLimit } from "../../error";
 import { z } from "zod";
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis/nodejs";
 import { clerkClient } from "@clerk/nextjs";
-
-const serverRateLimit = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(10, "1 s"),
-  analytics: true,
-});
-
-export const ownerPriveledges = ["owner"];
-export const superAdminPriveledges = ["owner", "superAdmin"];
-export const adminPriveledges = ["owner", "superAdmin", "admin"];
-export const authorPriveledges = ["owner", "superAdmin", "admin", "author"];
-export const userPriveledges = [
-  "owner",
-  "superAdmin",
-  "admin",
-  "author",
-  "user",
-];
+import { serverRateLimit } from "~/server/lib/rateLimits";
+import { adminPriveledges } from "~/server/lib/priviliedges";
 
 export const adminRouter = t.router({
   getUserCount: t.procedure.mutation(async ({ ctx }) => {

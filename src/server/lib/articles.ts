@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
-import { adminPriveledges } from "../api/routers/users/admin";
 import { prisma } from "../db";
+import { adminPriveledges } from "./priviliedges";
 
 //safe guard against updating other users articles and returns the article
 export async function getUsersOwnArticle(props: {

@@ -13,6 +13,8 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { prisma } from "~/server/db";
+import { checkRateLimit } from "./error";
+import { editingRateLimit } from "../lib/rateLimits";
 
 /**
  * 1. CONTEXT
@@ -55,10 +57,29 @@ export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
   const user = userId ? await clerkClient.users.getUser(userId) : null;
   const role = user?.privateMetadata.role;
 
+  let ip = "";
+
+  if (req.headers["x-real-ip"]) {
+    ip = req.headers["x-real-ip"] as string;
+  } else if (req.headers["x-forwarded-for"]) {
+    const forwarded = req.headers["x-forwarded-for"] as string;
+    ip = forwarded.split(/\s*,\s*/)[0] as string;
+  } else {
+    ip = req.connection.remoteAddress as string;
+  }
+
+  if (!ip) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "",
+    });
+  }
+
   return {
     prisma,
-    role,
     userId,
+    role,
+    ip,
   };
 };
 
@@ -107,6 +128,27 @@ export const createTRPCRouter = t.router;
  */
 
 export const publicProcedure = t.procedure;
+
+const authorProcedure = t.middleware(async ({ ctx, next }) => {
+  if (!ctx.userId || ctx.role === "user") {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "You don't have access to this resource",
+    });
+  }
+
+  const { success } = await editingRateLimit.limit(ctx.userId);
+  checkRateLimit(success);
+
+  return next({
+    ctx: {
+      userId: ctx.userId,
+      role: ctx.role,
+    },
+  });
+});
+
+export const authorRouter = t.procedure.use(authorProcedure);
 
 const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
   if (!ctx.userId) {

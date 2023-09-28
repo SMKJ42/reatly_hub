@@ -26,14 +26,14 @@ const Home: NextPageWithLayout = () => {
           </li>
         </ul>
       </section>
-      {/* <section className="p-4">
+      <section className="p-4">
         <h2 className="pb-2 text-xl font-bold">
           Check out our Education Center!
         </h2>
         <ul className="text-lg [&>*]:pb-2">
           <li></li>
         </ul>
-      </section> */}
+      </section>
       <section className="flex flex-col items-center">
         <h2 className="pb-4 text-xl font-bold">
           How to Utilize our Calculators

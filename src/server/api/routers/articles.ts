@@ -1,22 +1,15 @@
 import { z } from "zod";
-import { createTRPCRouter, t } from "../trpc";
+import { authorRouter, createTRPCRouter, t } from "../trpc";
 import { TRPCError } from "@trpc/server";
-import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
-import { Redis } from "@upstash/redis";
-import { checkRateLimit } from "../error";
 import { prisma } from "~/server/db";
 import { getArticlePreview, getUsersOwnArticle } from "~/server/lib/articles";
 import sanitizeHtml from "sanitize-html";
-
-const serverRateLimit = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(10, "1 s"),
-  analytics: true,
-});
+import { batchRequestRateLimit } from "~/server/lib/rateLimits";
+import { checkRateLimit } from "../error";
 
 export const articleAuthorRouter = t.router({
   //TODO:
-  stage_article: t.procedure
+  stage_article: authorRouter
     .input(
       z.object({
         title: z.string(),
@@ -25,16 +18,6 @@ export const articleAuthorRouter = t.router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.userId || ctx.role === "user") {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You don't have access to this resource",
-        });
-      }
-
-      const { success } = await serverRateLimit.limit(ctx.userId);
-      checkRateLimit(success);
-
       const sanContent = sanitizeHtml(input.content);
       const preview = getArticlePreview(sanContent);
 
@@ -50,7 +33,7 @@ export const articleAuthorRouter = t.router({
 
       return output;
     }),
-  updateStagedArticle: t.procedure
+  updateStagedArticle: authorRouter
     .input(
       z.object({
         content: z.string(),
@@ -58,22 +41,10 @@ export const articleAuthorRouter = t.router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.userId || ctx.role === "user") {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You don't have access to this resource",
-        });
-      }
-
-      const { success } = await serverRateLimit.limit(ctx.userId);
-      checkRateLimit(success);
-
-      //safe guard against updating other users articles
       await getUsersOwnArticle({
         userId: ctx.userId,
         role: ctx.role as string,
       });
-
       const sanContent = sanitizeHtml(input.content);
       const preview = getArticlePreview(sanContent);
 
@@ -87,24 +58,13 @@ export const articleAuthorRouter = t.router({
         },
       });
     }),
-  deletePublicArticle: t.procedure
+  deletePublicArticle: authorRouter
     .input(
       z.object({
         articleId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.userId || ctx.role === "user") {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You don't have access to this resource",
-        });
-      }
-
-      const { success } = await serverRateLimit.limit(ctx.userId);
-      checkRateLimit(success);
-
-      //safe guard against updating other users articles
       await getUsersOwnArticle({
         userId: ctx.userId,
         role: ctx.role as string,
@@ -116,27 +76,13 @@ export const articleAuthorRouter = t.router({
         },
       });
     }),
-  deleteStagedArticle: t.procedure
+  deleteStagedArticle: authorRouter
     .input(
       z.object({
         articleId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      console.log("ctx.role: ", ctx.role);
-      console.log("ctx.userId: ", ctx.userId);
-
-      if (!ctx.userId || ctx.role === "user") {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You don't have access to this resource",
-        });
-      }
-
-      const { success } = await serverRateLimit.limit(ctx.userId);
-      checkRateLimit(success);
-
-      //safe guard against updating other users articles
       await getUsersOwnArticle({
         userId: ctx.userId,
         role: ctx.role as string,
@@ -148,27 +94,17 @@ export const articleAuthorRouter = t.router({
         },
       });
     }),
+
   /*
    * deletes published and staged articles
    */
-  deepDeleteArticle: t.procedure
+  deepDeleteArticle: authorRouter
     .input(
       z.object({
         articleId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.userId || ctx.role === "user") {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You don't have access to this resource",
-        });
-      }
-
-      const { success } = await serverRateLimit.limit(ctx.userId);
-      checkRateLimit(success);
-
-      //safe guard against updating other users articles
       await getUsersOwnArticle({
         userId: ctx.userId,
         role: ctx.role as string,
@@ -186,8 +122,9 @@ export const articleAuthorRouter = t.router({
       });
     }),
 
-  // publishArticle: t.procedure
-  // requestPublish: t.procedure
+  // requestPublish: authorRouter
+
+  // publishArticle: authorRouter
 });
 
 export const articleRouter = createTRPCRouter({
@@ -196,9 +133,8 @@ export const articleRouter = createTRPCRouter({
   previewMostRecent: t.procedure
     .input(z.object({ page: z.number() }))
     .query(async ({ ctx, input }) => {
-      // const { success } = await serverRateLimit.limit();
-      // checkRateLimit(success);
-
+      const { success } = await batchRequestRateLimit.limit(ctx.ip);
+      checkRateLimit(success);
       const articles = await prisma.article.findMany({
         take: 10,
         skip: (input.page - 1) * 10,
