@@ -61,7 +61,7 @@ const Articles = (
   return (
     <article className="prose dark:prose-invert lg:prose-xl">
       <h1 id={`title-${articleData.title}`}>{articleData.title}</h1>
-      <p>Views: {articleData.viewCount}</p>
+      {/* <p>Views: {articleData.viewCount}</p> */}
       <div
         className={`article-${slug}`}
         dangerouslySetInnerHTML={article ? { __html: article } : undefined}
