@@ -8,21 +8,21 @@ const SFHIncomeOutputs = () => {
 
   return (
     <div>
-      <p>
+      <p className="mb-1">
         <span className="mr-1 font-bold">Cash Flow:</span>
         {singleFamily.cashFlow[0] === "-"
           ? "-$" + singleFamily.cashFlow.slice(1)
           : "$" + singleFamily.cashFlow}
       </p>
-      <p>
+      <p className="mb-1">
         <span className="mr-1 font-bold">Cap rate:</span>
         {singleFamily.capRate}%
       </p>
-      <p>
+      <p className="mb-1">
         <span className="mr-1 font-bold">ROE:</span>
         {singleFamily.ROE}%
       </p>
-      <p>
+      <p className="mb-1">
         <span className="mr-1 font-bold">ROI:</span>
         {singleFamily.ROI}%
       </p>

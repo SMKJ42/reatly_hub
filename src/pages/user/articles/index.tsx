@@ -26,11 +26,7 @@ const Articles: NextPageWithLayout = () => {
 
   return (
     <>
-      <div className="flex w-full justify-around">
-        <Link href="/user/articles/write-article">Create</Link>
-        <Link href="/user/articles/write-article">Update</Link>
-        <Link href="/user/articles/write-article">Review</Link>
-      </div>
+
       <h1 className=""> Articles :) </h1>
       {articles?.map((article) => (
         <div key={article.id}>

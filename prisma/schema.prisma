@@ -101,7 +101,7 @@ model staged_article {
   preview      String @db.TinyText
   reviewed     Boolean @default(false)
   version      String  @default("0.0.0")
-  published    Boolean @default(false)
+  status       String  @default("draft")
 
   @@index([createdAt])
   @@index([authorId])

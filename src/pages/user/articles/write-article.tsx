@@ -8,7 +8,7 @@ import { api } from "~/utils/api";
 
 const ReactQuill = dynamic(
   () =>
-    import("../../../components/blog/ReactQuil").then(
+    import("../../../components/articles/ReactQuil").then(
       (element) => element.ReactQuil
     ),
   {

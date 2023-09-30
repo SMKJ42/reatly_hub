@@ -55,7 +55,7 @@ export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
 
   const userId = sesh.userId;
   const user = userId ? await clerkClient.users.getUser(userId) : null;
-  const role = user?.privateMetadata.role;
+  const role = user?.publicMetadata.role;
 
   let ip = "";
 

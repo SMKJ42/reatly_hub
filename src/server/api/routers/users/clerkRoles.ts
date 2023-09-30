@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { createTRPCRouter, t } from "../../trpc";
+import { t } from "../../trpc";
 
 import { checkRateLimit } from "../../error";
 import { z } from "zod";
@@ -35,18 +35,18 @@ export const rolesRouter = t.router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.userId || ctx.role !== "owner") {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You don't have access to this resource",
-        });
-      }
+      // if (!ctx.userId || ctx.role !== "owner") {
+      //   throw new TRPCError({
+      //     code: "UNAUTHORIZED",
+      //     message: "You don't have access to this resource",
+      //   });
+      // }
 
-      const { success } = await serverRateLimit.limit(ctx.userId);
+      const { success } = await serverRateLimit.limit(ctx.userId as string);
       checkRateLimit(success);
 
       await clerkClient.users.updateUserMetadata(input.userId, {
-        privateMetadata: {
+        publicMetadata: {
           role: "owner",
         },
       });
@@ -70,7 +70,7 @@ export const rolesRouter = t.router({
       checkRateLimit(success);
 
       await clerkClient.users.updateUserMetadata(input.userId, {
-        privateMetadata: {
+        publicMetadata: {
           role: "author",
         },
       });
@@ -94,7 +94,7 @@ export const rolesRouter = t.router({
       checkRateLimit(success);
 
       await clerkClient.users.updateUserMetadata(input.userId, {
-        privateMetadata: {
+        publicMetadata: {
           role: "admin",
         },
       });
@@ -117,7 +117,7 @@ export const rolesRouter = t.router({
       checkRateLimit(success);
 
       await clerkClient.users.updateUserMetadata(input.userId, {
-        privateMetadata: {
+        publicMetadata: {
           role: "superAdmin",
         },
       });
@@ -142,7 +142,7 @@ export const rolesRouter = t.router({
       checkRateLimit(success);
 
       await clerkClient.users.updateUserMetadata(input.userId, {
-        privateMetadata: {
+        publicMetadata: {
           role: input.role,
         },
       });
@@ -167,7 +167,7 @@ export const rolesRouter = t.router({
       checkRateLimit(success);
 
       await clerkClient.users.updateUserMetadata(input.userId, {
-        privateMetadata: {
+        publicMetadata: {
           role: input.role,
         },
       });

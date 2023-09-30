@@ -5,6 +5,9 @@ import { useUser } from "@clerk/nextjs";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 import Image from "next/image";
 import Link from "next/link";
+import { adminPriveledges } from "~/lib/priviledges";
+import { api } from "~/utils/api";
+import { AccountArticleSection } from "~/components/articles/Account";
 
 const UserAccount: NextPageWithLayout = () => {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -25,7 +28,10 @@ const UserAccount: NextPageWithLayout = () => {
 
   return (
     <>
-      <h1 className="">Account</h1>
+      {adminPriveledges.includes(user.publicMetadata.role as string) && (
+        <AccountArticleSection />
+      )}
+
       <Image
         src={user?.profileImageUrl ? user.profileImageUrl : ""}
         alt={`${name}'s profile image`}

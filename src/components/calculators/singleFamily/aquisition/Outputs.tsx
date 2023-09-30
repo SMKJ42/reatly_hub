@@ -21,33 +21,33 @@ const SFHAquisitionOutputs = () => {
   } = singleFamily;
   return (
     <div className="aquisition-metrics">
-      <div className="aquisition-costs">
+      <p className="my-1 md:mt-0">
         <span className="mr-1 font-bold">Aquisition costs:</span>$
         {aquisitionCosts}
-      </div>
-      <div className="equity">
+      </p>
+      <p className="mb-1">
         <span className="mr-1 font-bold">Equity:</span>${equity}{" "}
-      </div>
-      <div className="loan-balance">
+      </p>
+      <p className="mb-1">
         <span className="mr-1 font-bold">Loan Balance:</span>${loanBalance}
-      </div>
-      <div className="mortgage">
+      </p>
+      <p className="mb-1">
         <span className="mr-1 font-bold">Mortgage P&I:</span>$
         {mortgagePayment !== "0" && convertToNum(mortgagePayment)
           ? `${mortgagePayment}`
           : "0"}
-      </div>
-      <div className="ltv">
+      </p>
+      <p className="mb-1">
         <span className="mr-1 font-bold">LTV:</span>
         {isNaN(convertToNum(LTV)) ? 0 : LTV}
-      </div>
+      </p>
       {rennovationsRadio ? (
         <>
-          <div className="rennovations-radio">
+          <p className="mb-1">
             <span className="mr-1 font-bold">Post Renno LTV:</span>
             {convertToNum(singleFamily.rennovations) > 0 ? "0" : LTV}
-          </div>
-          <div className="rennovation-return">
+          </p>
+          <p className="mb-1">
             <span className="mr-1 font-bold">Rennovation Return:</span>$
             {rennovationReturn(
               convertToNum(ARV),
@@ -56,7 +56,7 @@ const SFHAquisitionOutputs = () => {
               convertToNum(rennovations),
               convertToNum(closingCosts)
             )}
-          </div>
+          </p>
         </>
       ) : null}
     </div>

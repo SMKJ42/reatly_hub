@@ -6,15 +6,15 @@ const SFHExpensesOutputs = () => {
 
   return (
     <div className="expenses summary">
-      <div>
+      <p className="my-1 md:mt-0">
         <span className="mr-1 font-bold">Monthly payment:</span>$
         {singleFamily.monthlyPayment}
-      </div>
+      </p>
 
-      <div>
+      <p className="mb-1">
         <span className="mr-1 font-bold">Total monthly expenses:</span>$
         {singleFamily.expenses}
-      </div>
+      </p>
     </div>
   );
 };

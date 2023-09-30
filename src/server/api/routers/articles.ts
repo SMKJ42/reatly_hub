@@ -162,9 +162,87 @@ export const articleAuthorRouter = t.router({
       });
     }),
 
-  // requestPublish: authorRouter
+  requestPublish: authorRouter
+    .input(
+      z.object({
+        articleId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      await getUsersOwnArticle({
+        userId: ctx.userId,
+        role: ctx.role as string,
+      });
 
-  // publishArticle: authorRouter
+      await ctx.prisma.staged_article.update({
+        where: {
+          id: input.articleId,
+        },
+        data: {
+          status: "pending",
+        },
+      });
+    }),
+
+  publishArticle: authorRouter
+    .input(
+      z.object({
+        articleId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      await getUsersOwnArticle({
+        userId: ctx.userId,
+        role: ctx.role as string,
+      });
+
+      const data = await ctx.prisma.staged_article.update({
+        where: {
+          id: input.articleId,
+        },
+        data: {
+          status: "published",
+        },
+      });
+
+      await ctx.prisma.article.create({
+        data: {
+          id: data.publicId,
+          title: data.title,
+          content: data.content,
+          authorId: data.authorId,
+          preview: data.preview,
+        },
+      });
+    }),
+
+  getAuthorsLastArticle: authorRouter
+    .input(
+      z.object({
+        authorId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const article = await prisma.article.findFirst({
+        where: {
+          authorId: input.authorId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      if (!article) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Article not found",
+        });
+      }
+
+      return {
+        ...article,
+      };
+    }),
 });
 
 export const articleRouter = createTRPCRouter({
@@ -175,7 +253,7 @@ export const articleRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { success } = await batchRequestRateLimit.limit(ctx.ip);
       checkRateLimit(success);
-      const articles = await prisma.article.findMany({
+      const articles = await prisma.staged_article.findMany({
         take: 10,
         skip: (input.page - 1) * 10,
         orderBy: {
@@ -217,6 +295,26 @@ export const articleRouter = createTRPCRouter({
           },
         },
       });
+
+      return {
+        ...article,
+      };
+    }),
+  getStagedArticleById: t.procedure
+    .input(z.object({ articleId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const article = await prisma.staged_article.findUnique({
+        where: {
+          id: input.articleId,
+        },
+      });
+
+      if (!article) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Article not found",
+        });
+      }
 
       return {
         ...article,

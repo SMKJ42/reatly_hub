@@ -17,6 +17,7 @@ export const CalculatorsNav: React.FunctionComponent<dropDownProps> = (
 
   return (
     <div
+      className="flex flex-col"
       onMouseEnter={() => {
         setDropDownOption("calculators");
         setActiveDropDown(true);
@@ -24,17 +25,33 @@ export const CalculatorsNav: React.FunctionComponent<dropDownProps> = (
     >
       Calculators
       {dropDownOption === "calculators" && activeDropDown ? (
-        <CalculatorsDropDown />
+        <>
+          <LargeCalculatorsDropDown />
+          <MiniCalculatorsDropDown />
+        </>
       ) : null}
     </div>
   );
 };
 
-const CalculatorsDropDown = () => {
+const LargeCalculatorsDropDown = () => {
   return (
-    <div className="drop-down absolute flex w-28 flex-1 flex-col bg-primary200 dark:bg-primary200">
+    <div className="drop-down absolute hidden w-28 flex-1 flex-col bg-primary200 dark:bg-primary200 md:flex">
       <Link href="/user/calculators/single-family">SFH</Link>
       <Link href="/user/calculators/multi-family">MFH</Link>
+      <Link href="/user/calculators/history">History</Link>
+    </div>
+  );
+};
+const MiniCalculatorsDropDown = () => {
+  return (
+    <div className="mini-drop-down relative flex w-28 flex-1 flex-col text-base md:hidden">
+      <Link href="/user/calculators/single-family" className="mb-1">
+        SFH
+      </Link>
+      <Link href="/user/calculators/multi-family" className="mb-1">
+        MFH
+      </Link>
       <Link href="/user/calculators/history">History</Link>
     </div>
   );

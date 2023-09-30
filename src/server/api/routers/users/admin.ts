@@ -5,7 +5,7 @@ import { checkRateLimit } from "../../error";
 import { z } from "zod";
 import { clerkClient } from "@clerk/nextjs";
 import { serverRateLimit } from "~/server/lib/rateLimits";
-import { adminPriveledges } from "~/server/lib/priviliedges";
+import { adminPriveledges } from "~/lib/priviledges";
 
 export const adminRouter = t.router({
   getUserCount: t.procedure.mutation(async ({ ctx }) => {
