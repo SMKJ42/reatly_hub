@@ -108,6 +108,7 @@ function HydratedArticle(articleData: ArticleProps & { slug: string }) {
         ></div>
       </article>
     </>
+
   );
 }
 
