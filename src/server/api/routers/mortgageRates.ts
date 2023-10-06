@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { privateProcedure, publicProcedure, t } from "../trpc";
+import { publicProcedure, t } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { env } from "~/env.mjs";
 import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
@@ -26,7 +26,7 @@ const serverRateLimit = new Ratelimit({
 });
 
 export const mortgageRatesRouter = t.router({
-  create: t.procedure
+  create: publicProcedure
     .input(
       z.object({
         key: z.string(),
@@ -57,7 +57,7 @@ export const mortgageRatesRouter = t.router({
         });
       }
     }),
-  update: t.procedure
+  update: publicProcedure
     .input(
       z.object({
         key: z.string(),

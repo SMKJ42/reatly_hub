@@ -29,6 +29,15 @@ const WriteArticle: NextPageWithLayout = () => {
       { enabled: !!articleId }
     );
 
+  const { mutate: deleteArticle } = api.author.deleteStagedArticle.useMutation({
+    onSuccess: (opts) => {
+      console.log("success");
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   const [value, setValue] = useState("");
   const [title, setTitle] = useState("");
 
@@ -80,6 +89,16 @@ const WriteArticle: NextPageWithLayout = () => {
             <button className="rounded-lg bg-bg200 px-2 py-1 text-black">
               Request to Publish
             </button>
+            {articleId && (
+              <button
+                className="rounded-lg bg-bg200 px-2 py-1 text-black"
+                onClick={() => {
+                  deleteArticle({ articleId: articleId });
+                }}
+              >
+                Delete
+              </button>
+            )}
           </div>
         </div>
       </form>
@@ -91,6 +110,7 @@ const WriteArticle: NextPageWithLayout = () => {
       title: title,
       content: value,
     });
+    void router.push("/user/dashboard");
   }
 };
 

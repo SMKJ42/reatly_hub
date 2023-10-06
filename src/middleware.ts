@@ -6,7 +6,8 @@ export default authMiddleware({
     "/",
     "/articles",
     "/articles/[slug]",
-    "puclic/:path*",
+    "/public/:path*",
+    // "/public/calculator",
     "/api/trpc/[trpc]",
     "api/cron/[cron]",
   ],
@@ -21,7 +22,7 @@ export default authMiddleware({
       if (redirectUrl.pathname.includes("/articles")) {
         return;
       }
-      redirectUrl.pathname = "/user/calculators/history";
+      redirectUrl.pathname = "/user/dashboard";
       return NextResponse.redirect(redirectUrl);
     }
   },
