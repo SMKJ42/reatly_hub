@@ -96,4 +96,22 @@ export const adminRouter = t.router({
       });
       return user;
     }),
+  getPublishRequestCount: t.procedure.query(async ({ ctx }) => {
+    if (!ctx.userId || !adminPriveledges.includes(ctx.role as string)) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "You don't have access to this resource",
+      });
+    }
+
+    const { success } = await serverRateLimit.limit(ctx.userId);
+    checkRateLimit(success);
+
+    const count = await ctx.prisma.staged_article.count({
+      where: {
+        status: "pending",
+      },
+    });
+    return count;
+  }),
 });

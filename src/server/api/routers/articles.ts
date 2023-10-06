@@ -10,7 +10,7 @@ import type { StagedArticleConstructor } from "../../lib/types/serverRoutes";
 
 export const articleAuthorRouter = t.router({
   //TODO:
-  save_article: authorRouter
+  stageArticle: authorRouter
     .input(
       z.object({
         title: z.string(),
@@ -31,38 +31,6 @@ export const articleAuthorRouter = t.router({
 
       if (input.publicId) {
         article.id = input.publicId;
-      }
-
-      const output = await ctx.prisma.staged_article.create({
-        data: {
-          ...article,
-        },
-      });
-
-      return output;
-    }),
-
-  stage_article: authorRouter
-    .input(
-      z.object({
-        title: z.string(),
-        content: z.string(),
-        publicId: z.string().nullish(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const sanContent = sanitizeHtml(input.content);
-      const preview = getArticlePreview(sanContent);
-
-      const article: StagedArticleConstructor = {
-        title: input.title,
-        content: sanContent,
-        authorId: ctx.userId,
-        preview: preview.content,
-      };
-
-      if (input.publicId) {
-        article["id"] = input.publicId;
       }
 
       const output = await ctx.prisma.staged_article.create({
@@ -184,7 +152,28 @@ export const articleAuthorRouter = t.router({
       });
     }),
 
-  publishArticle: authorRouter
+  getPublishRequests: authorRouter
+    .input(
+      z.object({
+        page: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const requests = await ctx.prisma.staged_article.findMany({
+        where: {
+          status: "pending",
+        },
+        take: 10,
+        skip: (input.page - 1) * 10,
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      return requests;
+    }),
+
+  acceptPublishRequest: authorRouter
     .input(
       z.object({
         articleId: z.string(),
@@ -216,16 +205,30 @@ export const articleAuthorRouter = t.router({
       });
     }),
 
-  getAuthorsLastArticle: authorRouter
-    .input(
-      z.object({
-        authorId: z.string(),
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      const article = await prisma.article.findFirst({
+  denyPublishRequest: authorRouter
+    .input(z.object({ articleId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await getUsersOwnArticle({
+        userId: ctx.userId,
+        role: ctx.role as string,
+      });
+
+      await ctx.prisma.staged_article.update({
         where: {
-          authorId: input.authorId,
+          id: input.articleId,
+        },
+        data: {
+          status: "draft",
+        },
+      });
+    }),
+
+  getAuthorsLastStagedArticle: authorRouter
+    .input(z.object({}))
+    .query(async ({ ctx, input }) => {
+      const article = await prisma.staged_article.findFirst({
+        where: {
+          authorId: ctx.userId,
         },
         orderBy: {
           createdAt: "desc",
@@ -243,6 +246,29 @@ export const articleAuthorRouter = t.router({
         ...article,
       };
     }),
+
+  getAuthorsArticles: authorRouter
+    .input(z.object({ page: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const articles = await prisma.article.findMany({
+        take: 10,
+        skip: (input.page - 1) * 10,
+        where: {
+          authorId: ctx.userId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        select: {
+          id: true,
+          title: true,
+          preview: true,
+          createdAt: true,
+        },
+      });
+
+      return articles;
+    }),
 });
 
 export const articleRouter = createTRPCRouter({
@@ -253,7 +279,7 @@ export const articleRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { success } = await batchRequestRateLimit.limit(ctx.ip);
       checkRateLimit(success);
-      const articles = await prisma.staged_article.findMany({
+      const articles = await prisma.article.findMany({
         take: 10,
         skip: (input.page - 1) * 10,
         orderBy: {

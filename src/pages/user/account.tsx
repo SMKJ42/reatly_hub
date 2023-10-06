@@ -5,9 +5,6 @@ import { useUser } from "@clerk/nextjs";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 import Image from "next/image";
 import Link from "next/link";
-import { adminPriveledges } from "~/lib/priviledges";
-import { api } from "~/utils/api";
-import { AccountArticleSection } from "~/components/articles/Account";
 
 const UserAccount: NextPageWithLayout = () => {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -18,6 +15,8 @@ const UserAccount: NextPageWithLayout = () => {
     ? user.username
     : "user";
 
+  const role = (user?.publicMetadata?.role as string) || "";
+
   if (!isLoaded) return <StandardLoadingSpinner />;
   if (!isSignedIn)
     return (
@@ -27,21 +26,26 @@ const UserAccount: NextPageWithLayout = () => {
     );
 
   return (
-    <>
-      {adminPriveledges.includes(user.publicMetadata.role as string) && (
-        <AccountArticleSection />
-      )}
-
-      <Image
-        src={user?.profileImageUrl ? user.profileImageUrl : ""}
-        alt={`${name}'s profile image`}
-        width={80}
-        height={80}
-      ></Image>
-      <p>{name}</p>
-      <p>Want to be a blog contributor?</p>
-      <button>Apply</button>
-    </>
+    <div className="p-4">
+      <div className="pb-4">
+        <div className="border-gray w-fit rounded-xl border px-4 py-2 text-center">
+          <p className="pb-2 text-lg">{name}</p>
+          <div className="flex w-full justify-center">
+            <Image
+              src={user?.profileImageUrl ? user.profileImageUrl : ""}
+              alt={`${name}'s profile image`}
+              className="rounded-xl"
+              width={80}
+              height={80}
+            ></Image>
+          </div>
+          {user && <p className="mt-2">Role: {role || ""}</p>}
+          <button className="mb-1 mt-2 rounded-lg bg-white px-4 py-1 text-black">
+            Edit Image
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

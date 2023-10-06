@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { privateProcedure, t } from "../trpc";
+import { privateProcedure, publicProcedure, t } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { env } from "~/env.mjs";
 import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
@@ -88,8 +88,8 @@ export const mortgageRatesRouter = t.router({
         });
       }
     }),
-  getAll: privateProcedure.input(z.null()).query(async ({ ctx }) => {
-    const { success } = await ratelimit.limit(ctx.userId);
+  getAll: publicProcedure.input(z.null()).query(async ({ ctx }) => {
+    const { success } = await ratelimit.limit(ctx.ip);
     checkRateLimit(success);
 
     const data = await ctx.prisma.mortgageRates.findMany({});
