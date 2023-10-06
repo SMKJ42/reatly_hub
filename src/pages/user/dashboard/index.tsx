@@ -21,7 +21,10 @@ const Dashboard: NextPageWithLayout = () => {
     );
 
   return (
-    <div className="p-8">
+    <div className="p-8 pt-4 [&>*]:my-4">
+      {adminPriveledges.includes(user.publicMetadata.role as string) && (
+        <AccountAdmin />
+      )}
       {authorPriveledges.includes(user.publicMetadata.role as string) ? (
         <AccountAuthor />
       ) : (
@@ -29,9 +32,6 @@ const Dashboard: NextPageWithLayout = () => {
           <p>Want to be a blog contributor?</p>
           <button>Apply</button>
         </>
-      )}
-      {adminPriveledges.includes(user.publicMetadata.role as string) && (
-        <AccountAdmin />
       )}
       <AccountSFH />
     </div>

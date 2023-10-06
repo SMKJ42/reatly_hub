@@ -12,15 +12,8 @@ const Articles: NextPageWithLayout = () => {
     page,
   });
 
-  // const { mutate: deleteArticle } = api.author.deleteStagedArticle.useMutation({
-  //   onSuccess: () => {
-  //     console.log("success");
-  //     void ctx.articles.invalidate();
-  //   },
-  //   onError: (error) => {
-  //     console.log(error);
-  //   },
-  // });
+  const { mutate: denyPublishRequest } =
+    api.author.denyPublishRequest.useMutation();
 
   return (
     <>
@@ -35,7 +28,7 @@ const Articles: NextPageWithLayout = () => {
           </Link>
           <button
             onClick={() => {
-              // deleteArticle({ articleId: article.id });
+              denyPublishRequest({ articleId: article.id });
             }}
           >
             Push Back

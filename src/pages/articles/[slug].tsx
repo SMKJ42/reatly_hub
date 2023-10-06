@@ -17,7 +17,7 @@ export async function getServerSideProps(
 
   const query = context.query;
 
-  await helpers.articles.getStagedArticleById.prefetch({
+  await helpers.articles.getArticleById.prefetch({
     articleId: query.slug as string,
   });
 
@@ -45,13 +45,12 @@ const Articles = (
     };
   }
 
-  const { data: articleData, isLoading } =
-    api.articles.getStagedArticleById.useQuery(
-      {
-        articleId: slug,
-      },
-      { enabled: !!slug }
-    );
+  const { data: articleData, isLoading } = api.articles.getArticleById.useQuery(
+    {
+      articleId: slug,
+    },
+    { enabled: !!slug }
+  );
 
   const [article, setArticle] = useState<undefined | string>(undefined);
 

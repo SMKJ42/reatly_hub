@@ -6,12 +6,16 @@ export function AccountAdmin() {
     api.admin.getPublishRequestCount.useQuery();
 
   return (
-    <>
-      <h1 className="w-full text-center text-lg">Admin</h1>
-      <p>Articles Pending Approval: {publishRequestCount}</p>
-      <div className="flex w-full justify-around">
-        <Link href="/user/admin/review-articles">Review</Link>
+    <div className="flex w-full items-center justify-between ">
+      <p className="w-full">Articles Pending Approval: {publishRequestCount}</p>
+      <div className="flex justify-around">
+        <Link
+          href="/user/admin/review-articles"
+          className="whitespace-nowrap rounded-lg bg-white px-4 py-1 text-black"
+        >
+          Review Pending
+        </Link>
       </div>
-    </>
+    </div>
   );
 }
