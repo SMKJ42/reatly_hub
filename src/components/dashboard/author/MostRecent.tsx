@@ -77,7 +77,7 @@ function DraftArticleStatus(mostRecent: mostRecent) {
   return (
     <>
       {mostRecent.status === "draft" && (
-        <div className="ml-8 mt-4 flex  items-center ">
+        <div className="ml-8 mt-4 flex items-center ">
           <p className="mr-4 ">
             <span className="text-lg font-semibold">Status: </span>
             Draft
