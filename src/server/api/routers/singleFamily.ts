@@ -256,4 +256,22 @@ export const singleFamilyRouter = createTRPCRouter({
     });
     return singleFamilyPod;
   }),
+
+  getMostRecent: privateProcedure.query(async ({ ctx }) => {
+    const authorId = ctx.userId;
+
+    const { success } = await ratelimit.limit(authorId);
+    checkRateLimit(success);
+
+    const singleFamilyPod = await ctx.prisma.singleFamily.findMany({
+      take: 4,
+      where: {
+        authorId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    return singleFamilyPod;
+  }),
 });

@@ -1,5 +1,5 @@
 import { type ReactElement, useState, useEffect } from "react";
-import UserLayout from "../../../components/layouts/UserLayout";
+import UserLayout from "~/components/layouts/UserLayout";
 import { api } from "~/utils/api";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 import type {
@@ -7,14 +7,19 @@ import type {
   InferGetServerSidePropsType,
 } from "next";
 import { serverHelperWithContext } from "~/lib/serverHelperWithContext";
+import { useRouter } from "next/router";
+import { useUser } from "@clerk/nextjs";
+import { adminPriveledges } from "~/lib/priviledges";
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext<{ id: string }>
 ) {
   const helpers = await serverHelperWithContext(context);
-
   const query = context.query;
-
+  /*
+   * Prefetching the `post.byId` query.
+   * `prefetch` does not return the result and never throws - if you need that behavior, use `fetch` instead.
+   */
   await helpers.articles.getStagedArticleById.prefetch({
     articleId: query.slug as string,
   });
@@ -30,9 +35,28 @@ export async function getServerSideProps(
 const Articles = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) => {
-  console.log(props);
+  const userStatus = useUser();
+  const router = useRouter();
   const { query } = props;
   const slug = query?.slug as string;
+
+  const { mutate: publish } = api.author.acceptPublishRequest.useMutation({
+    onSuccess: (opts) => {
+      void router.push(`/articles/${slug}}`);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const { mutate: deny } = api.author.denyPublishRequest.useMutation({
+    onSuccess: (opts) => {
+      void router.push("/admin/review-articles");
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   const { data: articleData, isLoading } =
     api.articles.getStagedArticleById.useQuery(
@@ -66,6 +90,37 @@ const Articles = (
           dangerouslySetInnerHTML={article ? { __html: article } : undefined}
         ></div>
       </article>
+      <div>
+        {adminPriveledges.includes(
+          userStatus.user?.publicMetadata?.role as string
+        ) && (
+          <>
+            <button
+              className="mb-8 mr-8 rounded-lg bg-white px-4 py-1 text-black"
+              onClick={() => {
+                publish({ articleId: slug });
+              }}
+            >
+              Publish
+            </button>
+            <button
+              className="mb-8 rounded-lg bg-white px-4 py-1 text-black"
+              onClick={() => {
+                deny({ articleId: slug });
+              }}
+            >
+              Deny
+            </button>
+          </>
+        )}
+        <button
+          onClick={() => {
+            void router.back();
+          }}
+        >
+          Back
+        </button>
+      </div>
     </div>
   );
 };

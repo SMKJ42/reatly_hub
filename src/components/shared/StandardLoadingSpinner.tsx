@@ -4,16 +4,13 @@ interface LoadingSpinnerProps {
 }
 
 export const StandardLoadingSpinner = (props: LoadingSpinnerProps) => {
-  let { size, color } = props;
-
-  if (!color) color = "fill-primary200";
-  if (!size) size = 16;
+  const { size = "52", color = "primary200" } = props;
 
   return (
-    <>
+    <div className="flex h-full w-full items-center justify-center">
       <svg
         aria-hidden="true"
-        className={`mr-2 animate-spin ${color} text-gray-200 dark:text-gray-600`}
+        className={`mr-2 animate-spin fill-${color} text-gray-200 dark:text-gray-600`}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -30,6 +27,6 @@ export const StandardLoadingSpinner = (props: LoadingSpinnerProps) => {
         />
       </svg>
       <span className="sr-only">Loading...</span>
-    </>
+    </div>
   );
 };

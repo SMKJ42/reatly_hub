@@ -44,22 +44,24 @@ export default function UserLayout({
 
   return (
     <div
-      className={`min-h-screen ${inter.className} bg-bg10 text-black transition-colors duration-500 dark:bg-darkBg100 dark:text-white`}
+      className={`min-h-screen ${inter.className} text-black transition-colors duration-500 dark:bg-darkBg100 dark:text-white`}
     >
-      <LargeNav
-        activeDropDown={activeDropDown}
-        setActiveDropDown={setActiveDropDown}
-        dropDownOption={dropDownOption}
-        setDropDownOption={setDropDownOption}
-      />
-      <MiniNav
-        mini={mini}
-        setMini={setMini}
-        activeDropDown={activeDropDown}
-        setActiveDropDown={setActiveDropDown}
-        dropDownOption={dropDownOption}
-        setDropDownOption={setDropDownOption}
-      />
+      <div className="">
+        <LargeNav
+          activeDropDown={activeDropDown}
+          setActiveDropDown={setActiveDropDown}
+          dropDownOption={dropDownOption}
+          setDropDownOption={setDropDownOption}
+        />
+        <MiniNav
+          mini={mini}
+          setMini={setMini}
+          activeDropDown={activeDropDown}
+          setActiveDropDown={setActiveDropDown}
+          dropDownOption={dropDownOption}
+          setDropDownOption={setDropDownOption}
+        />
+      </div>
       <main
         onMouseEnter={() => {
           setActiveDropDown(false);
@@ -87,7 +89,7 @@ function LargeNavButtons(props: LargeNavProps) {
           className="flex flex-1"
           onMouseEnter={() => setActiveDropDown(false)}
         ></div>
-        <Link href="/user">Dashboard</Link>
+        <Link href="/user/dashboard">Dashboard</Link>
         <div
           className="flex flex-1"
           onMouseEnter={() => setActiveDropDown(false)}

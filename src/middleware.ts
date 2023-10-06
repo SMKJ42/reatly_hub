@@ -2,7 +2,14 @@ import { authMiddleware } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 export default authMiddleware({
-  publicRoutes: ["/", "/public/articles", "/api/trpc/[trpc]"],
+  publicRoutes: [
+    "/",
+    "/articles",
+    "/articles/[slug]",
+    "puclic/:path*",
+    "/api/trpc/[trpc]",
+    "api/cron/[cron]",
+  ],
   afterAuth(auth, req) {
     if (!auth.userId && !auth.isPublicRoute) {
       const redirectUrl = new URL(req.url);
@@ -11,10 +18,10 @@ export default authMiddleware({
     }
     if (auth.userId && auth.isPublicRoute) {
       const redirectUrl = new URL(req.url);
-      redirectUrl.pathname = "/user/calculators/history";
-      if (req.url.includes("user/writeArticle") && !auth.orgRole) {
-        redirectUrl.pathname = "/user";
+      if (redirectUrl.pathname.includes("/articles")) {
+        return;
       }
+      redirectUrl.pathname = "/user/calculators/history";
       return NextResponse.redirect(redirectUrl);
     }
   },

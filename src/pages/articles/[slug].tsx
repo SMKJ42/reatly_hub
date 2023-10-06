@@ -1,5 +1,4 @@
 import { type ReactElement, useState, useEffect } from "react";
-import UserLayout from "../../../components/layouts/UserLayout";
 import { api } from "~/utils/api";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 import type {
@@ -7,6 +6,9 @@ import type {
   InferGetServerSidePropsType,
 } from "next";
 import { serverHelperWithContext } from "~/lib/serverHelperWithContext";
+import PublicLayout from "~/components/layouts/PublicLayout";
+import UserLayout from "../../components/layouts/UserLayout";
+import { useUser } from "@clerk/nextjs";
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext<{ id: string }>
@@ -30,9 +32,18 @@ export async function getServerSideProps(
 const Articles = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) => {
-  console.log(props);
   const { query } = props;
   const slug = query?.slug as string;
+  const userStatus = useUser();
+  if (userStatus.isSignedIn) {
+    Articles.getLayout = function getLayout(page: ReactElement) {
+      return <UserLayout>{page}</UserLayout>;
+    };
+  } else {
+    Articles.getLayout = function getLayout(page: ReactElement) {
+      return <PublicLayout>{page}</PublicLayout>;
+    };
+  }
 
   const { data: articleData, isLoading } =
     api.articles.getStagedArticleById.useQuery(
@@ -71,7 +82,7 @@ const Articles = (
 };
 
 Articles.getLayout = function getLayout(page: ReactElement) {
-  return <UserLayout>{page}</UserLayout>;
+  return <PublicLayout>{page}</PublicLayout>;
 };
 
 export default Articles;
