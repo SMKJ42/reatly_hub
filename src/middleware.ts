@@ -4,11 +4,16 @@ import { NextResponse } from "next/server";
 export default authMiddleware({
   publicRoutes: [
     "/",
-    "/articles/[slug]",
+    "/articles/:path*",
     "/public/:path*",
-    "/api/trpc/[trpc]",
-    "/api/cron/[cron]",
+    "/articles/:path*",
+    "/api/trpc/mortgageRates.getAll",
+    "/api/trpc/articles(.*)",
+    "/",
   ],
+
+  apiRoutes: ["/api/trpc", "/api/trpc/(.*)", "/api/cron", "/api/cron/:path*"],
+
   afterAuth(auth, req) {
     if (!auth.userId && !auth.isPublicRoute) {
       const redirectUrl = new URL(req.url);

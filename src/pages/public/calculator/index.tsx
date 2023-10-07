@@ -55,7 +55,7 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
           e.preventDefault();
         }}
       >
-        <div className="sfh-deal-analysis flex w-full flex-col items-center">
+        <div className="sfh-deal-analysis flex w-full flex-col items-center px-8">
           <div className="container mx-4 grid w-fit grid-cols-1 justify-center gap-x-12 md:w-full md:grid-cols-2">
             <div className="address col-s flex flex-col items-center justify-center py-2 md:col-span-2 md:flex-row">
               <label className="mx-4 text-lg font-semibold" aria-required>

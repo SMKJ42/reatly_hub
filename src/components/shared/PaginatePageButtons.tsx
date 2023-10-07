@@ -119,8 +119,6 @@ function NavButton({
   currentPage?: number;
   value?: number;
 }) {
-  console.log(currentPage === value, currentPage, value);
-
   return (
     <button
       className={`mx-1 flex h-8 w-8 items-center justify-center rounded-lg dark:text-black ${
