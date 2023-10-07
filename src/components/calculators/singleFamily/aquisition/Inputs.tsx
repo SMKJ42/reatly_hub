@@ -57,10 +57,13 @@ const SFHAquisitionInputs = (props: {
   return (
     <div>
       <div className="price input-container flex-col md:flex-row">
-        <label className="flex items-center">Purchase price: </label>
+        <label className="flex items-center" htmlFor="pruchase price">
+          Purchase price:
+        </label>
         <div className="flex items-center">
           <p className="mt-2 rounded-l-sm bg-bg200 px-1 py-px text-black">$</p>
           <input
+            name="pruchase price"
             type="text"
             value={singleFamily.price}
             onChange={(e) => {
@@ -73,6 +76,7 @@ const SFHAquisitionInputs = (props: {
 
       <div className="loan-type input-container flex-col md:flex-row ">
         <label
+          htmlFor="loan type"
           className="flex w-full items-center md:justify-between"
           onMouseLeave={() =>
             setMortgageObject({ code: null, name: null, updatedAt: null })
@@ -119,6 +123,7 @@ const SFHAquisitionInputs = (props: {
         )}
 
         <select
+          name="loan type"
           value={singleFamily.loanType}
           onChange={(e) => {
             dispatch(updateLoanType(e.target.value));
@@ -138,13 +143,17 @@ const SFHAquisitionInputs = (props: {
         </select>
       </div>
       <div className="down-payment flex w-full flex-col md:flex-row md:items-center">
-        <label className="mr-4 whitespace-nowrap">Down payment:</label>
+        <label className="mr-4 whitespace-nowrap" htmlFor="down payment">
+          Down payment:
+        </label>
         <div className="flex justify-between">
           <div className="flex w-full">
             <p className="mt-2 rounded-l-sm bg-bg200 px-1 py-px text-black">
               $
             </p>
             <input
+              name="down payment"
+              aria-label="down payment dollar"
               type="text"
               value={singleFamily.downPaymentDoll}
               className="w-[120%] grow rounded-l-none"
@@ -155,7 +164,9 @@ const SFHAquisitionInputs = (props: {
           </div>
           <div className="flex justify-end">
             <input
+              name="down payment"
               type="text"
+              aria-label="down payment percent"
               className="w-5/12 rounded-r-none"
               value={singleFamily.downPaymentPerc}
               onChange={(e) => {
@@ -173,9 +184,12 @@ const SFHAquisitionInputs = (props: {
         </div>
       </div>
       <div className="interest input-container flex-col md:flex-row">
-        <label className="flex items-center">Interest:</label>
+        <label className="flex items-center" htmlFor="interest">
+          Interest:
+        </label>
         <div className="flex items-center">
           <input
+            name="interest"
             type="text"
             value={singleFamily.interest}
             className="w-full rounded-r-none"
@@ -187,8 +201,11 @@ const SFHAquisitionInputs = (props: {
         </div>
       </div>
       <div className="loan-term input-container flex-col md:flex-row">
-        <label className="flex items-center">Term: </label>
+        <label className="flex items-center" htmlFor="loan term">
+          Term:
+        </label>
         <input
+          name="loan term"
           type="text"
           value={singleFamily.loanTerm}
           onChange={(e) => {
@@ -198,13 +215,17 @@ const SFHAquisitionInputs = (props: {
       </div>
 
       <div className="closing-costs flex w-full flex-col md:flex-row md:items-center">
-        <label className="mr-4 whitespace-nowrap">Closing costs:</label>
+        <label className="mr-4 whitespace-nowrap" htmlFor="closing costs">
+          Closing costs:
+        </label>
         <div className="flex justify-between">
           <div className="flex w-full">
             <p className="mt-2 rounded-l-sm bg-bg200 px-1 py-px text-black">
               $
             </p>
             <input
+              name="closing costs"
+              aria-label="closing costs dollar"
               type="text"
               value={
                 singleFamily.closingCostsDoll === "0"
@@ -219,6 +240,8 @@ const SFHAquisitionInputs = (props: {
           </div>
           <div className="flex justify-end">
             <input
+              name="closing costs"
+              aria-label="closing costs percent"
               type="text"
               value={
                 singleFamily.closingCostsPerc === "0"
@@ -238,8 +261,11 @@ const SFHAquisitionInputs = (props: {
       </div>
 
       <div className="repairs input-container flex-col md:flex-row">
-        <label className="flex items-center">Repairs: </label>
+        <label className="flex items-center" htmlFor="repairs">
+          Repairs:
+        </label>
         <input
+          name="repairs"
           type="text"
           value={singleFamily.repairs === "0" ? "" : singleFamily.repairs}
           onChange={(e) => {

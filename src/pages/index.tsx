@@ -2,10 +2,14 @@ import type { ReactElement } from "react";
 import PublicLayout from "../components/layouts/PublicLayout";
 import type { NextPageWithLayout } from "./_app";
 import Image from "next/image";
+import Head from "next/head";
 
 const Home: NextPageWithLayout = () => {
   return (
     <div className="flex flex-col items-center text-center">
+      <Head>
+        <title>Realty-hub Home</title>
+      </Head>
       <div className="mb-8 mt-8">
         <h1 className="text-3xl font-bold"> Realty-Hub </h1>
         <p className="italic">Our goal is to educate</p>

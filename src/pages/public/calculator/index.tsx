@@ -19,6 +19,7 @@ import { api } from "~/utils/api";
 import { strNumsInput } from "~/lib/numberDisplay";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 import PublicLayout from "~/components/layouts/PublicLayout";
+import Head from "next/head";
 
 const SingleFamilyCalc: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
@@ -46,6 +47,9 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
 
   return (
     <div>
+      <Head>
+        <title>Realty-hub SFH Calculator</title>
+      </Head>
       <form
         onSubmit={(e) => {
           e.preventDefault();

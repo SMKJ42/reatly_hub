@@ -8,6 +8,7 @@ import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 import { AccountSFH } from "~/components/dashboard/pod/AccountSFH";
+import Head from "next/head";
 
 const Dashboard: NextPageWithLayout = () => {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -22,6 +23,9 @@ const Dashboard: NextPageWithLayout = () => {
 
   return (
     <div className="p-8 pt-4 [&>*]:my-4">
+      <Head>
+        <title>Realty-hub Dashboard</title>
+      </Head>
       {adminPriveledges.includes(user.publicMetadata.role as string) && (
         <AccountAdmin />
       )}

@@ -5,6 +5,7 @@ import { api } from "~/utils/api";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 import { SFHPodCard } from "~/components/calculators/history/PodCard";
 import Link from "next/link";
+import Head from "next/head";
 
 const Dashboard: NextPageWithLayout = () => {
   const { data: podData, isLoading: loadingHistory } =
@@ -33,6 +34,9 @@ const Dashboard: NextPageWithLayout = () => {
 
   return (
     <div>
+      <Head>
+        <title>Realty-hub History</title>
+      </Head>
       <div className="history-container grid grid-cols-2">
         {podData?.map((pod) => {
           return (

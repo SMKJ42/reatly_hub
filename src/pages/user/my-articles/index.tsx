@@ -5,6 +5,7 @@ import { api } from "~/utils/api";
 import Link from "next/link";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 import { NoArticlesFound } from "~/components/articles/NoArticlesFound";
+import Head from "next/head";
 
 interface Direction {
   direction: 1 | -1;
@@ -21,6 +22,9 @@ const MyArticles: NextPageWithLayout = () => {
 
   return (
     <div className="flex w-full flex-col items-center">
+      <Head>
+        <title>Realty-hub My Articles</title>
+      </Head>
       <div className="p-8 sm:w-3/4 lg:w-2/3 ">
         <div className="flex w-full justify-around pb-4">
           <button

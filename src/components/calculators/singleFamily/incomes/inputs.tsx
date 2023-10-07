@@ -13,8 +13,11 @@ const SFHIncomeInputs = () => {
   return (
     <div className="grid grid-cols-2 gap-x-4 md:grid-cols-1 md:gap-0">
       <div className="rent-per input-container flex-col md:flex-row">
-        <label className="flex items-center">Rent per unit: </label>
+        <label className="flex items-center" htmlFor="rent per unit">
+          Rent per unit:
+        </label>
         <input
+          name="rent per unit"
           type="text"
           className="max-w-xs !bg-green-200"
           value={singleFamily.rents === "0" ? "" : singleFamily.rents}
@@ -24,8 +27,11 @@ const SFHIncomeInputs = () => {
         />
       </div>
       <div className="other input-container flex-col md:flex-row">
-        <label className="flex items-center">Other income: </label>
+        <label className="flex items-center" htmlFor="other income">
+          Other income:
+        </label>
         <input
+          name="other income"
           type="text"
           className="max-w-xs !bg-green-200"
           value={singleFamily.incOther === "0" ? "" : singleFamily.incOther}

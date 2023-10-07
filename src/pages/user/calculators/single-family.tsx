@@ -22,6 +22,7 @@ import { getSFHSubmit } from "~/components/calculators/singleFamily/getSFSubmit"
 import { useRouter } from "next/router";
 import { strNumsInput } from "~/lib/numberDisplay";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
+import Head from "next/head";
 
 const SingleFamilyCalc: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
@@ -82,6 +83,9 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
 
   return (
     <div>
+      <Head>
+        <title>Realty-hub SFH Calculator</title>
+      </Head>
       {success && <Success setSuccess={setSuccess} />}
       <form
         onSubmit={(e) => {

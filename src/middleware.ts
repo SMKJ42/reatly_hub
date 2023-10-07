@@ -4,10 +4,10 @@ import { NextResponse } from "next/server";
 export default authMiddleware({
   publicRoutes: [
     "/",
-    "/articles/:path*",
+    "/articles/[slug]",
     "/public/:path*",
-    "/api/trpc/:path*",
-    "/api/cron/:path*",
+    "/api/trpc/[trpc]",
+    "/api/cron/[cron]",
   ],
   afterAuth(auth, req) {
     if (!auth.userId && !auth.isPublicRoute) {

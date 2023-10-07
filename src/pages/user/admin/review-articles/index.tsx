@@ -3,6 +3,7 @@ import UserLayout from "~/components/layouts/UserLayout";
 import type { NextPageWithLayout } from "~/pages/_app";
 import Link from "next/link";
 import { api } from "~/utils/api";
+import Head from "next/head";
 
 const Articles: NextPageWithLayout = () => {
   const ctx = api.useContext();
@@ -16,7 +17,10 @@ const Articles: NextPageWithLayout = () => {
     api.author.denyPublishRequest.useMutation();
 
   return (
-    <>
+    <div>
+      <Head>
+        <title>Realty-hub Review Articles</title>
+      </Head>
       <h1 className=""> Articles :) </h1>
       {articles?.map((article) => (
         <div key={article.id}>
@@ -35,7 +39,7 @@ const Articles: NextPageWithLayout = () => {
           </button>
         </div>
       ))}
-    </>
+    </div>
   );
 };
 
