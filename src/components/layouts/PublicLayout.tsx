@@ -70,8 +70,8 @@ function LargeNav() {
     <nav className="hidden h-14 px-4 md:flex">
       <HomeIcon />
       <LargeNavButtons />
-      <div className="account-manager mx-4 flex justify-around">
-        <div className="sign-out-btn w-42 ml-8">
+      <div className="account-manager mx-6 flex justify-around">
+        <div className="sign-out-btn w-42 ml-12">
           {user.isLoaded && user.isSignedIn ? (
             <>
               <Link href="/user/dashboard">Dashboard</Link>

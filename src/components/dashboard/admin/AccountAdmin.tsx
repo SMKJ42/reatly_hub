@@ -11,7 +11,7 @@ export function AccountAdmin() {
       <div className="flex justify-around">
         <Link
           href="/user/admin/review-articles"
-          className="whitespace-nowrap rounded-lg bg-white px-4 py-1 text-black"
+          className="whitespace-nowrap rounded-lg bg-darkBg300 px-4 py-1 text-white dark:bg-white dark:text-black "
         >
           Review Pending
         </Link>

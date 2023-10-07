@@ -2,7 +2,7 @@ import { type ReactElement } from "react";
 import UserLayout from "~/components/layouts/UserLayout";
 import type { NextPageWithLayout } from "../../_app";
 import { adminPriveledges, authorPriveledges } from "~/lib/priviledges";
-import { AccountAuthor } from "~/components/dashboard/author/AccountAuthor";
+import { AccountArticles } from "~/components/dashboard/articles/AccountAuthor";
 import { AccountAdmin } from "~/components/dashboard/admin/AccountAdmin";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
@@ -26,7 +26,7 @@ const Dashboard: NextPageWithLayout = () => {
         <AccountAdmin />
       )}
       {authorPriveledges.includes(user.publicMetadata.role as string) ? (
-        <AccountAuthor />
+        <AccountArticles />
       ) : (
         <>
           <p>Want to be a blog contributor?</p>
