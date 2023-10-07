@@ -12,8 +12,6 @@ export default authMiddleware({
     "/",
   ],
 
-  apiRoutes: ["/api/trpc", "/api/trpc/(.*)", "/api/cron", "/api/cron/:path*"],
-
   afterAuth(auth, req) {
     if (!auth.userId && !auth.isPublicRoute) {
       const redirectUrl = new URL(req.url);
@@ -22,7 +20,7 @@ export default authMiddleware({
     }
     if (auth.userId && auth.isPublicRoute) {
       const redirectUrl = new URL(req.url);
-      if (redirectUrl.pathname.includes("/articles")) {
+      if (redirectUrl.pathname.includes("/api/trpc/")) {
         return;
       }
       redirectUrl.pathname = "/user/dashboard";
