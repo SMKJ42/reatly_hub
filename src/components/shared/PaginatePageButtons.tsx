@@ -22,11 +22,7 @@ export function PaginatePageButtons(props: PaginatePageProps) {
   const [pageOpts, setPageOpts] = useState<number[] | null>([]);
 
   useEffect(() => {
-    if (page === 1) {
-      setPageOpts([1, 2, 3]);
-    } else if (page === pageMax) {
-      setPageOpts([page - 2, page - 1, page]);
-    } else setPageOpts([page - 1, page, page + 1]);
+    setPageOpts(changePage(page || 1, pageMax || 1));
   }, [page]);
 
   return (
@@ -68,6 +64,16 @@ export function PaginatePageButtons(props: PaginatePageProps) {
       </div>
     </div>
   );
+}
+
+function changePage(page: number, pageMax: number) {
+  const arr = [];
+  for (let i = 0; i < 3; i++) {
+    if (page + i <= pageMax) {
+      arr.push(page + i);
+    }
+  }
+  return arr;
 }
 
 function ArrowLeft() {

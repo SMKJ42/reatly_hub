@@ -267,7 +267,13 @@ export const articleAuthorRouter = t.router({
         },
       });
 
-      return articles;
+      const count = await prisma.staged_article.count({
+        where: {
+          authorId: ctx.userId,
+        },
+      });
+
+      return { articles, count };
     }),
 
   getAuthorsArticles: authorRouter
@@ -290,7 +296,13 @@ export const articleAuthorRouter = t.router({
         },
       });
 
-      return articles;
+      const count = await prisma.article.count({
+        where: {
+          authorId: ctx.userId,
+        },
+      });
+
+      return { articles, count };
     }),
 });
 

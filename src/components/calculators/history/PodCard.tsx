@@ -75,10 +75,10 @@ function ConfirmDelete(props: {
     });
 
   return (
-    <div className="absolute flex h-full w-full items-center justify-center">
+    <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-[rgb(0,0,0,0.3)]">
       {isDeleting ? <StandardLoadingSpinner /> : null}
 
-      <div className="flex h-auto flex-col justify-center rounded-lg bg-primary200 p-8">
+      <div className="bg-darkBg-300 flex h-auto flex-col justify-center rounded-lg bg-white p-8 text-white dark:text-black">
         <h1 className="text-center">Are you sure?</h1>
         <h2 className="text-center">This action cannot be undone</h2>
         <div className="mt-4 flex justify-center">

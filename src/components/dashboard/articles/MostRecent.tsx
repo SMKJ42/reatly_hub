@@ -84,9 +84,9 @@ function DraftArticleStatus(mostRecent: mostRecent) {
           </p>
           <Link
             href={`/user/write-article/${mostRecent?.id}`}
-            className="ml-8 mt-2 rounded-lg bg-white px-4 py-1 text-black"
+            className="ml-8 mt-2 rounded-lg bg-white px-4 py-[1px] text-black"
           >
-            Resume work...
+            Resume work
           </Link>
         </div>
       )}

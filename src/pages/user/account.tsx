@@ -44,9 +44,6 @@ const UserAccount: NextPageWithLayout = () => {
             ></Image>
           </div>
           {user && <p className="mt-2">Role: {role || ""}</p>}
-          <button className="mb-1 mt-2 rounded-lg bg-white px-4 py-1 text-black">
-            Edit Image
-          </button>
         </div>
       </div>
     </div>

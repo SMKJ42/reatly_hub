@@ -1,16 +1,16 @@
 import PublicLayout from "~/components/layouts/PublicLayout";
-import type { NextPageWithLayout } from "../_app";
+import type { NextPageWithLayout } from "../../_app";
 import Head from "next/head";
 
-const termsOfService: NextPageWithLayout = () => {
+const privacyPolicy: NextPageWithLayout = () => {
   return <></>;
 };
 
-termsOfService.getLayout = function getLayout(page) {
+privacyPolicy.getLayout = function getLayout(page) {
   return (
     <PublicLayout>
       <Head>
-        <title>Realty-hub Terms of Service</title>
+        <title>Realty-hub Privacy Policy</title>
         <meta name="description" content="Realty-hub Privacy Policy page" />
       </Head>
       {page}
@@ -18,4 +18,4 @@ termsOfService.getLayout = function getLayout(page) {
   );
 };
 
-export default termsOfService;
+export default privacyPolicy;

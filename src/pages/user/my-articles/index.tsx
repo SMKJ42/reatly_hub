@@ -6,6 +6,7 @@ import Link from "next/link";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 import { NoArticlesFound } from "~/components/articles/NoArticlesFound";
 import Head from "next/head";
+import { PaginatePageButtons } from "~/components/shared/PaginatePageButtons";
 
 interface Direction {
   direction: 1 | -1;
@@ -48,17 +49,10 @@ const MyArticles: NextPageWithLayout = () => {
             Staged
           </button>
         </div>
-        <div className="[&>*]:border-b">
-          {articleType === "published" && <PublishedArticles />}
-          {articleType === "staged" && <StagedArticles />}
-        </div>
-        <div className="flex w-full justify-center">
-          <button>Left Carrot</button>
-          <button>...</button>
-          <button>current</button>
-          <button>...</button>
-          <button>Right Carrot</button>
-        </div>
+        {/* <div > */}
+        {articleType === "published" && <PublishedArticles />}
+        {articleType === "staged" && <StagedArticles />}
+        {/* </div> */}
       </div>
     </div>
   );
@@ -67,9 +61,10 @@ const MyArticles: NextPageWithLayout = () => {
 function PublishedArticles() {
   const [page, setPage] = useState(1);
 
-  const { data: articles, isLoading } = api.author.getAuthorsArticles.useQuery({
-    page,
-  });
+  const { data: articleData, isLoading } =
+    api.author.getAuthorsArticles.useQuery({
+      page,
+    });
 
   function handlePageNavigation(props: PageNavigationProps) {
     if ("direction" in props) {
@@ -96,32 +91,45 @@ function PublishedArticles() {
     },
   });
 
+  function paginateTo(e: number) {
+    setPage((prev) => prev + e);
+  }
+
   return (
     <>
-      {articles && articles.length === 0 && <NoArticlesFound />}
-      {isLoading && <StandardLoadingSpinner />}
-      {articles?.map((article) => (
-        <div key={article.id}>
-          <h2 className="text-2xl font-semibold">{article.title}</h2>
-          <p className="text-xl">{article.preview}...</p>
-          <div className="py-2">
-            <Link
-              href="/user/articles/[id]"
-              as={`/user/articles/${article.id}`}
-              className="rounded-md border px-4 py-1 shadow-inner dark:shadow-white"
-            >
-              Read more
-            </Link>
-          </div>
-          <button
-            onClick={() => {
-              deleteArticle({ articleId: article.id });
-            }}
-          >
-            Delete
-          </button>
-        </div>
-      ))}
+      <div className="[&>*]:border-b">
+        {articleData &&
+          articleData.articles &&
+          articleData.articles.length === 0 && <NoArticlesFound />}
+        {isLoading && <StandardLoadingSpinner />}
+        {articleData &&
+          articleData.articles?.map((article) => (
+            <div key={article.id}>
+              <h2 className="text-2xl font-semibold">{article.title}</h2>
+              <p className="text-xl">{article.preview}...</p>
+              <div className="py-2">
+                <Link
+                  href="/user/articles/[id]"
+                  as={`/user/articles/${article.id}`}
+                  className="rounded-md border px-4 py-1 shadow-inner dark:shadow-white"
+                >
+                  Read more
+                </Link>
+              </div>
+              <button
+                onClick={() => {
+                  deleteArticle({ articleId: article.id });
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+      </div>
+      <PaginatePageButtons
+        paginateTo={paginateTo}
+        pageMax={articleData && Math.ceil(articleData.count / 10)}
+      />
     </>
   );
 }
@@ -129,7 +137,7 @@ function PublishedArticles() {
 function StagedArticles() {
   const [page, setPage] = useState(1);
 
-  const { data: articles, isLoading } =
+  const { data: articleData, isLoading } =
     api.author.getAuthorsStagedArticles.useQuery({
       page,
     });
@@ -159,33 +167,46 @@ function StagedArticles() {
     },
   });
 
+  function paginateTo(e: number) {
+    setPage((prev) => prev + e);
+  }
+
   return (
-    <>
-      {articles && articles.length === 0 && <div>No articles found</div>}
-      {isLoading && <StandardLoadingSpinner />}
-      {articles?.map((article) => (
-        <div key={article.id}>
-          <h2 className="text-2xl font-semibold">{article.title}</h2>
-          <p className="text-xl">{article.preview}...</p>
-          <div className="py-2">
-            <Link
-              href="/user/articles/[id]"
-              as={`/user/articles/${article.id}`}
-              className="rounded-md border px-4 py-1 shadow-inner dark:shadow-white"
-            >
-              Read more
-            </Link>
-          </div>
-          <button
-            onClick={() => {
-              deleteArticle({ articleId: article.id });
-            }}
-          >
-            Delete
-          </button>
-        </div>
-      ))}
-    </>
+    <div>
+      <div className="[&>*]:border-b">
+        {articleData &&
+          articleData.articles &&
+          articleData.articles.length === 0 && <NoArticlesFound />}
+        {isLoading && <StandardLoadingSpinner />}
+        {articleData &&
+          articleData.articles?.map((article) => (
+            <div key={article.id}>
+              <h2 className="text-2xl font-semibold">{article.title}</h2>
+              <p className="text-xl">{article.preview}...</p>
+              <div className="py-2">
+                <Link
+                  href="/user/articles/[id]"
+                  as={`/user/articles/${article.id}`}
+                  className="rounded-md border px-4 py-1 shadow-inner dark:shadow-white"
+                >
+                  Read more
+                </Link>
+              </div>
+              <button
+                onClick={() => {
+                  deleteArticle({ articleId: article.id });
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+      </div>
+      <PaginatePageButtons
+        paginateTo={paginateTo}
+        pageMax={articleData && Math.ceil(articleData.count / 10)}
+      />
+    </div>
   );
 }
 

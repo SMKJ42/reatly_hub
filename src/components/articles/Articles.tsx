@@ -54,7 +54,7 @@ export const Articles = () => {
         </div>
         <PaginatePageButtons
           paginateTo={paginateTo}
-          pageMax={articleData && articleData.count / 10}
+          pageMax={articleData && Math.ceil(articleData.count / 10)}
         />
       </div>
     </div>
