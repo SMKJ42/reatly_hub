@@ -1,4 +1,9 @@
-import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import {
+  SignInButton,
+  SignOutButton,
+  SignUpButton,
+  useUser,
+} from "@clerk/nextjs";
 import Link from "next/link";
 import {
   type Dispatch,
@@ -78,7 +83,11 @@ function LargeNav() {
               <SignOutButton />
             </>
           ) : (
-            <SignInButton />
+            <>
+              <SignUpButton />
+              <div className="w-4"></div>
+              <SignInButton />
+            </>
           )}
         </div>
       </div>
@@ -105,13 +114,20 @@ function MiniNavButtons() {
           <Link href="/articles">Articles</Link>
         </div>
 
-        <div className="sign-out-btn w-42 mt-2">
-          {user.isLoaded && user.isSignedIn ? (
+        {user.isLoaded && user.isSignedIn ? (
+          <div className="sign-out-btn w-42 mt-2">
             <SignOutButton />
-          ) : (
-            <SignInButton />
-          )}
-        </div>
+          </div>
+        ) : (
+          <>
+            <div className="sign-out-btn w-42 mt-2">
+              <SignUpButton />
+            </div>
+            <div className="sign-out-btn w-42 mt-2">
+              <SignInButton />
+            </div>
+          </>
+        )}
       </div>
     </>
   );
