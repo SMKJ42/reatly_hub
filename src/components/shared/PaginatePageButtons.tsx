@@ -119,11 +119,15 @@ function NavButton({
   currentPage?: number;
   value?: number;
 }) {
+  console.log(currentPage === value, currentPage, value);
+
   return (
     <button
-      className={`mx-1 flex h-8 w-8 items-center justify-center rounded-lg text-black hover:bg-bg300 ${
-        currentPage && currentPage === value ? "bg-bg300" : "bg-white"
-      }`}
+      className={`mx-1 flex h-8 w-8 items-center justify-center rounded-lg dark:text-black ${
+        currentPage && currentPage === value
+          ? "bg-bg200 dark:bg-bg300"
+          : "bg-bg300 dark:bg-white"
+      } `}
       onClick={() => {
         onClick();
       }}

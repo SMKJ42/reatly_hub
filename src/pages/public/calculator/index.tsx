@@ -61,20 +61,21 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
               <input
                 value={address}
                 type="text"
-                className="mx-4 w-full md:w-1/3"
+                className="mx-4 w-full md:w-1/3 "
                 onChange={(e) => {
                   dispatch(updateAddress(e.target.value));
                 }}
                 required
               />
-              <input
-                type="button"
-                value="reset"
-                className="px-2"
+              <button
+                type="reset"
+                className="mx-2 mt-2 rounded-lg bg-darkBg200 px-4 py-1 text-white hover:cursor-pointer dark:bg-white dark:text-black"
                 onClick={() => {
                   dispatch(resetSFH());
                 }}
-              />
+              >
+                Reset
+              </button>
             </div>
             <SFHAquisitionInputs loanProducts={loanProducts} />
             <SFHAquisitionOutputs />
