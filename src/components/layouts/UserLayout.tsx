@@ -111,10 +111,6 @@ function LargeNavButtons(props: LargeNavProps) {
           className="flex flex-1"
           onMouseEnter={() => setActiveDropDown(false)}
         ></div>
-        <div
-          className="flex flex-1"
-          onMouseEnter={() => setActiveDropDown(false)}
-        ></div>
       </div>
     </>
   );

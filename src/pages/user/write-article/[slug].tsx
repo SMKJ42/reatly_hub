@@ -18,10 +18,8 @@ const ReactQuill = dynamic(
 );
 
 const WriteArticle: NextPageWithLayout = () => {
-  //value holds the content of the editor in HTML format
   const router = useRouter();
-  const articleId =
-    router.query[0] === "new-article" ? "" : (router.query[0] as string);
+  const articleId = router.query.slug as string;
 
   const { data: article, isLoading } =
     api.articles.getStagedArticleById.useQuery(
@@ -31,17 +29,23 @@ const WriteArticle: NextPageWithLayout = () => {
       { enabled: !!articleId }
     );
 
+  const { mutate: deleteArticle } = api.author.deleteStagedArticle.useMutation({
+    onSuccess: (opts) => {
+      console.log("success");
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   const [value, setValue] = useState("");
   const [title, setTitle] = useState("");
 
   useEffect(() => {
     if (!article) return;
-    const _article = article?.content;
-    setValue(_article);
+    setValue(article.content);
     setTitle(article.title);
   }, [article]);
-
-  console.log(value);
 
   const { mutate: create, isLoading: isSaving } =
     api.author.stageArticle.useMutation({
@@ -68,6 +72,7 @@ const WriteArticle: NextPageWithLayout = () => {
             placeholder="Title"
             required
             className="w-1/2 px-1 text-xl"
+            value={title}
             onChange={(e) => {
               setTitle(e.target.value);
             }}
@@ -84,6 +89,16 @@ const WriteArticle: NextPageWithLayout = () => {
             <button className="rounded-lg bg-bg200 px-2 py-1 text-black">
               Request to Publish
             </button>
+            {articleId && (
+              <button
+                className="rounded-lg bg-bg200 px-2 py-1 text-black"
+                onClick={() => {
+                  deleteArticle({ articleId: articleId });
+                }}
+              >
+                Delete
+              </button>
+            )}
           </div>
         </div>
       </form>
@@ -95,6 +110,7 @@ const WriteArticle: NextPageWithLayout = () => {
       title: title,
       content: value,
     });
+    void router.push("/user/dashboard");
   }
 };
 

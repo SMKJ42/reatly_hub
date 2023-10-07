@@ -77,16 +77,16 @@ function DraftArticleStatus(mostRecent: mostRecent) {
   return (
     <>
       {mostRecent.status === "draft" && (
-        <div className="ml-8 mt-4 flex  items-center ">
+        <div className="ml-8 mt-4 flex items-center ">
           <p className="mr-4 ">
             <span className="text-lg font-semibold">Status: </span>
             Draft
           </p>
           <Link
             href={`/user/write-article/${mostRecent?.id}`}
-            className="ml-8 mt-2 rounded-lg bg-white px-4 py-1 text-black"
+            className="ml-8 mt-2 rounded-lg bg-white px-4 py-[1px] text-black"
           >
-            Resume work...
+            Resume work
           </Link>
         </div>
       )}

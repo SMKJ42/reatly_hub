@@ -22,6 +22,7 @@ import { getSFHSubmit } from "~/components/calculators/singleFamily/getSFSubmit"
 import { useRouter } from "next/router";
 import { strNumsInput } from "~/lib/numberDisplay";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
+import Head from "next/head";
 
 const SingleFamilyCalc: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
@@ -82,13 +83,22 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
 
   return (
     <div>
+      <Head>
+        <title>Realty-hub SFH Calculator</title>
+      </Head>
       {success && <Success setSuccess={setSuccess} />}
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          if (isSaving || isUpdating) return;
+          if (!id) {
+            create({ ...getSFHSubmit() });
+          } else if (typeof id === "string") {
+            update({ ...getSFHSubmit(), id });
+          }
         }}
       >
-        <div className="sfh-deal-analysis flex w-full flex-col items-center">
+        <div className="sfh-deal-analysis flex w-full flex-col items-center px-8">
           <div className="container mx-4 grid w-fit grid-cols-1 justify-center gap-x-12 md:w-full md:grid-cols-2">
             <div className="address col-s flex flex-col items-center justify-center py-2 md:col-span-2 md:flex-row">
               <label className="mx-4 text-lg font-semibold" aria-required>
@@ -129,27 +139,18 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
               type="submit"
               className="mr-4 rounded-md px-4 py-1 dark:bg-white dark:text-black"
               disabled={isSaving || isUpdating}
-              onClick={() => {
-                if (isSaving || isUpdating) return;
-                if (!id) {
-                  create({ ...getSFHSubmit() });
-                } else if (typeof id === "string") {
-                  update({ ...getSFHSubmit(), id });
-                }
-              }}
             >
               {id ? "update" : "save"}
             </button>
-            <button
+            {/* <button
               type="button"
-              value="PDF"
-              className="mr-4 rounded-md px-4 py-1 dark:bg-white dark:text-black"
               onClick={() => {
-                handlePDF();
+                alert("This feature is not yet available.");
               }}
+              className="mr-4 rounded-md px-4 py-1 dark:bg-white dark:text-black"
             >
               PDF
-            </button>
+            </button> */}
           </div>
         </div>
       </form>

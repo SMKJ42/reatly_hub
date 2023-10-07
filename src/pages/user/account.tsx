@@ -5,6 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 import Image from "next/image";
 import Link from "next/link";
+import Head from "next/head";
 
 const UserAccount: NextPageWithLayout = () => {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -27,6 +28,9 @@ const UserAccount: NextPageWithLayout = () => {
 
   return (
     <div className="p-4">
+      <Head>
+        <title>Realty-Hub Account</title>
+      </Head>
       <div className="pb-4">
         <div className="border-gray w-fit rounded-xl border px-4 py-2 text-center">
           <p className="pb-2 text-lg">{name}</p>
@@ -40,9 +44,6 @@ const UserAccount: NextPageWithLayout = () => {
             ></Image>
           </div>
           {user && <p className="mt-2">Role: {role || ""}</p>}
-          <button className="mb-1 mt-2 rounded-lg bg-white px-4 py-1 text-black">
-            Edit Image
-          </button>
         </div>
       </div>
     </div>

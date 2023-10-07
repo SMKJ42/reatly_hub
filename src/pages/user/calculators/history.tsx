@@ -5,6 +5,7 @@ import { api } from "~/utils/api";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 import { SFHPodCard } from "~/components/calculators/history/PodCard";
 import Link from "next/link";
+import Head from "next/head";
 
 const Dashboard: NextPageWithLayout = () => {
   const { data: podData, isLoading: loadingHistory } =
@@ -33,12 +34,15 @@ const Dashboard: NextPageWithLayout = () => {
 
   return (
     <div>
-      <div className="history-container grid grid-cols-2">
+      <Head>
+        <title>Realty-hub History</title>
+      </Head>
+      <div className="history-container mx-8 grid grid-cols-2">
         {podData?.map((pod) => {
           return (
             <div
               key={pod.id}
-              className="pod-container mx-12 my-6 flex justify-center rounded-xl border-2 border-primary100 bg-primary200 p-4 text-white shadow-lg"
+              className="pod-container my-6 flex justify-center rounded-xl border-2 border-gray-300 p-4 text-white shadow-lg"
             >
               <SFHPodCard {...pod} />
             </div>

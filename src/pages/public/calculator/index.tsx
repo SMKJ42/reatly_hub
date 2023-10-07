@@ -19,6 +19,7 @@ import { api } from "~/utils/api";
 import { strNumsInput } from "~/lib/numberDisplay";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 import PublicLayout from "~/components/layouts/PublicLayout";
+import Head from "next/head";
 
 const SingleFamilyCalc: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
@@ -46,12 +47,15 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
 
   return (
     <div>
+      <Head>
+        <title>Realty-hub SFH Calculator</title>
+      </Head>
       <form
         onSubmit={(e) => {
           e.preventDefault();
         }}
       >
-        <div className="sfh-deal-analysis flex w-full flex-col items-center">
+        <div className="sfh-deal-analysis flex w-full flex-col items-center px-8">
           <div className="container mx-4 grid w-fit grid-cols-1 justify-center gap-x-12 md:w-full md:grid-cols-2">
             <div className="address col-s flex flex-col items-center justify-center py-2 md:col-span-2 md:flex-row">
               <label className="mx-4 text-lg font-semibold" aria-required>
@@ -61,20 +65,21 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
               <input
                 value={address}
                 type="text"
-                className="mx-4 w-full md:w-1/3"
+                className="mx-4 w-full md:w-1/3 "
                 onChange={(e) => {
                   dispatch(updateAddress(e.target.value));
                 }}
                 required
               />
-              <input
-                type="button"
-                value="reset"
-                className="px-2"
+              <button
+                type="reset"
+                className="mx-2 mt-2 rounded-lg bg-darkBg200 px-4 py-1 text-white hover:cursor-pointer dark:bg-white dark:text-black"
                 onClick={() => {
                   dispatch(resetSFH());
                 }}
-              />
+              >
+                Reset
+              </button>
             </div>
             <SFHAquisitionInputs loanProducts={loanProducts} />
             <SFHAquisitionOutputs />

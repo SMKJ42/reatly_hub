@@ -3,7 +3,7 @@ import Link from "next/link";
 export function HomeIcon() {
   return (
     <div className="logo-container flex">
-      <Link href="/">
+      <Link href="/" aria-label="Navigate Home">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

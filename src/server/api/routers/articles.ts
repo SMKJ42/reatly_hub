@@ -247,6 +247,35 @@ export const articleAuthorRouter = t.router({
       };
     }),
 
+  getAuthorsStagedArticles: authorRouter
+    .input(z.object({ page: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const articles = await prisma.staged_article.findMany({
+        take: 10,
+        skip: (input.page - 1) * 10,
+        where: {
+          authorId: ctx.userId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        select: {
+          id: true,
+          title: true,
+          preview: true,
+          createdAt: true,
+        },
+      });
+
+      const count = await prisma.staged_article.count({
+        where: {
+          authorId: ctx.userId,
+        },
+      });
+
+      return { articles, count };
+    }),
+
   getAuthorsArticles: authorRouter
     .input(z.object({ page: z.number() }))
     .query(async ({ ctx, input }) => {
@@ -267,7 +296,13 @@ export const articleAuthorRouter = t.router({
         },
       });
 
-      return articles;
+      const count = await prisma.article.count({
+        where: {
+          authorId: ctx.userId,
+        },
+      });
+
+      return { articles, count };
     }),
 });
 
@@ -292,7 +327,8 @@ export const articleRouter = createTRPCRouter({
           createdAt: true,
         },
       });
-      return articles;
+      const count = await prisma.article.count();
+      return { articles, count };
     }),
 
   getArticleById: t.procedure

@@ -3,15 +3,8 @@ import { t } from "../../trpc";
 
 import { checkRateLimit } from "../../error";
 import { z } from "zod";
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis/nodejs";
 import { clerkClient } from "@clerk/nextjs";
-
-const serverRateLimit = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(10, "1 s"),
-  analytics: true,
-});
+import { serverRateLimit } from "~/server/lib/rateLimits";
 
 export const ownerPriveledges = ["owner"];
 export const superAdminPriveledges = ["owner", "superAdmin"];

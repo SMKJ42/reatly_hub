@@ -37,6 +37,7 @@ function DarkIcon({
 }) {
   return (
     <button
+      aria-label="Toggle dark mode"
       onClick={() => {
         document.documentElement.classList.remove("dark");
         localStorage.setItem("color-theme", "light");
@@ -68,6 +69,7 @@ function LightIcon({
 }) {
   return (
     <button
+      aria-label="Toggle dark mode"
       onClick={() => {
         document.documentElement.classList.add("dark");
         localStorage.setItem("color-theme", "dark");

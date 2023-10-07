@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { MostRecentArticle } from "./MostRecent";
 
-export function AccountAuthor() {
+export function AccountArticles() {
   return (
     <div className="grid grid-cols-6 rounded-xl border">
       <div className="flex w-full flex-col border-r p-4">
@@ -10,7 +10,7 @@ export function AccountAuthor() {
           <button className="mb-4">
             <Link
               href="/user/write-article/new-article"
-              className="rounded-lg bg-white px-4 py-1 text-black"
+              className="rounded-lg bg-darkBg300 px-4 py-1 text-white dark:bg-white dark:text-black"
             >
               Create
             </Link>
@@ -18,7 +18,7 @@ export function AccountAuthor() {
           <button>
             <Link
               href="/user/my-articles"
-              className="rounded-lg bg-white px-4 py-1 text-black"
+              className="rounded-lg bg-darkBg300 px-4 py-1 text-white dark:bg-white dark:text-black"
             >
               View
             </Link>

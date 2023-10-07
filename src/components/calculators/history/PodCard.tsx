@@ -13,19 +13,21 @@ export const SFHPodCard = (pod: PodInterface) => {
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   return (
-    <>
+    <div className="flex flex-col items-center">
       {confirmDelete && (
         <ConfirmDelete setConfirmDelete={setConfirmDelete} pod={pod} />
       )}
       <div>
         <h3 className="text-center">{pod.address}</h3>
-        <p className="">Cash flow: ${pod.cashFlow}</p>
-        <p className="">CapEx: {pod.capEx}%</p>
-        <p className="">ROE: {pod.ROE}%</p>
-        <p className="">ROI: {pod.ROI}%</p>
+        <div>
+          <p className="">Cash flow: ${pod.cashFlow}</p>
+          <p className="">CapEx: {pod.capEx}%</p>
+          <p className="">ROE: {pod.ROE}%</p>
+          <p className="">ROI: {pod.ROI}%</p>
+        </div>
         <div className="mt-2 flex w-full justify-around rounded-md ">
           <button
-            className="mr-4 rounded-md border-2 border-primary300 bg-primary100 px-3"
+            className="rounded-md bg-darkBg300 px-3 text-white dark:bg-white dark:text-black"
             onClick={() => {
               dispatch(
                 HydrateSingleFamily({
@@ -41,7 +43,7 @@ export const SFHPodCard = (pod: PodInterface) => {
             Edit
           </button>
           <button
-            className="rounded-md border-2 border-primary300 bg-primary100 px-3"
+            className="rounded-md bg-darkBg300 px-3 text-white dark:bg-white dark:text-black"
             onClick={() => {
               setConfirmDelete(true);
             }}
@@ -50,7 +52,7 @@ export const SFHPodCard = (pod: PodInterface) => {
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
@@ -73,10 +75,10 @@ function ConfirmDelete(props: {
     });
 
   return (
-    <div className="absolute flex h-full w-full items-center justify-center">
+    <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-[rgb(0,0,0,0.3)]">
       {isDeleting ? <StandardLoadingSpinner /> : null}
 
-      <div className="flex h-auto flex-col justify-center rounded-lg bg-primary200 p-8">
+      <div className="bg-darkBg-300 flex h-auto flex-col justify-center rounded-lg bg-white p-8 text-white dark:text-black">
         <h1 className="text-center">Are you sure?</h1>
         <h2 className="text-center">This action cannot be undone</h2>
         <div className="mt-4 flex justify-center">

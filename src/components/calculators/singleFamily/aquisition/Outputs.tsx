@@ -20,7 +20,7 @@ const SFHAquisitionOutputs = () => {
     rennovationsRadio,
   } = singleFamily;
   return (
-    <div className="aquisition-metrics">
+    <div className="aquisition-metrics mt-2">
       <p className="my-1 md:mt-0">
         <span className="mr-1 font-bold">Aquisition costs:</span>$
         {aquisitionCosts}

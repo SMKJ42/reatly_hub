@@ -1,9 +1,22 @@
+import Head from "next/head";
 import type { ReactElement } from "react";
 import UserLayout from "~/components/layouts/UserLayout";
-import Articles from "~/pages/articles";
+import type { NextPageWithLayout } from "~/pages/_app";
+import { Articles } from "~/components/articles/Articles";
 
-Articles.getLayout = function getLayout(page: ReactElement) {
+const UserArticles: NextPageWithLayout = () => {
+  return (
+    <div>
+      <Head>
+        <title>Realty-hub Articles</title>
+      </Head>
+      <Articles />
+    </div>
+  );
+};
+
+UserArticles.getLayout = function getLayout(page: ReactElement) {
   return <UserLayout>{page}</UserLayout>;
 };
 
-export default Articles;
+export default UserArticles;
