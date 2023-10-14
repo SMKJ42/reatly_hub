@@ -9,6 +9,7 @@ export default authMiddleware({
     /*
      * exposes mortgage rate & article routers to public
      */
+    "/api/cron/updateMortgageRates(.*)",
     "/api/trpc/mortgageRates(.*)",
     "/api/trpc/articles(.*)",
   ],
