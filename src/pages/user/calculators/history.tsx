@@ -7,7 +7,7 @@ import { SFHPodCard } from "~/components/calculators/history/PodCard";
 import Link from "next/link";
 import Head from "next/head";
 
-const Dashboard: NextPageWithLayout = () => {
+const History: NextPageWithLayout = () => {
   const { data: podData, isLoading: loadingHistory } =
     api.singleFamily.getAll.useQuery();
 
@@ -53,8 +53,8 @@ const Dashboard: NextPageWithLayout = () => {
   );
 };
 
-Dashboard.getLayout = function getLayout(page: ReactElement) {
+History.getLayout = function getLayout(page: ReactElement) {
   return <UserLayout>{page}</UserLayout>;
 };
 
-export default Dashboard;
+export default History;

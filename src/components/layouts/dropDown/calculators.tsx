@@ -37,8 +37,9 @@ export const CalculatorsNav: React.FunctionComponent<dropDownProps> = (
 const LargeCalculatorsDropDown = () => {
   return (
     <div className="drop-down absolute hidden w-28 flex-1 flex-col bg-primary200 dark:bg-primary200 md:flex">
-      <Link href="/user/calculators/single-family">SFH</Link>
-      <Link href="/user/calculators/multi-family">MFH</Link>
+      <Link href="/user/calculators/single-family">Single Family</Link>
+      <Link href="/user/calculators/multi-family">Multi Family</Link>
+      <Link href="/user/calculators/seller-finance">Seller Finance</Link>
       <Link href="/user/calculators/history">History</Link>
     </div>
   );
@@ -47,10 +48,13 @@ const MiniCalculatorsDropDown = () => {
   return (
     <div className="mini-drop-down relative flex w-28 flex-1 flex-col text-base md:hidden">
       <Link href="/user/calculators/single-family" className="mb-1">
-        SFH
+        Single Family
       </Link>
       <Link href="/user/calculators/multi-family" className="mb-1">
-        MFH
+        Multi Family
+      </Link>
+      <Link href="/user/calculators/seller-finance" className="mb-1">
+        Seller Finance
       </Link>
       <Link href="/user/calculators/history">History</Link>
     </div>

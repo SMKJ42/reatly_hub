@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import singleFamilyReducer from "./slice/singleFamilySlice";
 import clientReducer from "./slice/clientSlice";
+import sellerFinanceSlice from "./slice/SellerFinanceSlice";
 
 const store = configureStore({
   reducer: {
     singleFamily: singleFamilyReducer,
     client: clientReducer,
+    sellerFinance: sellerFinanceSlice,
   },
   devTools: true,
   middleware(getDefaultMiddleware) {

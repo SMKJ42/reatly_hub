@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { convertToNum, strNumsInput } from "../../lib/numberDisplay";
 import {
-  calcMortgagePayment,
   convertDecimalToPercent,
   convertPercentToDecimal,
 } from "../../lib/calculations";
 import { type mortgageRates } from "@prisma/client";
 import type { singleFamilyInterface } from "~/server/lib/types/redux";
+import { calcMortgagePayment } from "~/lib/amortSchedules/core";
 
 const initialState: singleFamilyInterface = {
   id: false,
@@ -91,7 +91,7 @@ export const singleFamilySlice = createSlice({
       const downPaymentPerc = convertToNum(state.downPaymentPerc);
       const downPaymentDoll = price * (downPaymentPerc / 100);
       const interest = convertToNum(state.interest) / 100;
-      const loanTerm = convertToNum(state.loanTerm);
+      const loanTerm = convertToNum(state.loanTerm) * 12;
       const rents = convertToNum(state.rents);
       const incOther = convertToNum(state.incOther);
       const taxes = convertToNum(state.taxes);
@@ -163,7 +163,7 @@ export const singleFamilySlice = createSlice({
     updateInterest: (state, action: { payload: string }) => {
       const interest = convertToNum(action.payload) / 100;
       const loanBalance = convertToNum(state.loanBalance);
-      const loanTerm = convertToNum(state.loanTerm);
+      const loanTerm = convertToNum(state.loanTerm) * 12;
       const taxes = convertToNum(state.taxes);
       const insurance = convertToNum(state.insurance);
       const hoa = convertToNum(state.hoa);
@@ -219,7 +219,7 @@ export const singleFamilySlice = createSlice({
       const downPaymentPerc = convertToNum(action.payload);
       const price = convertToNum(state.price);
       const interest = convertToNum(state.interest) / 100;
-      const loanTerm = convertToNum(state.loanTerm);
+      const loanTerm = convertToNum(state.loanTerm) * 12;
       const rents = convertToNum(state.rents);
       const incOther = convertToNum(state.incOther);
       const equity = convertToNum(state.equity);
@@ -288,7 +288,7 @@ export const singleFamilySlice = createSlice({
       const downPayment = convertToNum(action.payload);
       const price = convertToNum(state.price);
       const interest = convertToNum(state.interest) / 100;
-      const loanTerm = convertToNum(state.loanTerm);
+      const loanTerm = convertToNum(state.loanTerm) * 12;
       const rents = convertToNum(state.rents);
       const incOther = convertToNum(state.incOther);
       const equity = convertToNum(state.equity);
@@ -401,7 +401,7 @@ export const singleFamilySlice = createSlice({
     },
 
     updateLoanTerm: (state, action: { payload: string }) => {
-      const loanTerm = convertToNum(action.payload);
+      const loanTerm = convertToNum(action.payload) * 12;
       const loanBalance = convertToNum(state.loanBalance);
       const interest = convertToNum(state.interest) / 100;
       const taxes = convertToNum(state.taxes);

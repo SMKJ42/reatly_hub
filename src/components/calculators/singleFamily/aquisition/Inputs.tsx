@@ -57,7 +57,7 @@ const SFHAquisitionInputs = (props: {
   return (
     <div>
       <div className="price input-container flex-col md:flex-row">
-        <label className="flex items-center" htmlFor="pruchase price">
+        <label className="flex items-center" htmlFor="purchase price">
           Purchase price:
         </label>
         <div className="flex items-center">

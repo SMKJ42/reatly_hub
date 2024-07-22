@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export interface CounterState {
+export interface ClientState {
   colorTheme: string;
 }
 
-const initialState: CounterState = {
+const initialState: ClientState = {
   colorTheme: "",
 };
 
