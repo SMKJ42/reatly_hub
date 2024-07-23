@@ -81,7 +81,7 @@ export default async function getMortgageRates(
   }
 }
 
-function fetchRatePromises(requestLoanType: {
+export function fetchRatePromises(requestLoanType: {
   [key: string]: string | Promise<AxiosResponse>;
 }) {
   Object.keys(requestLoanType).forEach((key) => {
@@ -97,7 +97,7 @@ function fetchRatePromises(requestLoanType: {
   return requestLoanType;
 }
 
-function findName(code: string) {
+export function findName(code: string) {
   switch (code) {
     case "MORTGAGE30US":
       return "30 Year Fixed";

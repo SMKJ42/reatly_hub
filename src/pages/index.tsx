@@ -18,7 +18,6 @@ const Home: NextPageWithLayout = () => {
       </Head>
       <div className="mb-8 mt-8">
         <h1 className="text-3xl font-bold"> Realty-Hub </h1>
-        <p className="italic">Our goal is to educate</p>
       </div>
       <Image
         src="/stock_banner.JPG"

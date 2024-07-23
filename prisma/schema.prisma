@@ -1,14 +1,17 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
-}
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model singleFamily {
@@ -97,8 +100,8 @@ model staged_article {
   title        String
   authorId     String
 
-  content      String @db.MediumText
-  preview      String @db.TinyText
+  content      String @db.Text
+  preview      String @db.Text
   reviewed     Boolean @default(false)
   version      String  @default("0.0.0")
   status       String  @default("draft")
@@ -116,8 +119,8 @@ model article {
   likeCount     Int      @default(0)
 
   title        String
-  content      String @db.MediumText
-  preview      String @db.TinyText
+  content      String @db.Text
+  preview      String @db.Text
   authorId     String
   articleLikes articleLikes[]
 

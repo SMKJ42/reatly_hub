@@ -1,65 +1,30 @@
-import { TRPCError } from "@trpc/server";
-import { t } from "../../trpc";
-
-import { checkRateLimit } from "../../error";
+import { adminProcedure, createTRPCRouter } from "../../trpc";
 import { z } from "zod";
 import { clerkClient } from "@clerk/nextjs";
-import { serverRateLimit } from "~/server/lib/rateLimits";
-import { adminPriveledges } from "~/lib/priviledges";
 
-export const adminRouter = t.router({
-  getUserCount: t.procedure.mutation(async ({ ctx }) => {
-    if (!ctx.userId || !adminPriveledges.includes(ctx.role as string)) {
-      throw new TRPCError({
-        code: "UNAUTHORIZED",
-        message: "You don't have access to this resource",
-      });
-    }
-
-    const { success } = await serverRateLimit.limit(ctx.userId);
-    checkRateLimit(success);
-
+export const adminRouter = createTRPCRouter({
+  getUserCount: adminProcedure.mutation(async ({ ctx }) => {
     const count = await clerkClient.users.getCount();
     return count;
   }),
-  getUserById: t.procedure
+  getUserById: adminProcedure
     .input(
       z.object({
         userId: z.string(),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      if (!ctx.userId || !adminPriveledges.includes(ctx.role as string)) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You don't have access to this resource",
-        });
-      }
-
-      const { success } = await serverRateLimit.limit(ctx.userId);
-      checkRateLimit(success);
-
+    .mutation(async ({ ctx: _ctx, input }) => {
       const user = await clerkClient.users.getUser(input.userId);
       return user;
     }),
 
-  getAllUsers: t.procedure
+  getAllUsers: adminProcedure
     .input(
       z.object({
         page: z.number(),
       })
     )
     .mutation(async ({ input, ctx }) => {
-      if (!ctx.userId || !adminPriveledges.includes(ctx.role as string)) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You don't have access to this resource",
-        });
-      }
-
-      const { success } = await serverRateLimit.limit(ctx.userId);
-      checkRateLimit(success);
-
       const offset = input.page * 20;
 
       const users = await clerkClient.users.getUserList({
@@ -69,24 +34,14 @@ export const adminRouter = t.router({
       return users;
     }),
 
-  getUserByUsername: t.procedure
+  getUserByUsername: adminProcedure
     .input(
       z.object({
         username: z.string(),
         page: z.number(),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      if (!ctx.userId || !adminPriveledges.includes(ctx.role as string)) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You don't have access to this resource",
-        });
-      }
-
-      const { success } = await serverRateLimit.limit(ctx.userId);
-      checkRateLimit(success);
-
+    .mutation(async ({ ctx: _ctx, input }) => {
       const offset = input.page * 20;
 
       const user = await clerkClient.users.getUserList({
@@ -96,17 +51,7 @@ export const adminRouter = t.router({
       });
       return user;
     }),
-  getPublishRequestCount: t.procedure.query(async ({ ctx }) => {
-    if (!ctx.userId || !adminPriveledges.includes(ctx.role as string)) {
-      throw new TRPCError({
-        code: "UNAUTHORIZED",
-        message: "You don't have access to this resource",
-      });
-    }
-
-    const { success } = await serverRateLimit.limit(ctx.userId);
-    checkRateLimit(success);
-
+  getPublishRequestCount: adminProcedure.query(async ({ ctx }) => {
     const count = await ctx.prisma.staged_article.count({
       where: {
         status: "pending",

@@ -2,8 +2,6 @@ import { z } from "zod";
 import { publicProcedure, t } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { env } from "~/env.mjs";
-import { checkRateLimit } from "../error";
-import { serverRateLimit } from "~/server/lib/rateLimits";
 
 export const mortgageRatesRouter = t.router({
   create: publicProcedure
@@ -17,11 +15,8 @@ export const mortgageRatesRouter = t.router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { success } = await serverRateLimit.limit(input.key);
-      checkRateLimit(success);
-
-      if (input.key !== env.THE_KEY_TO_RULE_THEM_ALL) {
-        throw new TRPCError({
+      if (input.key !== env.CRON_KEY) {
+        return new TRPCError({
           code: "UNAUTHORIZED",
           message: "You don't have access to this resource",
         });
@@ -43,14 +38,12 @@ export const mortgageRatesRouter = t.router({
         updatedAt: z.string().datetime(),
         code: z.string(),
         rate: z.number(),
+        name: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { success } = await serverRateLimit.limit(input.key);
-      checkRateLimit(success);
-
-      if (input.key !== env.THE_KEY_TO_RULE_THEM_ALL) {
-        throw new TRPCError({
+      if (input.key !== env.CRON_KEY) {
+        return new TRPCError({
           code: "UNAUTHORIZED",
           message: "You don't have access to this resource",
         });

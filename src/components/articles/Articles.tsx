@@ -29,9 +29,9 @@ export const Articles = () => {
   });
 
   return (
-    <div className="flex w-full flex-col items-center">
-      <div className="p-8 sm:w-3/4 lg:w-2/3 ">
-        <div className="[&>*]:border-b">
+    <div className="flex min-h-screen w-full flex-col items-center">
+      <div className="min-h-screen p-8 sm:w-3/4 lg:w-2/3">
+        <div className="min-h-screen [&>*]:border-b">
           {articleData && articleData.articles.length === 0 && (
             <NoArticlesFound />
           )}
@@ -52,10 +52,12 @@ export const Articles = () => {
               </div>
             ))}
         </div>
-        <PaginatePageButtons
-          paginateTo={paginateTo}
-          pageMax={articleData && Math.ceil(articleData.count / 10)}
-        />
+        <div className="bottom relative">
+          <PaginatePageButtons
+            paginateTo={paginateTo}
+            pageMax={articleData && Math.ceil(articleData.count / 10)}
+          />
+        </div>
       </div>
     </div>
   );

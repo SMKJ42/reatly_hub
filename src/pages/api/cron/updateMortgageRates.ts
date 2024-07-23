@@ -1,10 +1,14 @@
 import { TRPCError } from "@trpc/server";
 import { getHTTPStatusCodeFromError } from "@trpc/server/http";
-import axios, { type AxiosResponse } from "axios";
+import { type AxiosResponse } from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { env } from "~/env.mjs";
 import { appRouter } from "~/server/api/root";
 import { createTRPCContext } from "~/server/api/trpc";
+import {
+  fetchRatePromises,
+  findName,
+} from "../maintenance/createMortgageRates";
 
 const loanTypes = {
   thirtyYear: "MORTGAGE30US",
@@ -20,7 +24,7 @@ export default async function getMortgageRates(
   response: NextApiResponse
 ) {
   const key = request.query.key as string;
-  if (!key) {
+  if (!key || key !== env.CRON_KEY) {
     return response
       .status(400)
       .json({ message: "You do not have access to this resource" });
@@ -32,16 +36,20 @@ export default async function getMortgageRates(
 
   //create promise array from loan types
   const queryObject = fetchRatePromises(loanTypes);
-  const promiseArray = Object.values(queryObject);
+  const fetch_promise_array = Object.values(queryObject);
+  const update_promise_array = [];
 
-  //once all pormises settle, update each rate.
-  Promise.allSettled(promiseArray)
+  //once all promises settle, update each rate.
+  Promise.allSettled(fetch_promise_array)
     .then((results) => {
       results.forEach((resolvedPromise) => {
         if (resolvedPromise.status === "fulfilled") {
-          updataThisRate(resolvedPromise.value as AxiosResponse);
+          update_promise_array.push(
+            updataThisRate(resolvedPromise.value as AxiosResponse)
+          );
         }
       });
+
       return response.status(200).json({ message: "success" });
     })
     .catch((cause) => {
@@ -62,30 +70,18 @@ export default async function getMortgageRates(
       ? (coercedCode.split("&")[0] as string)
       : "";
 
+    const name = findName(coercedCode);
+
     const validReq = {
       key,
+      name,
       code: coercedCode,
       rate: parseFloat(data.value),
       updatedAt: new Date(data.date).toISOString(),
     };
+
     if (validReq) {
       void caller.mortgageRates.update(validReq);
     }
   }
-}
-
-function fetchRatePromises(requestLoanType: {
-  [key: string]: string | Promise<AxiosResponse>;
-}) {
-  Object.keys(requestLoanType).forEach((key) => {
-    requestLoanType[key] = returnPromise(requestLoanType[key] as string);
-  });
-
-  function returnPromise(value: string) {
-    const FRED = env.FRED_API_KEY;
-    const url = `https://api.stlouisfed.org/fred/series/observations?series_id=${value}&sort_order=desc&limit=1&api_key=${FRED}&file_type=json`;
-    return axios.get(url);
-  }
-
-  return requestLoanType;
 }

@@ -1,16 +1,58 @@
 import { z } from "zod";
-import { authorRouter, createTRPCRouter, t } from "../trpc";
+import { authurProcedure, createTRPCRouter, t } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "~/server/db";
-import { getArticlePreview, getUsersOwnArticle } from "~/server/lib/articles";
 import sanitizeHtml from "sanitize-html";
-import { batchRequestRateLimit } from "~/server/lib/rateLimits";
-import { checkRateLimit } from "../error";
 import type { StagedArticleConstructor } from "../../lib/types/serverRoutes";
+import { type ServerContext } from "../types";
 
-export const articleAuthorRouter = t.router({
-  //TODO:
-  stageArticle: authorRouter
+export function getArticlePreview(html: string) {
+  html = html
+    // reduce the string into a manageable size before removing html tags
+    .slice(0, 600)
+    // remove html tags
+    .replaceAll(/(<([^>]+)>)/gi, " ")
+    .trim();
+
+  if (html.length < 180) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Article must be at least 180 characters long",
+    });
+  }
+  // reduce the string further into a manageable size to display on UI
+  html = html.slice(0, 200);
+
+  return { content: html };
+}
+
+export async function checkUserHas_Article_CRUD_Priviledge(
+  ctx: ServerContext,
+  articleId: string
+) {
+  const article = await prisma.article.findUnique({
+    where: {
+      id: articleId,
+    },
+  });
+
+  if (
+    article?.authorId === ctx.userId &&
+    ["super-admin", "owner"].includes(ctx.role)
+  ) {
+    // do nothing, user has access
+  } else {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "You don't have access to this resource",
+    });
+  }
+
+  return article;
+}
+
+export const articleAuthorRouter = createTRPCRouter({
+  stageArticle: authurProcedure
     .input(
       z.object({
         title: z.string(),
@@ -41,7 +83,7 @@ export const articleAuthorRouter = t.router({
 
       return output;
     }),
-  updateStagedArticle: authorRouter
+  updateStagedArticle: authurProcedure
     .input(
       z.object({
         content: z.string(),
@@ -49,10 +91,7 @@ export const articleAuthorRouter = t.router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      await getUsersOwnArticle({
-        userId: ctx.userId,
-        role: ctx.role as string,
-      });
+      await checkUserHas_Article_CRUD_Priviledge(ctx, input.articleId);
       const sanContent = sanitizeHtml(input.content);
       const preview = getArticlePreview(sanContent);
 
@@ -66,17 +105,14 @@ export const articleAuthorRouter = t.router({
         },
       });
     }),
-  deletePublicArticle: authorRouter
+  deletePublicArticle: authurProcedure
     .input(
       z.object({
         articleId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      await getUsersOwnArticle({
-        userId: ctx.userId,
-        role: ctx.role as string,
-      });
+      await checkUserHas_Article_CRUD_Priviledge(ctx, input.articleId);
 
       await ctx.prisma.article.delete({
         where: {
@@ -84,17 +120,14 @@ export const articleAuthorRouter = t.router({
         },
       });
     }),
-  deleteStagedArticle: authorRouter
+  deleteStagedArticle: authurProcedure
     .input(
       z.object({
         articleId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      await getUsersOwnArticle({
-        userId: ctx.userId,
-        role: ctx.role as string,
-      });
+      await checkUserHas_Article_CRUD_Priviledge(ctx, input.articleId);
 
       await ctx.prisma.staged_article.delete({
         where: {
@@ -106,17 +139,14 @@ export const articleAuthorRouter = t.router({
   /*
    * deletes published and staged articles
    */
-  deepDeleteArticle: authorRouter
+  deepDeleteArticle: authurProcedure
     .input(
       z.object({
         articleId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      await getUsersOwnArticle({
-        userId: ctx.userId,
-        role: ctx.role as string,
-      });
+      await checkUserHas_Article_CRUD_Priviledge(ctx, input.articleId);
 
       await ctx.prisma.article.delete({
         where: {
@@ -130,17 +160,14 @@ export const articleAuthorRouter = t.router({
       });
     }),
 
-  requestPublish: authorRouter
+  requestPublish: authurProcedure
     .input(
       z.object({
         articleId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      await getUsersOwnArticle({
-        userId: ctx.userId,
-        role: ctx.role as string,
-      });
+      await checkUserHas_Article_CRUD_Priviledge(ctx, input.articleId);
 
       await ctx.prisma.staged_article.update({
         where: {
@@ -152,7 +179,7 @@ export const articleAuthorRouter = t.router({
       });
     }),
 
-  getPublishRequests: authorRouter
+  getPublishRequests: authurProcedure
     .input(
       z.object({
         page: z.number(),
@@ -173,17 +200,14 @@ export const articleAuthorRouter = t.router({
       return requests;
     }),
 
-  acceptPublishRequest: authorRouter
+  acceptPublishRequest: authurProcedure
     .input(
       z.object({
         articleId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      await getUsersOwnArticle({
-        userId: ctx.userId,
-        role: ctx.role as string,
-      });
+      await checkUserHas_Article_CRUD_Priviledge(ctx, input.articleId);
 
       const data = await ctx.prisma.staged_article.update({
         where: {
@@ -205,13 +229,10 @@ export const articleAuthorRouter = t.router({
       });
     }),
 
-  denyPublishRequest: authorRouter
+  denyPublishRequest: authurProcedure
     .input(z.object({ articleId: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      await getUsersOwnArticle({
-        userId: ctx.userId,
-        role: ctx.role as string,
-      });
+      await checkUserHas_Article_CRUD_Priviledge(ctx, input.articleId);
 
       await ctx.prisma.staged_article.update({
         where: {
@@ -223,7 +244,7 @@ export const articleAuthorRouter = t.router({
       });
     }),
 
-  getAuthorsLastStagedArticle: authorRouter
+  getAuthorsLastStagedArticle: authurProcedure
     .input(z.object({}))
     .query(async ({ ctx, input }) => {
       const article = await prisma.staged_article.findFirst({
@@ -247,7 +268,7 @@ export const articleAuthorRouter = t.router({
       };
     }),
 
-  getAuthorsStagedArticles: authorRouter
+  getAuthorsStagedArticles: authurProcedure
     .input(z.object({ page: z.number() }))
     .query(async ({ ctx, input }) => {
       const articles = await prisma.staged_article.findMany({
@@ -276,7 +297,7 @@ export const articleAuthorRouter = t.router({
       return { articles, count };
     }),
 
-  getAuthorsArticles: authorRouter
+  getAuthorsArticles: authurProcedure
     .input(z.object({ page: z.number() }))
     .query(async ({ ctx, input }) => {
       const articles = await prisma.article.findMany({
@@ -312,8 +333,6 @@ export const articleRouter = createTRPCRouter({
   previewMostRecent: t.procedure
     .input(z.object({ page: z.number() }))
     .query(async ({ ctx, input }) => {
-      const { success } = await batchRequestRateLimit.limit(ctx.ip);
-      checkRateLimit(success);
       const articles = await prisma.article.findMany({
         take: 10,
         skip: (input.page - 1) * 10,
@@ -382,12 +401,4 @@ export const articleRouter = createTRPCRouter({
         ...article,
       };
     }),
-  //getMostViewed
-  //getMostRecent
-  //getMostLiked
-  //search
-  //getByCategory
-  //getByAuthor
-  //getByTag
-  //getTopFour
 });

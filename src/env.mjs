@@ -9,8 +9,8 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
     NODE_ENV: z.enum(["development", "test", "production"]),
-    THE_KEY_TO_RULE_THEM_ALL: z.string(),
     FRED_API_KEY: z.string(),
+    CRON_KEY: z.string(),
   },
 
   /**
@@ -27,8 +27,8 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
-    THE_KEY_TO_RULE_THEM_ALL: process.env.THE_KEY_TO_RULE_THEM_ALL,
     FRED_API_KEY: process.env.FRED_API_KEY,
+    CRON_KEY: process.env.CRON_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

@@ -1,10 +1,7 @@
-import { TRPCError } from "@trpc/server";
-import { t } from "../../trpc";
+import { adminProcedure, createTRPCRouter } from "../../trpc";
 
-import { checkRateLimit } from "../../error";
 import { z } from "zod";
 import { clerkClient } from "@clerk/nextjs";
-import { serverRateLimit } from "~/server/lib/rateLimits";
 
 export const ownerPriveledges = ["owner"];
 export const superAdminPriveledges = ["owner", "superAdmin"];
@@ -18,26 +15,16 @@ export const userPriveledges = [
   "user",
 ];
 
-export const rolesRouter = t.router({
+export const rolesRouter = createTRPCRouter({
   //TODO:
 
-  DANGER_createOwner: t.procedure
+  DANGER_createOwner: adminProcedure
     .input(
       z.object({
         userId: z.string(),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      // if (!ctx.userId || ctx.role !== "owner") {
-      //   throw new TRPCError({
-      //     code: "UNAUTHORIZED",
-      //     message: "You don't have access to this resource",
-      //   });
-      // }
-
-      const { success } = await serverRateLimit.limit(ctx.userId as string);
-      checkRateLimit(success);
-
+    .mutation(async ({ input }) => {
       await clerkClient.users.updateUserMetadata(input.userId, {
         publicMetadata: {
           role: "owner",
@@ -45,23 +32,13 @@ export const rolesRouter = t.router({
       });
     }),
 
-  createAuthor: t.procedure
+  createAuthor: adminProcedure
     .input(
       z.object({
         userId: z.string(),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      if (!ctx.userId || !adminPriveledges.includes(ctx.role as string)) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You don't have access to this resource",
-        });
-      }
-
-      const { success } = await serverRateLimit.limit(ctx.userId);
-      checkRateLimit(success);
-
+    .mutation(async ({ input }) => {
       await clerkClient.users.updateUserMetadata(input.userId, {
         publicMetadata: {
           role: "author",
@@ -69,46 +46,26 @@ export const rolesRouter = t.router({
       });
     }),
 
-  createAdmin: t.procedure
+  createAdmin: adminProcedure
     .input(
       z.object({
         userId: z.string(),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      if (!ctx.userId || !superAdminPriveledges.includes(ctx.role as string)) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You don't have access to this resource",
-        });
-      }
-
-      const { success } = await serverRateLimit.limit(ctx.userId);
-      checkRateLimit(success);
-
+    .mutation(async ({ input }) => {
       await clerkClient.users.updateUserMetadata(input.userId, {
         publicMetadata: {
           role: "admin",
         },
       });
     }),
-  createSuperAdmin: t.procedure
+  createSuperAdmin: adminProcedure
     .input(
       z.object({
         userId: z.string(),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      if (!ctx.userId || !ownerPriveledges.includes(ctx.role as string)) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You don't have access to this resource",
-        });
-      }
-
-      const { success } = await serverRateLimit.limit(ctx.userId);
-      checkRateLimit(success);
-
+    .mutation(async ({ input }) => {
       await clerkClient.users.updateUserMetadata(input.userId, {
         publicMetadata: {
           role: "superAdmin",
@@ -116,24 +73,14 @@ export const rolesRouter = t.router({
       });
     }),
 
-  demoteSuperAdmin: t.procedure
+  demoteSuperAdmin: adminProcedure
     .input(
       z.object({
         userId: z.string(),
         role: z.enum(["admin", "user", "author"]),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      if (!ctx.userId || !ownerPriveledges.includes(ctx.role as string)) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You don't have access to this resource",
-        });
-      }
-
-      const { success } = await serverRateLimit.limit(ctx.userId);
-      checkRateLimit(success);
-
+    .mutation(async ({ input }) => {
       await clerkClient.users.updateUserMetadata(input.userId, {
         publicMetadata: {
           role: input.role,
@@ -141,24 +88,14 @@ export const rolesRouter = t.router({
       });
     }),
 
-  demoteAdmin: t.procedure
+  demoteAdmin: adminProcedure
     .input(
       z.object({
         userId: z.string(),
         role: z.enum(["author", "user"]),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      if (!ctx.userId || !superAdminPriveledges.includes(ctx.role as string)) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You don't have access to this resource",
-        });
-      }
-
-      const { success } = await serverRateLimit.limit(ctx.userId);
-      checkRateLimit(success);
-
+    .mutation(async ({ input }) => {
       await clerkClient.users.updateUserMetadata(input.userId, {
         publicMetadata: {
           role: input.role,
@@ -166,23 +103,13 @@ export const rolesRouter = t.router({
       });
     }),
 
-  deleteUser: t.procedure
+  deleteUser: adminProcedure
     .input(
       z.object({
         userId: z.string(),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      if (!ctx.userId || !superAdminPriveledges.includes(ctx.role as string)) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You don't have access to this resource",
-        });
-      }
-
-      const { success } = await serverRateLimit.limit(ctx.userId);
-      checkRateLimit(success);
-
+    .mutation(async ({ input }) => {
       await clerkClient.users.deleteUser(input.userId);
     }),
 });

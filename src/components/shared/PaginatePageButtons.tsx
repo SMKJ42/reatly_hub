@@ -26,7 +26,7 @@ export function PaginatePageButtons(props: PaginatePageProps) {
   }, [page]);
 
   return (
-    <div className="flex w-full justify-center pt-4">
+    <div className="flex w-full justify-center">
       <div className="flex">
         <NavButton
           onClick={() => {

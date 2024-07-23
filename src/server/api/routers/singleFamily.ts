@@ -1,7 +1,7 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { z } from "zod";
-import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, userProcedure } from "~/server/api/trpc";
 import { checkRateLimit } from "../error";
 
 const ratelimit = new Ratelimit({
@@ -17,7 +17,7 @@ const ratelimit = new Ratelimit({
 });
 
 export const singleFamilyRouter = createTRPCRouter({
-  create: privateProcedure
+  create: userProcedure
     .input(
       z.object({
         address: z.string(),
@@ -66,59 +66,16 @@ export const singleFamilyRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const authorId: string = ctx.userId;
 
-      const { success } = await ratelimit.limit(authorId);
-      checkRateLimit(success);
-
       const singleFamilyPod = await ctx.prisma.singleFamily.create({
         data: {
           authorId,
-          address: input.address,
-          price: input.price,
-          interest: input.interest,
-          downPaymentPerc: input.downPaymentPerc,
-          downPaymentDoll: input.downPaymentDoll,
-          closingCostsPerc: input.closingCostsPerc,
-          closingCostsDoll: input.closingCostsDoll,
-          loanTerm: input.loanTerm,
-          loanType: input.loanType,
-          repairs: input.repairs,
-          ARV: input.ARV,
-          taxes: input.taxes,
-          insurance: input.insurance,
-          hoa: input.hoa,
-          vacancy: input.vacancy,
-          capEx: input.capEx,
-          rennovations: input.rennovations,
-          maintenance: input.maintenance,
-          management: input.management,
-          expOther: input.expOther,
-          rents: input.rents,
-          incOther: input.incOther,
-          appreciation: input.appreciation,
-          loanBalance: input.loanBalance,
-          costOfRenno: input.costOfRenno,
-          totalAquisitionReturn: input.totalAquisitionReturn,
-          aquisitionCosts: input.aquisitionCosts,
-          equity: input.equity,
-          LTV: input.LTV,
-          mortgagePayment: input.mortgagePayment,
-          cashFlow: input.cashFlow,
-          expenses: input.expenses,
-          monthlyPayment: input.monthlyPayment,
-          cashOnCash: input.cashOnCash,
-          rennoEquity: input.rennoEquity,
-          rennoReturn: input.rennoReturn,
-          closingCosts: input.closingCosts,
-          capRate: input.capRate,
-          ROE: input.ROE,
-          ROI: input.ROI,
-          fixed: input.fixed,
+          ...input,
         },
       });
       return { ...singleFamilyPod };
     }),
 
-  update: privateProcedure
+  update: userProcedure
     .input(
       z.object({
         id: z.string(),
@@ -167,9 +124,6 @@ export const singleFamilyRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const authorId: string = ctx.userId;
-
-      const { success } = await ratelimit.limit(authorId);
-      checkRateLimit(success);
 
       const singleFamilyPod = await ctx.prisma.singleFamily.update({
         where: {
@@ -177,64 +131,19 @@ export const singleFamilyRouter = createTRPCRouter({
         },
         data: {
           authorId,
-          address: input.address,
-          price: input.price,
-          interest: input.interest,
-          downPaymentPerc: input.downPaymentPerc,
-          downPaymentDoll: input.downPaymentDoll,
-          closingCostsPerc: input.closingCostsPerc,
-          closingCostsDoll: input.closingCostsDoll,
-          loanTerm: input.loanTerm,
-          loanType: input.loanType,
-          repairs: input.repairs,
-          ARV: input.ARV,
-          taxes: input.taxes,
-          insurance: input.insurance,
-          hoa: input.hoa,
-          vacancy: input.vacancy,
-          capEx: input.capEx,
-          rennovations: input.rennovations,
-          maintenance: input.maintenance,
-          management: input.management,
-          expOther: input.expOther,
-          rents: input.rents,
-          incOther: input.incOther,
-          appreciation: input.appreciation,
-          loanBalance: input.loanBalance,
-          costOfRenno: input.costOfRenno,
-          totalAquisitionReturn: input.totalAquisitionReturn,
-          aquisitionCosts: input.aquisitionCosts,
-          equity: input.equity,
-          LTV: input.LTV,
-          mortgagePayment: input.mortgagePayment,
-          cashFlow: input.cashFlow,
-          expenses: input.expenses,
-          monthlyPayment: input.monthlyPayment,
-          cashOnCash: input.cashOnCash,
-          rennoEquity: input.rennoEquity,
-          rennoReturn: input.rennoReturn,
-          closingCosts: input.closingCosts,
-          capRate: input.capRate,
-          ROE: input.ROE,
-          ROI: input.ROI,
-          fixed: input.fixed,
+          ...input,
         },
       });
       return singleFamilyPod;
     }),
 
-  delete: privateProcedure
+  delete: userProcedure
     .input(
       z.object({
         id: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const authorId: string = ctx.userId;
-
-      const { success } = await ratelimit.limit(authorId);
-      checkRateLimit(success);
-
       const deleteSingleFamilyPod = await ctx.prisma.singleFamily.delete({
         where: {
           id: input.id,
@@ -243,7 +152,7 @@ export const singleFamilyRouter = createTRPCRouter({
       return deleteSingleFamilyPod;
     }),
 
-  getAll: privateProcedure.query(async ({ ctx }) => {
+  getAll: userProcedure.query(async ({ ctx }) => {
     const authorId = ctx.userId;
 
     const { success } = await ratelimit.limit(authorId);
@@ -257,11 +166,8 @@ export const singleFamilyRouter = createTRPCRouter({
     return singleFamilyPod;
   }),
 
-  getMostRecent: privateProcedure.query(async ({ ctx }) => {
+  getMostRecent: userProcedure.query(async ({ ctx }) => {
     const authorId = ctx.userId;
-
-    const { success } = await ratelimit.limit(authorId);
-    checkRateLimit(success);
 
     const singleFamilyPod = await ctx.prisma.singleFamily.findMany({
       take: 4,

@@ -13,8 +13,9 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { prisma } from "~/server/db";
-import { checkRateLimit } from "./error";
-import { editingRateLimit } from "../lib/rateLimits";
+import { AuthenticationError, checkRateLimit, PrivilegeError } from "./error";
+import { serverRateLimit } from "../lib/rateLimits";
+import { ServerContext, type RealtyHubRole } from "./types";
 
 /**
  * 1. CONTEXT
@@ -55,7 +56,9 @@ export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
 
   const userId = sesh.userId;
   const user = userId ? await clerkClient.users.getUser(userId) : null;
-  const role = user?.publicMetadata.role;
+
+  // I don't believe we can set the type definition for clerk, so we set co-erce it here...
+  const role = user?.publicMetadata.role as RealtyHubRole;
 
   let ip = "";
 
@@ -129,16 +132,49 @@ export const createTRPCRouter = t.router;
 
 export const publicProcedure = t.procedure;
 
-const authorProcedure = t.middleware(async ({ ctx, next }) => {
-  if (!ctx.userId || ctx.role === "user") {
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "You don't have access to this resource",
-    });
+const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
+  if (!ctx.userId) {
+    throw AuthenticationError;
   }
 
-  const { success } = await editingRateLimit.limit(ctx.userId);
+  const { success } = await serverRateLimit.limit(ctx.userId);
   checkRateLimit(success);
+
+  const authorized = [
+    "admin",
+    "super-admin",
+    "owner",
+    "author",
+    "user",
+  ].includes(ctx.role);
+
+  if (!authorized) {
+    throw PrivilegeError;
+  }
+
+  return next({
+    ctx: {
+      userId: ctx.userId,
+    },
+  });
+});
+
+export const userProcedure = t.procedure.use(enforceUserIsAuthed);
+const enfoceAuthorIsAuthed = t.middleware(async ({ ctx, next }) => {
+  if (!ctx.userId) {
+    throw AuthenticationError;
+  }
+
+  const { success } = await serverRateLimit.limit(ctx.userId);
+  checkRateLimit(success);
+
+  const authorized = ["admin", "super-admin", "owner", "author"].includes(
+    ctx.role
+  );
+
+  if (!authorized) {
+    throw PrivilegeError;
+  }
 
   return next({
     ctx: {
@@ -148,15 +184,22 @@ const authorProcedure = t.middleware(async ({ ctx, next }) => {
   });
 });
 
-export const authorRouter = t.procedure.use(authorProcedure);
+export const authurProcedure = t.procedure.use(enfoceAuthorIsAuthed);
 
-const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
+const enforceAdminIsAuthed = t.middleware(async ({ ctx, next }) => {
   if (!ctx.userId) {
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "You must be logged in to do that",
-    });
+    throw AuthenticationError;
   }
+
+  const { success } = await serverRateLimit.limit(ctx.userId);
+  checkRateLimit(success);
+
+  const authorized = ["admin", "super-admin", "owner"].includes(ctx.role);
+
+  if (!authorized) {
+    throw PrivilegeError;
+  }
+
   return next({
     ctx: {
       userId: ctx.userId,
@@ -164,4 +207,25 @@ const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
   });
 });
 
-export const privateProcedure = t.procedure.use(enforceUserIsAuthed);
+export const adminProcedure = t.procedure.use(enforceAdminIsAuthed);
+
+export const enforceOwnerIsAuthed = t.middleware(async ({ ctx, next }) => {
+  if (!ctx.userId) {
+    throw AuthenticationError;
+  }
+
+  const { success } = await serverRateLimit.limit(ctx.userId);
+  checkRateLimit(success);
+
+  const authorized = ["owner"].includes(ctx.role);
+
+  if (!authorized) {
+    throw PrivilegeError;
+  }
+
+  return next({
+    ctx: {
+      userId: ctx.userId,
+    },
+  });
+});
