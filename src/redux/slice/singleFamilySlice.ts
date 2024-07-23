@@ -5,7 +5,7 @@ import {
   convertPercentToDecimal,
 } from "../../lib/calculations";
 import { type mortgageRates } from "@prisma/client";
-import type { singleFamilyInterface } from "~/server/lib/types/redux";
+import type { singleFamilyInterface } from "~/server/types/redux";
 import { calcMortgagePayment } from "~/lib/amortSchedules/core";
 
 const initialState: singleFamilyInterface = {

@@ -7,7 +7,7 @@ import { appRouter } from "~/server/api/root";
 import { createTRPCContext } from "~/server/api/trpc";
 
 interface LoanTypes {
-  [key: string]: string | Promise<AxiosResponse>;
+  [key: string]: string;
 }
 
 const loanTypes: LoanTypes = {
@@ -40,21 +40,24 @@ export default async function getMortgageRates(
   //once all pormises settle, update each rate.
   Promise.allSettled(promiseArray)
     .then((results) => {
-      results.forEach((resolvedPromise) => {
-        console.log(resolvedPromise);
-        if (resolvedPromise.status === "fulfilled") {
-          createThisRate(resolvedPromise.value as AxiosResponse);
+      results.forEach((data_response) => {
+        if (data_response.status === "fulfilled") {
+          createThisRate(data_response.value);
+        } else {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to fetch mortgage rates",
+          });
         }
       });
-      return response.status(200).json({ message: "success" });
+      return response;
     })
     .catch((cause) => {
-      console.log(cause);
       if (cause instanceof TRPCError) {
         const httpCode = getHTTPStatusCodeFromError(cause);
         return response.status(httpCode).json(cause);
       }
-      return response.status(500).json({ message: "internal server error" });
+      return response;
     });
 
   function createThisRate(input: AxiosResponse) {
@@ -81,20 +84,21 @@ export default async function getMortgageRates(
   }
 }
 
-export function fetchRatePromises(requestLoanType: {
-  [key: string]: string | Promise<AxiosResponse>;
-}) {
-  Object.keys(requestLoanType).forEach((key) => {
-    requestLoanType[key] = returnPromise(requestLoanType[key] as string);
+export function fetchRatePromises(requestLoanType: { [key: string]: string }): {
+  [key: string]: Promise<AxiosResponse>;
+} {
+  const output: { [key: string]: Promise<AxiosResponse> } = {};
+  Object.keys(requestLoanType).map((key) => {
+    output[key] = returnPromise(requestLoanType[key] as string);
   });
 
-  function returnPromise(value: string) {
+  function returnPromise(value: string): Promise<AxiosResponse> {
     const FRED = env.FRED_API_KEY;
     const url = `https://api.stlouisfed.org/fred/series/observations?series_id=${value}&sort_order=desc&limit=1&api_key=${FRED}&file_type=json`;
     return axios.get(url);
   }
 
-  return requestLoanType;
+  return output;
 }
 
 export function findName(code: string) {

@@ -13,7 +13,7 @@ import {
   updatePrice,
   updateRepairs,
 } from "../../../../redux/slice/singleFamilySlice";
-import type { singleFamilyInterface } from "~/server/lib/types/redux";
+import type { singleFamilyInterface } from "~/server/types/redux";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { type mortgageRates } from "@prisma/client";
 import { mortgageCitation } from "public/Citation";

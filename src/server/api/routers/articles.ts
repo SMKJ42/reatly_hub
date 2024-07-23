@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { authurProcedure, createTRPCRouter, t } from "../trpc";
+import { authurProcedure, createTRPCRouter, publicProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "~/server/db";
 import sanitizeHtml from "sanitize-html";
-import type { StagedArticleConstructor } from "../../lib/types/serverRoutes";
+import type { StagedArticleConstructor } from "../../types/serverRoutes";
 import { type ServerContext } from "../types";
 
 export function getArticlePreview(html: string) {
@@ -37,8 +37,8 @@ export async function checkUserHas_Article_CRUD_Priviledge(
   });
 
   if (
-    article?.authorId === ctx.userId &&
-    ["super-admin", "owner"].includes(ctx.role)
+    article?.authorId === ctx.userId ||
+    ["owner", "super-admin"].includes(ctx.role)
   ) {
     // do nothing, user has access
   } else {
@@ -105,7 +105,7 @@ export const articleAuthorRouter = createTRPCRouter({
         },
       });
     }),
-  deletePublicArticle: authurProcedure
+  deepDeletePublicArticle: authurProcedure
     .input(
       z.object({
         articleId: z.string(),
@@ -120,7 +120,7 @@ export const articleAuthorRouter = createTRPCRouter({
         },
       });
     }),
-  deleteStagedArticle: authurProcedure
+  deepDeleteStagedArticle: authurProcedure
     .input(
       z.object({
         articleId: z.string(),
@@ -153,9 +153,9 @@ export const articleAuthorRouter = createTRPCRouter({
           id: input.articleId,
         },
       });
-      await ctx.prisma.staged_article.deleteMany({
+      await ctx.prisma.staged_article.delete({
         where: {
-          publicId: input.articleId,
+          id: input.articleId,
         },
       });
     }),
@@ -244,60 +244,7 @@ export const articleAuthorRouter = createTRPCRouter({
       });
     }),
 
-  getAuthorsLastStagedArticle: authurProcedure
-    .input(z.object({}))
-    .query(async ({ ctx, input }) => {
-      const article = await prisma.staged_article.findFirst({
-        where: {
-          authorId: ctx.userId,
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
-
-      if (!article) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Article not found",
-        });
-      }
-
-      return {
-        ...article,
-      };
-    }),
-
-  getAuthorsStagedArticles: authurProcedure
-    .input(z.object({ page: z.number() }))
-    .query(async ({ ctx, input }) => {
-      const articles = await prisma.staged_article.findMany({
-        take: 10,
-        skip: (input.page - 1) * 10,
-        where: {
-          authorId: ctx.userId,
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-        select: {
-          id: true,
-          title: true,
-          preview: true,
-          createdAt: true,
-        },
-      });
-
-      const count = await prisma.staged_article.count({
-        where: {
-          authorId: ctx.userId,
-        },
-      });
-
-      return { articles, count };
-    }),
-
-  getAuthorsArticles: authurProcedure
+  getAuthorsArticlesPreview: authurProcedure
     .input(z.object({ page: z.number() }))
     .query(async ({ ctx, input }) => {
       const articles = await prisma.article.findMany({
@@ -328,11 +275,9 @@ export const articleAuthorRouter = createTRPCRouter({
 });
 
 export const articleRouter = createTRPCRouter({
-  //TODO:
-
-  previewMostRecent: t.procedure
+  previewMostRecent: publicProcedure
     .input(z.object({ page: z.number() }))
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       const articles = await prisma.article.findMany({
         take: 10,
         skip: (input.page - 1) * 10,
@@ -350,9 +295,9 @@ export const articleRouter = createTRPCRouter({
       return { articles, count };
     }),
 
-  getArticleById: t.procedure
+  getArticleById: publicProcedure
     .input(z.object({ articleId: z.string() }))
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       const article = await prisma.article.findUnique({
         where: {
           id: input.articleId,
@@ -381,9 +326,9 @@ export const articleRouter = createTRPCRouter({
         ...article,
       };
     }),
-  getStagedArticleById: t.procedure
+  getStagedArticleById: publicProcedure
     .input(z.object({ articleId: z.string() }))
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       const article = await prisma.staged_article.findUnique({
         where: {
           id: input.articleId,

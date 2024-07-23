@@ -44,9 +44,7 @@ export default async function getMortgageRates(
     .then((results) => {
       results.forEach((resolvedPromise) => {
         if (resolvedPromise.status === "fulfilled") {
-          update_promise_array.push(
-            updataThisRate(resolvedPromise.value as AxiosResponse)
-          );
+          update_promise_array.push(updataThisRate(resolvedPromise.value));
         }
       });
 

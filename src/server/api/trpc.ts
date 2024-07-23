@@ -13,9 +13,9 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { prisma } from "~/server/db";
-import { AuthenticationError, checkRateLimit, PrivilegeError } from "./error";
-import { serverRateLimit } from "../lib/rateLimits";
-import { ServerContext, type RealtyHubRole } from "./types";
+import { AuthenticationError, PrivilegeError, RateLimitError } from "./error";
+import { type RealtyHubRole } from "./types";
+import { serverRateLimit } from "./redis";
 
 /**
  * 1. CONTEXT
@@ -38,18 +38,13 @@ import { ServerContext, type RealtyHubRole } from "./types";
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
 
-// const createInnerTRPCContext = (_opts: CreateContextOptions) => {
-//   return {
-//     prisma,
-//   };
-// };
-
 /**
  * This is the actual context you will use in your router. It will be used to process every request
  * that goes through your tRPC endpoint.
  *
  * @see https://trpc.io/docs/context
  */
+
 export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
   const { req } = _opts;
   const sesh = getAuth(req);
@@ -130,16 +125,29 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 
-export const publicProcedure = t.procedure;
+const enforcePublicRateLimit = t.middleware(async ({ ctx, next }) => {
+  const { success } = await serverRateLimit.limit(ctx.ip);
+  if (!success) {
+    throw RateLimitError;
+  }
+  return next({
+    ctx: {
+      ip: ctx.ip,
+    },
+  });
+});
+
+export const publicProcedure = t.procedure.use(enforcePublicRateLimit);
 
 const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
   if (!ctx.userId) {
     throw AuthenticationError;
   }
 
-  const { success } = await serverRateLimit.limit(ctx.userId);
-  checkRateLimit(success);
-
+  const { success } = await serverRateLimit.limit(ctx.ip);
+  if (!success) {
+    throw RateLimitError;
+  }
   const authorized = [
     "admin",
     "super-admin",
@@ -165,9 +173,10 @@ const enfoceAuthorIsAuthed = t.middleware(async ({ ctx, next }) => {
     throw AuthenticationError;
   }
 
-  const { success } = await serverRateLimit.limit(ctx.userId);
-  checkRateLimit(success);
-
+  const { success } = await serverRateLimit.limit(ctx.ip);
+  if (!success) {
+    throw RateLimitError;
+  }
   const authorized = ["admin", "super-admin", "owner", "author"].includes(
     ctx.role
   );
@@ -191,9 +200,10 @@ const enforceAdminIsAuthed = t.middleware(async ({ ctx, next }) => {
     throw AuthenticationError;
   }
 
-  const { success } = await serverRateLimit.limit(ctx.userId);
-  checkRateLimit(success);
-
+  const { success } = await serverRateLimit.limit(ctx.ip);
+  if (!success) {
+    throw RateLimitError;
+  }
   const authorized = ["admin", "super-admin", "owner"].includes(ctx.role);
 
   if (!authorized) {
@@ -214,9 +224,10 @@ export const enforceOwnerIsAuthed = t.middleware(async ({ ctx, next }) => {
     throw AuthenticationError;
   }
 
-  const { success } = await serverRateLimit.limit(ctx.userId);
-  checkRateLimit(success);
-
+  const { success } = await serverRateLimit.limit(ctx.ip);
+  if (!success) {
+    throw RateLimitError;
+  }
   const authorized = ["owner"].includes(ctx.role);
 
   if (!authorized) {
@@ -229,3 +240,5 @@ export const enforceOwnerIsAuthed = t.middleware(async ({ ctx, next }) => {
     },
   });
 });
+
+export const ownerProcedure = t.procedure.use(enforceOwnerIsAuthed);

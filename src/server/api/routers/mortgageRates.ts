@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { publicProcedure, t } from "../trpc";
+import { createTRPCRouter, publicProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { env } from "~/env.mjs";
 
-export const mortgageRatesRouter = t.router({
+export const mortgageRatesRouter = createTRPCRouter({
   create: publicProcedure
     .input(
       z.object({
