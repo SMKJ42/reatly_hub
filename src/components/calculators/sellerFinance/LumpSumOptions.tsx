@@ -34,8 +34,8 @@ export function LumpSumOptions() {
               onChange={(e) => {
                 dispatch(
                   updateLumpSumPayment({
-                    month: convertToNum(e.target.value),
-                    amount: item.amount,
+                    month: convertToNum(e.target.value).toString(),
+                    amount: item.amount.toString(),
                     idx,
                   })
                 );
@@ -47,8 +47,8 @@ export function LumpSumOptions() {
               onChange={(e) => {
                 dispatch(
                   updateLumpSumPayment({
-                    month: item.month,
-                    amount: convertToNum(e.target.value),
+                    month: item.month.toString(),
+                    amount: convertToNum(e.target.value).toString(),
                     idx,
                   })
                 );

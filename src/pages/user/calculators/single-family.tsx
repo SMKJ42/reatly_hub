@@ -119,7 +119,7 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
                 value="reset"
                 className="px-2"
                 onClick={() => {
-                  dispatch(resetSFH());
+                  window.location.reload();
                 }}
               />
             </div>
@@ -142,15 +142,6 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
             >
               {id ? "update" : "save"}
             </button>
-            {/* <button
-              type="button"
-              onClick={() => {
-                alert("This feature is not yet available.");
-              }}
-              className="mr-4 rounded-md px-4 py-1 dark:bg-white dark:text-black"
-            >
-              PDF
-            </button> */}
           </div>
         </div>
       </form>

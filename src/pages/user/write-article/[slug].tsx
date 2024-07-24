@@ -4,8 +4,8 @@ import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import UserLayout from "~/components/layouts/UserLayout";
 import dynamic from "next/dynamic";
-import { api } from "~/utils/api";
 import { useRouter } from "next/router";
+import { api } from "~/utils/api";
 
 const ReactQuill = dynamic(
   () =>
@@ -28,15 +28,6 @@ const WriteArticle: NextPageWithLayout = () => {
       },
       { enabled: !!articleId }
     );
-
-  const { mutate: deleteArticle } = api.author.deleteStagedArticle.useMutation({
-    onSuccess: (opts) => {
-      console.log("success");
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
 
   const [value, setValue] = useState("");
   const [title, setTitle] = useState("");
@@ -93,7 +84,7 @@ const WriteArticle: NextPageWithLayout = () => {
               <button
                 className="rounded-lg bg-bg200 px-2 py-1 text-black"
                 onClick={() => {
-                  deleteArticle({ articleId: articleId });
+                  // deleteArticle({ articleId: articleId });
                 }}
               >
                 Delete

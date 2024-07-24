@@ -20,10 +20,12 @@ const History: NextPageWithLayout = () => {
 
   if (podData && podData.length === 0) {
     return (
-      <div className="mt-8 flex h-full w-full items-center justify-center px-12">
-        <h1 className="text-center md:text-2xl">
+      <div className="flex h-full w-full items-center justify-center px-12">
+        <h1 className="text-center md:text-2xl mt-8">
           You have no history.&nbsp;
-          <Link href="/user/calculators/single-family" className="underline">
+          <Link href="/user/calculators/single-family"
+            className="underline"
+          >
             Go to the calculator
           </Link>
           &nbsp;to get started.

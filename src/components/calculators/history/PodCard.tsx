@@ -3,8 +3,8 @@ import { useState } from "react";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 import { useAppDispatch } from "~/redux/hooks";
 import { HydrateSingleFamily } from "~/redux/slice/singleFamilySlice";
-import type { PodInterface } from "~/server/types/client";
 import { api } from "~/utils/api";
+import { type PodInterface } from "~/server/types/client";
 
 export const SFHPodCard = (pod: PodInterface) => {
   const router = useRouter();

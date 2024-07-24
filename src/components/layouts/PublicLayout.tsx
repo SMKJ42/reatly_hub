@@ -12,12 +12,10 @@ import {
   useState,
 } from "react";
 import ToggleTheme from "../shared/ToggleTheme";
-import { Inter } from "next/font/google";
 import { HomeIcon } from "../shared/icons/home";
 import { ExpandIcon } from "../shared/icons/expand";
 import { CollapseIcon } from "../shared/icons/collapse";
 
-const inter = Inter({ subsets: ["latin"] });
 
 type Mini = "expanded" | "collapsed";
 interface MiniNav {
@@ -39,13 +37,15 @@ export default function PublicLayout({
 
   return (
     <div
-      className={`min-h-screen ${inter.className} text-black transition-colors duration-500 dark:bg-darkBg100 dark:text-white`}
+      className="text-black transition-colors duration-500 min-h-screen bg-slate-100 dark:bg-darkBg100 dark:text-white"
     >
-      <div className="">
+      <div className="fixed w-full z-10">
         <LargeNav />
         <MiniNav mini={mini} setMini={setMini} />
       </div>
-      <main>{children}</main>
+      <main className="top-14 relative bg-slate-100 dark:bg-darkBg100 dark:text-white [min-height:calc(100vh-3.5rem)]">
+          {children}
+      </main>
       <footer></footer>
     </div>
   );

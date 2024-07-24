@@ -5,10 +5,13 @@ import Image from "next/image";
 import Head from "next/head";
 import Link from "next/link";
 import { SignUpButton } from "@clerk/nextjs";
+import { AdminRoles } from "~/utils/priviledges";
 
 const Home: NextPageWithLayout = () => {
+  console.log(AdminRoles.includes("admin"));
+
   return (
-    <div className="flex flex-col items-center text-center">
+    <div className="flex flex-col items-center text-center h-fit">
       <Head>
         <title>Realty-hub Home</title>
         <meta
@@ -44,7 +47,7 @@ const Home: NextPageWithLayout = () => {
           </p>
           <Link
             href="articles"
-            className="rounded-lg bg-darkBg300 px-4 py-2 text-white dark:bg-white dark:text-black"
+            className="rounded-lg bg-darkBg300 px-4 py-2 text-white dark:bg-slate-200 dark:text-black"
           >
             Articles
           </Link>
@@ -58,7 +61,7 @@ const Home: NextPageWithLayout = () => {
           </p>
           <Link
             href="public/calculator"
-            className="rounded-lg bg-darkBg300 px-4 py-2 text-white dark:bg-white dark:text-black"
+            className="rounded-lg bg-darkBg300 px-4 py-2 text-white dark:bg-slate-200 dark:text-black"
           >
             Calculator
           </Link>

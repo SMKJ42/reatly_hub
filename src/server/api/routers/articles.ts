@@ -1,10 +1,14 @@
 import { z } from "zod";
-import { authurProcedure, createTRPCRouter, publicProcedure } from "../trpc";
+import {
+  authurProcedure,
+  createTRPCRouter,
+  publicProcedure,
+  type ServerContext,
+} from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "~/server/db";
 import sanitizeHtml from "sanitize-html";
 import type { StagedArticleConstructor } from "../../types/serverRoutes";
-import { type ServerContext } from "../types";
 
 export function getArticlePreview(html: string) {
   html = html
@@ -57,7 +61,6 @@ export const articleAuthorRouter = createTRPCRouter({
       z.object({
         title: z.string(),
         content: z.string(),
-        publicId: z.string().nullish(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -70,10 +73,6 @@ export const articleAuthorRouter = createTRPCRouter({
         authorId: ctx.userId,
         preview: preview.content,
       };
-
-      if (input.publicId) {
-        article.id = input.publicId;
-      }
 
       const output = await ctx.prisma.staged_article.create({
         data: {

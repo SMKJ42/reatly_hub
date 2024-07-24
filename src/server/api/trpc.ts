@@ -14,8 +14,23 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import { prisma } from "~/server/db";
 import { AuthenticationError, PrivilegeError, RateLimitError } from "./error";
-import { type RealtyHubRole } from "./types";
 import { serverRateLimit } from "./redis";
+import { type Prisma, type PrismaClient } from "@prisma/client";
+import { type DefaultArgs } from "@prisma/client/runtime/library";
+import {
+  AdminRoles,
+  AuthorRoles,
+  OwnerRoles,
+  UserRoles,
+  type RealtyHubRole,
+} from "~/utils/priviledges";
+
+export type ServerContext = {
+  userId: string | null;
+  prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>;
+  role: RealtyHubRole;
+  ip: string;
+};
 
 /**
  * 1. CONTEXT
@@ -148,13 +163,8 @@ const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
   if (!success) {
     throw RateLimitError;
   }
-  const authorized = [
-    "admin",
-    "super-admin",
-    "owner",
-    "author",
-    "user",
-  ].includes(ctx.role);
+
+  const authorized = UserRoles.includes(ctx.role);
 
   if (!authorized) {
     throw PrivilegeError;
@@ -177,9 +187,7 @@ const enfoceAuthorIsAuthed = t.middleware(async ({ ctx, next }) => {
   if (!success) {
     throw RateLimitError;
   }
-  const authorized = ["admin", "super-admin", "owner", "author"].includes(
-    ctx.role
-  );
+  const authorized = AuthorRoles.includes(ctx.role);
 
   if (!authorized) {
     throw PrivilegeError;
@@ -204,7 +212,7 @@ const enforceAdminIsAuthed = t.middleware(async ({ ctx, next }) => {
   if (!success) {
     throw RateLimitError;
   }
-  const authorized = ["admin", "super-admin", "owner"].includes(ctx.role);
+  const authorized = AdminRoles.includes(ctx.role);
 
   if (!authorized) {
     throw PrivilegeError;
@@ -228,7 +236,7 @@ export const enforceOwnerIsAuthed = t.middleware(async ({ ctx, next }) => {
   if (!success) {
     throw RateLimitError;
   }
-  const authorized = ["owner"].includes(ctx.role);
+  const authorized = OwnerRoles.includes(ctx.role);
 
   if (!authorized) {
     throw PrivilegeError;

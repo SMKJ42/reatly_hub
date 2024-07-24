@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import RennovationRadio from "./RennovationRadio";
 import Rennovations from "./Rennovations";
 import { convertToNum, strNumsInput } from "../../../../lib/numberDisplay";
 import {
@@ -13,11 +12,11 @@ import {
   updatePrice,
   updateRepairs,
 } from "../../../../redux/slice/singleFamilySlice";
-import type { singleFamilyInterface } from "~/server/types/redux";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { type mortgageRates } from "@prisma/client";
 import { mortgageCitation } from "public/Citation";
 import { monthNumToString } from "~/lib/dateFormatter/month";
+import { type singleFamilyInterface } from "~/server/types/redux";
 
 const SFHAquisitionInputs = (props: {
   loanProducts: mortgageRates[] | undefined;

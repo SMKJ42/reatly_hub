@@ -1,13 +1,12 @@
 import Link from "next/link";
-import { api } from "~/utils/api";
 import { NoArticlesFound } from "~/components/articles/NoArticlesFound";
 import { PaginatePageButtons } from "~/components/shared/PaginatePageButtons";
 import { useRouter } from "next/router";
+import { api } from "~/utils/api";
 
 export const Articles = () => {
-  const ctx = api.useContext();
   const router = useRouter();
-  const page = router.query.page ? +router.query.page : 1;
+  const page = router.query.page ? router.query.page.length : 1;
 
   function paginateTo(newPage: number) {
     void router.push(`/articles?page=${newPage}`);
@@ -18,20 +17,10 @@ export const Articles = () => {
       page,
     });
 
-  const { mutate: deleteArticle } = api.author.deleteStagedArticle.useMutation({
-    onSuccess: () => {
-      console.log("success");
-      void ctx.articles.invalidate();
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-
   return (
-    <div className="flex min-h-screen w-full flex-col items-center">
-      <div className="min-h-screen p-8 sm:w-3/4 lg:w-2/3">
-        <div className="min-h-screen [&>*]:border-b">
+    <div className="flex w-full flex-col items-center">
+      <div className="p-8 sm:w-3/4 lg:w-2/3">
+        <div className="min-h-[75vh] [&>*]:border-b text-center">
           {articleData && articleData.articles.length === 0 && (
             <NoArticlesFound />
           )}
@@ -52,7 +41,7 @@ export const Articles = () => {
               </div>
             ))}
         </div>
-        <div className="bottom relative">
+        <div>
           <PaginatePageButtons
             paginateTo={paginateTo}
             pageMax={articleData && Math.ceil(articleData.count / 10)}

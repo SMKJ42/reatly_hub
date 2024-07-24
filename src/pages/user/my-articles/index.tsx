@@ -61,10 +61,10 @@ const MyArticles: NextPageWithLayout = () => {
 function PublishedArticles() {
   const [page, setPage] = useState(1);
 
-  const { data: articleData, isLoading } =
-    api.author.getAuthorsArticles.useQuery({
-      page,
-    });
+  // const { data: articleData, isLoading } =
+  //   api.author.getAuthorsArticles.useQuery({
+  //     page,
+  //   });
 
   function handlePageNavigation(props: PageNavigationProps) {
     if ("direction" in props) {
@@ -81,15 +81,15 @@ function PublishedArticles() {
   }
   const ctx = api.useContext();
 
-  const { mutate: deleteArticle } = api.author.deleteStagedArticle.useMutation({
-    onSuccess: () => {
-      console.log("success");
-      void ctx.articles.invalidate();
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
+  // const { mutate: deleteArticle } = api.author.deleteStagedArticle.useMutation({
+  //   onSuccess: () => {
+  //     console.log("success");
+  //     void ctx.articles.invalidate();
+  //   },
+  //   onError: (error) => {
+  //     console.log(error);
+  //   },
+  // });
 
   function paginateTo(e: number) {
     setPage((prev) => prev + e);
@@ -97,8 +97,8 @@ function PublishedArticles() {
 
   return (
     <>
-      <div className="[&>*]:border-b">
-        {articleData &&
+      {/* <div className="[&>*]:border-b"> */}
+        {/* {articleData &&
           articleData.articles &&
           articleData.articles.length === 0 && <NoArticlesFound />}
         {isLoading && <StandardLoadingSpinner />}
@@ -129,7 +129,7 @@ function PublishedArticles() {
       <PaginatePageButtons
         paginateTo={paginateTo}
         pageMax={articleData && Math.ceil(articleData.count / 10)}
-      />
+      /> */}
     </>
   );
 }
@@ -137,10 +137,10 @@ function PublishedArticles() {
 function StagedArticles() {
   const [page, setPage] = useState(1);
 
-  const { data: articleData, isLoading } =
-    api.author.getAuthorsStagedArticles.useQuery({
-      page,
-    });
+  // const { data: articleData, isLoading } =
+  //   api.author.getAuthorsStagedArticles.useQuery({
+  //     page,
+  //   });
 
   function handlePageNavigation(props: PageNavigationProps) {
     if ("direction" in props) {
@@ -157,15 +157,15 @@ function StagedArticles() {
   }
   const ctx = api.useContext();
 
-  const { mutate: deleteArticle } = api.author.deleteStagedArticle.useMutation({
-    onSuccess: () => {
-      console.log("success");
-      void ctx.articles.invalidate();
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
+  // const { mutate: deleteArticle } = api.author.deleteStagedArticle.useMutation({
+  //   onSuccess: () => {
+  //     console.log("success");
+  //     void ctx.articles.invalidate();
+  //   },
+  //   onError: (error) => {
+  //     console.log(error);
+  //   },
+  // });
 
   function paginateTo(e: number) {
     setPage((prev) => prev + e);
@@ -173,7 +173,7 @@ function StagedArticles() {
 
   return (
     <div>
-      <div className="[&>*]:border-b">
+      {/* <div className="[&>*]:border-b">
         {articleData &&
           articleData.articles &&
           articleData.articles.length === 0 && <NoArticlesFound />}
@@ -205,7 +205,7 @@ function StagedArticles() {
       <PaginatePageButtons
         paginateTo={paginateTo}
         pageMax={articleData && Math.ceil(articleData.count / 10)}
-      />
+      /> */}
     </div>
   );
 }

@@ -5,8 +5,9 @@ import {
   convertPercentToDecimal,
 } from "../../lib/calculations";
 import { type mortgageRates } from "@prisma/client";
-import type { singleFamilyInterface } from "~/server/types/redux";
 import { calcMortgagePayment } from "~/lib/amortSchedules/core";
+import { type singleFamilyInterface } from "~/server/types/redux";
+import { setInterest } from "./SellerFinanceSlice";
 
 const initialState: singleFamilyInterface = {
   id: false,
@@ -69,7 +70,7 @@ export const singleFamilySlice = createSlice({
       state,
       action: { payload: singleFamilyInterface }
     ) => {
-      console.log("firing reducer");
+      setInterest(action.payload.interest);
       return { ...action.payload };
     },
     updateId: (state, action: { payload: string }) => {

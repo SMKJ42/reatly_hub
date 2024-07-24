@@ -1,19 +1,17 @@
 import { SignOutButton } from "@clerk/nextjs";
 import Link from "next/link";
 import ToggleTheme from "../shared/ToggleTheme";
-import { CalculatorsNav } from "./dropDown/calculators";
+import { CalculatorsDropdown } from "./dropDown/calculators";
 import React, {
   type Dispatch,
   type ReactNode,
   type SetStateAction,
   useState,
 } from "react";
-import { Inter } from "next/font/google";
 import { CollapseIcon } from "../shared/icons/collapse";
 import { ExpandIcon } from "../shared/icons/expand";
 import { HomeIcon } from "../shared/icons/home";
 
-const inter = Inter({ subsets: ["latin"] });
 
 interface LargeNavProps {
   setDropDownOption: Dispatch<SetStateAction<string>>;
@@ -44,9 +42,9 @@ export default function UserLayout({
 
   return (
     <div
-      className={`min-h-screen ${inter.className} text-black transition-colors duration-500 dark:bg-darkBg100 dark:text-white`}
+      className="text-black transition-colors duration-500 min-h-screen bg-slate-100 dark:bg-darkBg100 dark:text-white"
     >
-      <div className="">
+      <div className="absolute w-full">
         <LargeNav
           activeDropDown={activeDropDown}
           setActiveDropDown={setActiveDropDown}
@@ -63,12 +61,13 @@ export default function UserLayout({
         />
       </div>
       <main
+        className="top-14 relative bg-slate-100 dark:bg-darkBg100 dark:text-white [min-height:calc(100vh-3.5rem)]"
         onMouseEnter={() => {
           setActiveDropDown(false);
           setDropDownOption("");
         }}
       >
-        {children}
+          {children}
       </main>
       <footer></footer>
     </div>
@@ -95,7 +94,7 @@ function LargeNavButtons(props: LargeNavProps) {
           onMouseEnter={() => setActiveDropDown(false)}
         ></div>
         <button>
-          <CalculatorsNav
+          <CalculatorsDropdown
             setDropDownOption={setDropDownOption}
             dropDownOption={dropDownOption}
             setActiveDropDown={setActiveDropDown}
@@ -169,7 +168,7 @@ function MiniNavButtons(props: LargeNavProps) {
               setDropDownOption("");
             }}
           ></div>
-          <CalculatorsNav
+          <CalculatorsDropdown
             setDropDownOption={setDropDownOption}
             dropDownOption={dropDownOption}
             setActiveDropDown={setActiveDropDown}
@@ -189,7 +188,9 @@ function MiniNavButtons(props: LargeNavProps) {
           <Link href="/user/articles">Articles</Link>
         </div>
         <div className="account-manager mx-4 flex flex-col items-center justify-around">
-          <Link href="/user/account" className="mt-2">
+          <Link href="/user/account"
+            className="mt-2"
+          >
             Account
           </Link>
           <div className="sign-out-btn w-42 mt-2">

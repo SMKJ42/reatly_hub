@@ -1,5 +1,5 @@
 import React from "react";
-import { rennovationReturn } from "../../../../lib/calculations";
+// import { rennovationReturn } from "../../../../lib/calculations";
 import { convertToNum } from "../../../../lib/numberDisplay";
 import { useAppSelector } from "~/redux/hooks";
 
@@ -49,13 +49,13 @@ const SFHAquisitionOutputs = () => {
           </p>
           <p className="mb-1">
             <span className="mr-1 font-bold">Rennovation Return:</span>$
-            {rennovationReturn(
+            {/* {rennovationReturn(
               convertToNum(ARV),
               convertToNum(price),
               convertToNum(repairs),
               convertToNum(rennovations),
               convertToNum(closingCosts)
-            )}
+            )} */}
           </p>
         </>
       ) : null}

@@ -7,7 +7,7 @@ type dropDownProps = {
   activeDropDown: boolean;
 };
 
-export const CalculatorsNav: React.FunctionComponent<dropDownProps> = (
+export const CalculatorsDropdown: React.FunctionComponent<dropDownProps> = (
   props
 ) => {
   const setDropDownOption = props.setDropDownOption;
@@ -36,24 +36,30 @@ export const CalculatorsNav: React.FunctionComponent<dropDownProps> = (
 
 const LargeCalculatorsDropDown = () => {
   return (
-    <div className="drop-down absolute hidden w-28 flex-1 flex-col bg-primary200 dark:bg-primary200 md:flex">
-      <Link href="/user/calculators/single-family">Single Family</Link>
-      <Link href="/user/calculators/multi-family">Multi Family</Link>
-      <Link href="/user/calculators/seller-finance">Seller Finance</Link>
-      <Link href="/user/calculators/history">History</Link>
+    <div className="drop-down z-20 absolute hidden mt-2 [&>*]:pt-1 [&>*]:px-4 [&>*]:w-full flex-1 flex-col bg-darkBg300 md:flex h-fit rounded-lg border-2 border-white">
+      <Link href="/user/calculators/single-family" className="hover:bg-darkBg200 rounded-t-lg">Single Family</Link>
+      <Link href="/user/calculators/multi-family" className="hover:bg-darkBg200">Multi Family</Link>
+      <Link href="/user/calculators/seller-finance" className="hover:bg-darkBg200">Seller Finance</Link>
+      <Link href="/user/calculators/history" className="hover:bg-darkBg200 rounded-b-lg">History</Link>
     </div>
   );
 };
 const MiniCalculatorsDropDown = () => {
   return (
     <div className="mini-drop-down relative flex w-28 flex-1 flex-col text-base md:hidden">
-      <Link href="/user/calculators/single-family" className="mb-1">
+      <Link href="/user/calculators/single-family"
+        className="mb-1"
+      >
         Single Family
       </Link>
-      <Link href="/user/calculators/multi-family" className="mb-1">
+      <Link href="/user/calculators/multi-family"
+        className="mb-1"
+      >
         Multi Family
       </Link>
-      <Link href="/user/calculators/seller-finance" className="mb-1">
+      <Link href="/user/calculators/seller-finance"
+        className="mb-1"
+      >
         Seller Finance
       </Link>
       <Link href="/user/calculators/history">History</Link>

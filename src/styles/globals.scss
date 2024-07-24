@@ -41,7 +41,6 @@ $--darkBg300: "#444444";
 
 main {
   @apply dark:text-bg300;
-  min-height: 95vh;
 
   input,
   select {

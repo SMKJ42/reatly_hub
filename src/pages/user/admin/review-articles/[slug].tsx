@@ -1,6 +1,5 @@
 import { type ReactElement, useState, useEffect } from "react";
 import UserLayout from "~/components/layouts/UserLayout";
-import { api } from "~/utils/api";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 import type {
   GetServerSidePropsContext,
@@ -9,7 +8,8 @@ import type {
 import { serverHelperWithContext } from "~/lib/serverHelperWithContext";
 import { useRouter } from "next/router";
 import { useUser } from "@clerk/nextjs";
-import { adminPriveledges } from "~/lib/priviledges";
+import { api } from "~/utils/api";
+import { AdminRoles } from "~/utils/priviledges";
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext<{ id: string }>
@@ -91,7 +91,7 @@ const Articles = (
         ></div>
       </article>
       <div>
-        {adminPriveledges.includes(
+        {AdminRoles.includes(
           userStatus.user?.publicMetadata?.role as string
         ) && (
           <>

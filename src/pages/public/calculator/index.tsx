@@ -46,7 +46,7 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
   if (loanProductsLoading) return <StandardLoadingSpinner size={88} />;
 
   return (
-    <div>
+    <>
       <Head>
         <title>Realty-hub SFH Calculator</title>
       </Head>
@@ -94,7 +94,7 @@ const SingleFamilyCalc: NextPageWithLayout = () => {
           </div>
         </div>
       </form>
-    </div>
+    </>
   );
 };
 

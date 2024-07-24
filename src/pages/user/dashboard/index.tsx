@@ -1,7 +1,6 @@
 import { type ReactElement } from "react";
 import UserLayout from "~/components/layouts/UserLayout";
 import type { NextPageWithLayout } from "../../_app";
-import { adminPriveledges, authorPriveledges } from "~/lib/priviledges";
 import { AccountArticles } from "~/components/dashboard/articles/AccountAuthor";
 import { AccountAdmin } from "~/components/dashboard/admin/AccountAdmin";
 import { useUser } from "@clerk/nextjs";
@@ -9,6 +8,7 @@ import Link from "next/link";
 import { StandardLoadingSpinner } from "~/components/shared/StandardLoadingSpinner";
 import { AccountSFH } from "~/components/dashboard/pod/AccountSFH";
 import Head from "next/head";
+import { AdminRoles, AuthorRoles } from "~/utils/priviledges";
 
 const Dashboard: NextPageWithLayout = () => {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -26,10 +26,10 @@ const Dashboard: NextPageWithLayout = () => {
       <Head>
         <title>Realty-hub Dashboard</title>
       </Head>
-      {adminPriveledges.includes(user.publicMetadata.role as string) && (
+      {AdminRoles.includes(user.publicMetadata.role as string) && (
         <AccountAdmin />
       )}
-      {authorPriveledges.includes(user.publicMetadata.role as string) ? (
+      {AuthorRoles.includes(user.publicMetadata.role as string) ? (
         <AccountArticles />
       ) : (
         <>

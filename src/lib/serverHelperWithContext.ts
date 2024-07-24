@@ -2,10 +2,11 @@ import { clerkClient } from "@clerk/nextjs";
 import { getAuth } from "@clerk/nextjs/server";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import { TRPCError } from "@trpc/server";
-import { GetServerSidePropsContext } from "next";
+import { type GetServerSidePropsContext } from "next";
 import SuperJSON from "superjson";
 import { appRouter } from "~/server/api/root";
 import { prisma } from "~/server/db";
+import { type RealtyHubRole } from "./priviledges";
 
 export async function serverHelperWithContext(
   context: GetServerSidePropsContext<{ id: string }>
@@ -15,7 +16,7 @@ export async function serverHelperWithContext(
 
   const userId = sesh.userId;
   const user = userId ? await clerkClient.users.getUser(userId) : null;
-  const role = user?.publicMetadata.role;
+  const role = user?.publicMetadata.role as RealtyHubRole;
 
   let ip = "";
 
@@ -37,7 +38,7 @@ export async function serverHelperWithContext(
 
   return createServerSideHelpers({
     router: appRouter,
-    ctx: { prisma, userId, role, ip },
+    ctx: { prisma, userId, role: role, ip },
     transformer: SuperJSON,
   });
 }

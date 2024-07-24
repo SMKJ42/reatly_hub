@@ -3,7 +3,7 @@ import { z } from "zod";
 import { clerkClient } from "@clerk/nextjs";
 
 export const adminRouter = createTRPCRouter({
-  getUserCount: adminProcedure.mutation(async ({ ctx }) => {
+  getUserCount: adminProcedure.mutation(async ({}) => {
     const count = await clerkClient.users.getCount();
     return count;
   }),
@@ -24,7 +24,7 @@ export const adminRouter = createTRPCRouter({
         page: z.number(),
       })
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       const offset = input.page * 20;
 
       const users = await clerkClient.users.getUserList({

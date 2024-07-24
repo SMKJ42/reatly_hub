@@ -20,31 +20,31 @@ interface mostRecent {
 export function MostRecentArticle() {
   const router = useRouter();
 
-  const {
-    data: mostRecent,
-    isLoading,
-    isError,
-  } = api.author.getAuthorsLastStagedArticle.useQuery({});
+  // const {
+  //   data: mostRecent,
+  //   isLoading,
+  //   isError,
+  // } = api.author.getAuthorsLastStagedArticle.useQuery({});
 
-  if (isLoading) {
-    return (
-      <div className="col-span-5">
-        <StandardLoadingSpinner />
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="col-span-5">
+  //       <StandardLoadingSpinner />
+  //     </div>
+  //   );
+  // }
 
-  if (isError) {
-    return (
-      <div className="col-span-5 pl-8">
-        <p>Unable to load most recent article.</p>
-      </div>
-    );
-  }
+  // if (isError) {
+  //   return (
+  //     <div className="col-span-5 pl-8">
+  //       <p>Unable to load most recent article.</p>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
-      <div className="flex w-full flex-col justify-center px-8">
+      {/* <div className="flex w-full flex-col justify-center px-8">
         <h2
           className="mb-2 text-xl font-semibold hover:cursor-pointer hover:underline"
           onClick={() => {
@@ -55,7 +55,7 @@ export function MostRecentArticle() {
         </h2>
         <p>{mostRecent?.preview}...</p>
       </div>
-      {mostRecent && <ArticleSwitch {...mostRecent} />}
+      {mostRecent && <ArticleSwitch {...mostRecent} />} */}
     </>
   );
 }
@@ -84,7 +84,7 @@ function DraftArticleStatus(mostRecent: mostRecent) {
           </p>
           <Link
             href={`/user/write-article/${mostRecent?.id}`}
-            className="ml-8 mt-2 rounded-lg bg-white px-4 py-[1px] text-black"
+            // className="ml-8 mt-2 rounded-lg bg-white px-4 py-[1px] text-black"
           >
             Resume work
           </Link>
@@ -105,13 +105,13 @@ function PendingArticleStatus(mostRecent: mostRecent) {
           </p>
           <Link
             href={`/user/write-articles/${mostRecent?.id}`}
-            className="ml-8 mt-2 rounded-lg bg-white px-4 py-1 text-black"
+            // className="ml-8 mt-2 rounded-lg bg-white px-4 py-1 text-black"
           >
             Revise
           </Link>
           <Link
             href={`/user/admin/review-articles/${mostRecent?.id}`}
-            className="ml-8 mt-2 rounded-lg bg-white px-4 py-1 text-black"
+            // className="ml-8 mt-2 rounded-lg bg-white px-4 py-1 text-black"
           >
             Review
           </Link>
@@ -132,7 +132,7 @@ function PublishedArticleStatus(mostRecent: mostRecent) {
           </p>
           <Link
             href={`/user/admin/review-articles/${mostRecent?.id}`}
-            className="ml-8 mt-2 rounded-lg bg-white px-4 py-1 text-black"
+            // className="ml-8 mt-2 rounded-lg bg-white px-4 py-1 text-black"
           >
             Review
           </Link>
