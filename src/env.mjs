@@ -9,6 +9,7 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
     NODE_ENV: z.enum(["development", "test", "production"]),
+    CLERK_SECRET_KEY: z.string(),
     FRED_API_KEY: z.string(),
     CRON_KEY: z.string(),
   },
@@ -27,6 +28,7 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
+    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
     FRED_API_KEY: process.env.FRED_API_KEY,
     CRON_KEY: process.env.CRON_KEY,
   },

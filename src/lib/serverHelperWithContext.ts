@@ -1,4 +1,3 @@
-import { clerkClient } from "@clerk/nextjs";
 import { getAuth } from "@clerk/nextjs/server";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import { TRPCError } from "@trpc/server";
@@ -7,6 +6,7 @@ import SuperJSON from "superjson";
 import { appRouter } from "~/server/api/root";
 import { prisma } from "~/server/db";
 import { type RealtyHubRole } from "../utils/priviledges";
+import { clerkClient } from "~/server/clerk";
 
 export async function serverHelperWithContext(
   context: GetServerSidePropsContext<{ id: string }>

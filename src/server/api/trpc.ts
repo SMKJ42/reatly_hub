@@ -6,7 +6,6 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { clerkClient } from "@clerk/nextjs";
 import { getAuth } from "@clerk/nextjs/server";
 import { TRPCError, initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
@@ -24,6 +23,8 @@ import {
   UserRoles,
   type RealtyHubRole,
 } from "~/utils/priviledges";
+import { env } from "~/env.mjs";
+import { clerkClient } from "../clerk";
 
 export type ServerContext = {
   userId: string | null;

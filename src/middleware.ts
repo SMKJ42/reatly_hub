@@ -1,45 +1,16 @@
-import { authMiddleware } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export default authMiddleware({
-  publicRoutes: [
-    "/",
-    "/articles/:path*",
-    "/public/:path*",
-    /*
-     * exposes mortgage rate & article routers to public
-     */
-    "/api/cron/updateMortgageRates(.*)",
-    "/api/trpc/mortgageRates(.*)",
-    "/api/trpc/articles(.*)",
-  ],
+const isUserRoute = createRouteMatcher(["user/(.*)"]);
 
-  afterAuth(auth, req) {
-    /*
-     * if user is not logged in and tries to access a private route
-     */
-    if (!auth.userId && !auth.isPublicRoute) {
-      const redirectUrl = new URL(req.url);
-      redirectUrl.pathname = "/";
-      return NextResponse.redirect(redirectUrl);
-    }
-    /*
-     * redirects to dashboard if user is logged in and tries to
-     * access public route while also respecting api routes
-     */
-    if (auth.userId && auth.isPublicRoute) {
-      const redirectUrl = new URL(req.url);
-      if (!redirectUrl.pathname.includes("/api/trpc/")) {
-        redirectUrl.pathname = "/user/dashboard";
-        return NextResponse.redirect(redirectUrl);
-      }
-    }
-  },
+export default clerkMiddleware((auth, req) => {
+  if (isUserRoute(req)) auth().protect();
 });
 
-/*
- * middleware runs on the following routes
- */
 export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    // Always run for API routes
+    "/(api|trpc)(.*)",
+  ],
 };

@@ -9,13 +9,15 @@ import {
   type Dispatch,
   type ReactNode,
   type SetStateAction,
+  useEffect,
   useState,
 } from "react";
 import ToggleTheme from "../shared/ToggleTheme";
 import { HomeIcon } from "../shared/icons/home";
 import { ExpandIcon } from "../shared/icons/expand";
 import { CollapseIcon } from "../shared/icons/collapse";
-
+import { redirect } from "next/navigation";
+import { useRouter } from "next/router";
 
 type Mini = "expanded" | "collapsed";
 interface MiniNav {
@@ -35,16 +37,21 @@ export default function PublicLayout({
 }) {
   const [mini, setMini] = useState<Mini>("collapsed");
 
+  const user = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user.isLoaded && user.isSignedIn) void router.push("/user/dashboard");
+  }, [user]);
+
   return (
-    <div
-      className="text-black transition-colors duration-500 min-h-screen bg-slate-100 dark:bg-darkBg100 dark:text-white"
-    >
-      <div className="fixed w-full z-10">
+    <div className="min-h-screen bg-slate-100 text-black transition-colors duration-500 dark:bg-darkBg100 dark:text-white">
+      <div className="fixed z-10 w-full">
         <LargeNav />
         <MiniNav mini={mini} setMini={setMini} />
       </div>
-      <main className="top-14 relative bg-slate-100 dark:bg-darkBg100 dark:text-white [min-height:calc(100vh-3.5rem)]">
-          {children}
+      <main className="relative top-14 bg-slate-100 [min-height:calc(100vh-3.5rem)] dark:bg-darkBg100 dark:text-white">
+        {children}
       </main>
       <footer></footer>
     </div>
@@ -79,7 +86,9 @@ function LargeNav() {
         <div className="sign-out-btn w-42 ml-12">
           {user.isLoaded && user.isSignedIn ? (
             <>
-              <Link href="/user/dashboard">Dashboard</Link>
+              <Link href="/user/dashboard" className="mr-4">
+                Dashboard
+              </Link>
               <SignOutButton />
             </>
           ) : (
