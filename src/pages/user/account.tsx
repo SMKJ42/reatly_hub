@@ -36,7 +36,7 @@ const UserAccount: NextPageWithLayout = () => {
           <p className="pb-2 text-lg">{name}</p>
           <div className="flex w-full justify-center">
             <Image
-              src={user?.profileImageUrl ? user.profileImageUrl : ""}
+              src={user?.imageUrl ? user.imageUrl : ""}
               alt={`${name}'s profile image`}
               className="rounded-xl"
               width={80}

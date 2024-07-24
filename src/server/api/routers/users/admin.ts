@@ -1,6 +1,6 @@
+import { clerkClient } from "~/server/clerk";
 import { adminProcedure, createTRPCRouter } from "../../trpc";
 import { z } from "zod";
-import { clerkClient } from "@clerk/nextjs";
 
 export const adminRouter = createTRPCRouter({
   getUserCount: adminProcedure.mutation(async ({}) => {
