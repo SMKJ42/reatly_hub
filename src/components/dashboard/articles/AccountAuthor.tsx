@@ -10,7 +10,7 @@ export function AccountArticles() {
           <button className="mb-4">
             <Link
               href="/user/write-article/new-article"
-              className="rounded-lg bg-darkBg300 px-4 py-1 text-white dark:bg-white dark:text-black"
+              // className="rounded-lg bg-darkBg300 px-4 py-1 text-white dark:bg-white dark:text-black"
             >
               Create
             </Link>
@@ -18,7 +18,7 @@ export function AccountArticles() {
           <button>
             <Link
               href="/user/my-articles"
-              className="rounded-lg bg-darkBg300 px-4 py-1 text-white dark:bg-white dark:text-black"
+              // className="rounded-lg bg-darkBg300 px-4 py-1 text-white dark:bg-white dark:text-black"
             >
               View
             </Link>

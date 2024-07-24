@@ -10,7 +10,7 @@ export function AccountSFH() {
           <button className="mb-4">
             <Link
               href="/user/calculators/single-family"
-              className="rounded-lg bg-darkBg300 px-4 py-1 text-white dark:bg-white dark:text-black"
+              // className="rounded-lg bg-darkBg300 px-4 py-1 text-white dark:bg-white dark:text-black"
             >
               Create
             </Link>
@@ -18,7 +18,7 @@ export function AccountSFH() {
           <button>
             <Link
               href="/user/calculators/history"
-              className="rounded-lg bg-darkBg300 px-4 py-1 text-white dark:bg-white dark:text-black"
+              // className="rounded-lg bg-darkBg300 px-4 py-1 text-white dark:bg-white dark:text-black"
             >
               View
             </Link>

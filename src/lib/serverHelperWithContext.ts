@@ -6,7 +6,7 @@ import { type GetServerSidePropsContext } from "next";
 import SuperJSON from "superjson";
 import { appRouter } from "~/server/api/root";
 import { prisma } from "~/server/db";
-import { type RealtyHubRole } from "./priviledges";
+import { type RealtyHubRole } from "../utils/priviledges";
 
 export async function serverHelperWithContext(
   context: GetServerSidePropsContext<{ id: string }>
